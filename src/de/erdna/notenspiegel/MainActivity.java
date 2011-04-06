@@ -12,12 +12,12 @@ import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends ListActivity {
 	private DbAdapter dbAdapter;
+	private SimpleCursorAdapter adapter;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setContentView(R.layout.layout_mark_row);
 
 		// Connect to DataSevice and DB
 		dbAdapter = new DbAdapter(this);
@@ -30,10 +30,16 @@ public class MainActivity extends ListActivity {
 		// Simple Cursor Adapter
 		String[] from = { DbAdapter.KEY_MARK_NAME, DbAdapter.KEY_MARK_MARK };
 		int[] to = { R.id.textViewMarkName, R.id.textViewMarkMark };
-		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.layout_mark_row,
+		adapter = new SimpleCursorAdapter(this, R.layout.layout_mark_row,
 				cursor, from, to);
 		setListAdapter(adapter);
 
+	}
+	
+	@Override
+	protected void onResume() {
+		adapter.changeCursor(dbAdapter.fetchAllMarks());
+		super.onResume();
 	}
 
 	@Override
@@ -51,6 +57,7 @@ public class MainActivity extends ListActivity {
 			startActivity(intent);
 			break;
 		case R.id.menu_item_refresh:
+			new RefreshTask().execute(this);
 			break;
 			
 		default:
