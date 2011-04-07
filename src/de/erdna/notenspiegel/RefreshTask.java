@@ -11,6 +11,8 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 	@Override
 	protected Void doInBackground(Object... objects) {
+		
+		// get context from MainActivity
 		context = (Context) objects[0];
 		
 		// Connect to DataSevice and DB
