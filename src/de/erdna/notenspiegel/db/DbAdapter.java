@@ -42,4 +42,8 @@ public class DbAdapter {
 		return cursor;
 	}
 
+	public long deleteAll() {
+		return db.delete(TABLE_MARK, null, null);
+	}
+
 }

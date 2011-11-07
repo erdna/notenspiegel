@@ -69,9 +69,10 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		// Connect to DataSevice and DB
 		DbAdapter dbAdapter = new DbAdapter(context);
 		dbAdapter.open();
+		dbAdapter.deleteAll();
 
 		try {
-			readWebPage(url);
+			readWebPage(url, dbAdapter);
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,8 +80,6 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		dbAdapter.createMark("Info", "1.7");
 
 		return null;
 	}
@@ -92,7 +91,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		super.onPostExecute(result);
 	}
 
-	void readWebPage(String url) throws ClientProtocolException, IOException {
+	void readWebPage(String url, DbAdapter dbAdapter) throws ClientProtocolException, IOException {
 
 		HttpClient client = getNewHttpClient();
 
@@ -140,17 +139,117 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		}
 		System.out.println("----------------------------------------");
 
-		parseTab(responseNoten.getEntity().getContent());
+		parseNotenTab(responseNoten.getEntity().getContent(),dbAdapter);
 
-//		if (responseNoten != null) {
-//			String ret = EntityUtils.toString(responseNoten.getEntity());
-//			Log.v("responseNoten", ret);
-//		}
+		// if (responseNoten != null) {
+		// String ret = EntityUtils.toString(responseNoten.getEntity());
+		// Log.v("responseNoten", ret);
+		// }
 
 	}
 
-	private void parseTab(InputStream content) {
-		// TODO Auto-generated method stub
+	private void parseNotenTab(InputStream htmlPage, DbAdapter dbAdapter) {
+
+		final String TAB_HEADING = "N o t e n s p i e g e l";
+
+		boolean foundTab = false;
+		boolean foundRow = false;
+
+		String name = "";
+		String mark = "";
+
+		try {
+			XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+			factory.setValidating(false);
+			factory.setFeature(Xml.FEATURE_RELAXED, true);
+			factory.setNamespaceAware(true);
+			XmlPullParser xpp = factory.newPullParser();
+
+			xpp.setInput(new InputStreamReader(htmlPage));
+			int eventType = xpp.getEventType();
+			while (eventType != XmlPullParser.END_DOCUMENT) {
+
+				// search for tab with explicit heading
+				if (eventType == XmlPullParser.TEXT) {
+					if (xpp.getText().equals(TAB_HEADING)) {
+						Log.v("parseNotenTab()", TAB_HEADING);
+						foundTab = true;
+					}
+				}
+
+				// search for row which is not heading
+				if (foundTab && !foundRow && eventType == XmlPullParser.START_TAG) {
+					if (xpp.getName().equals("tr")) {
+						Log.v("parseNotenTab()", xpp.getName());
+						foundRow = true;
+					}
+				}
+
+				// search for first element in row
+				if (foundRow && eventType == XmlPullParser.START_TAG) {
+					if (xpp.getName().equals("td")) {
+						Log.v("parseNotenTab()", xpp.getName());
+						eventType = xpp.next();
+						if (eventType == XmlPullParser.TEXT) {
+							Log.i("Prüfungsnummer", xpp.getText());
+							// Log.w("Position", xpp.getPositionDescription());
+						}
+
+						eventType = xpp.next();
+						eventType = xpp.next();
+						eventType = xpp.next();
+						eventType = xpp.next();
+
+						Log.w("Position", xpp.getPositionDescription());
+						if (eventType == XmlPullParser.TEXT) {
+							name = xpp.getText();
+							Log.i("Prüfungstext", name);
+							Log.w("Position", xpp.getPositionDescription());
+						}
+
+						eventType = xpp.next();
+						eventType = xpp.next();
+						eventType = xpp.next();
+						eventType = xpp.next();
+
+						eventType = xpp.next();
+						eventType = xpp.next();
+						eventType = xpp.next();
+						eventType = xpp.next();
+
+						Log.w("Position", xpp.getPositionDescription());
+						if (eventType == XmlPullParser.TEXT) {
+							String text = xpp.getText();
+							mark = Html.fromHtml(text).subSequence(18, 21).toString();
+							Log.i("Note", mark);
+							Log.w("Position", xpp.getPositionDescription());
+						}
+
+						dbAdapter.createMark(name, mark);
+						
+						foundRow = false;
+					}
+				}
+
+				// search for tale end tag and abort
+				if (foundTab && eventType == XmlPullParser.END_TAG) {
+					if (xpp.getName().equals("table")) {
+						Log.w("parseNotenTab", "table end tag found");
+						break;
+					}
+				}
+
+				eventType = xpp.next();
+
+			}
+
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public class MySSLSocketFactory extends SSLSocketFactory {
