@@ -3,6 +3,7 @@ package de.erdna.notenspiegel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
@@ -45,7 +46,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import de.erdna.notenspiegel.db.DbAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,6 +54,9 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.util.Xml;
+
+import de.erdna.notenspiegel.db.DbAdapter;
+import static de.erdna.notenspiegel.Constants.*;
 
 public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
@@ -76,17 +79,14 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 		try {
 			readMarksFromHisQis(url, dbAdapter);
+			// TODO do error handling
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (XmlPullParserException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -120,17 +120,20 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 
 		HttpResponse response = client.execute(request);
-
 		printResponseHeader(response);
-		//printResponseContent(response);
-		
-		if(loginFailed(response))
-			Log.e("login", "login was NOT successful");
-			//TODO do something, maybe throw an exception 
-		else 			
-			Log.i("login", "login was successful");
 
-		String urlNoten = parseMenu(response.getEntity().getContent());
+		String content = EntityUtils.toString(response.getEntity());
+		printResponseContent(content);
+
+		if (loginFailed(content)) {
+			Log.e("login", "login was NOT successful");
+			// TODO do something, maybe throw an exception
+			return;
+		} else {
+			Log.i("login", "login was successful");
+		}
+
+		String urlNoten = parseMenu(content);
 		Log.v("urlNoten", urlNoten);
 
 		HttpGet getRequest = new HttpGet(Html.fromHtml(urlNoten).toString());
@@ -168,12 +171,12 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 	}
 
-	private boolean loginFailed(HttpResponse response) throws XmlPullParserException, IllegalStateException, IOException {
-		// usurely the status must be 401
+	private boolean loginFailed(String content) throws XmlPullParserException, IllegalStateException, IOException {
+		// surely the status must be 401
 		// but Bochmann is stupid
-		// 401 - Not Authorised 
+		// 401 - Not Authorised
 		// The request needs user authentication
-		
+
 		final String ERROR_TEXT = "Anmeldung fehlgeschlagen";
 
 		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -182,38 +185,39 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		factory.setNamespaceAware(true);
 		XmlPullParser xpp = factory.newPullParser();
 
-		xpp.setInput(new InputStreamReader(response.getEntity().getContent()));
+		xpp.setInput(new StringReader(content));
 		int eventType = xpp.getEventType();
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 
 			// search for tab with explicit heading
 			if (eventType == XmlPullParser.TEXT) {
 				if (xpp.getText().contains(ERROR_TEXT)) {
-					Log.v("parseNotenTab()", xpp.getText());
+					if (DEBUG) Log.v("parseNotenTab()", xpp.getText());
 					return true;
 				}
 			}
-			
+
 			eventType = xpp.next();
-			
-		}		
+
+		}
 		return false;
 	}
 
-	private void printResponseContent(HttpResponse response) throws IOException {
-		if (response != null) {
-			String ret = EntityUtils.toString(response.getEntity());
-			Log.v("content", ret);
+	private void printResponseContent(String content) {
+		if (content != null) {
+			if (DEBUG) Log.v("content", content);
 		}
 	}
 
 	private void printResponseHeader(HttpResponse response) {
-		System.out.println("----------------------------------------");
-		System.out.println(response.getStatusLine());
-		for (Header header : response.getAllHeaders()) {
-			System.out.println(header.toString());
+		if (DEBUG) {
+			System.out.println("----------------------------------------");
+			System.out.println(response.getStatusLine());
+			for (Header header : response.getAllHeaders()) {
+				System.out.println(header.toString());
+			}
+			System.out.println("----------------------------------------");
 		}
-		System.out.println("----------------------------------------");
 	}
 
 	private void parseNotenTab(InputStream htmlPage, DbAdapter dbAdapter) throws XmlPullParserException, IOException {
@@ -368,7 +372,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		}
 	}
 
-	private String parseMenu(InputStream htmlPage) throws XmlPullParserException, IOException {
+	private String parseMenu(String htmlPage) throws XmlPullParserException, IOException {
 
 		final int ASSUMED_HREF_INDEX = 1;
 
@@ -378,7 +382,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		factory.setNamespaceAware(true);
 		XmlPullParser xpp = factory.newPullParser();
 
-		xpp.setInput(new InputStreamReader(htmlPage));
+		xpp.setInput(new StringReader(htmlPage));
 		int eventType = xpp.getEventType();
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 
@@ -388,7 +392,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 					if (attributeName.equalsIgnoreCase("href")) {
 						String link = xpp.getAttributeValue("", "href");
 						if (link.contains("=notenspiegel")) {
-							Log.v("Link", link);
+							if (DEBUG) Log.v("Link", link);
 							return link;
 						}
 					}
@@ -422,7 +426,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 			if (eventType == XmlPullParser.START_TAG) {
 				if (xpp.getName().equalsIgnoreCase("a") && xpp.getAttributeCount() > 1) {
 					String attributeName0 = xpp.getAttributeName(0);
-					// Log.v("AttributeName0", attributeName0);
+					if (DEBUG) Log.v("AttributeName0", attributeName0);
 					String attributeName1 = xpp.getAttributeName(ASSUMED_HREF_INDEX);
 					// Log.v("AttributeName1", attributeName1);
 					if (attributeName0.equalsIgnoreCase("class") && attributeName1.equalsIgnoreCase("href")) {
