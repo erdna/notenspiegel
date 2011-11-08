@@ -123,7 +123,6 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		printResponseHeader(response);
 
 		String content = EntityUtils.toString(response.getEntity());
-		printResponseContent(content);
 
 		if (loginFailed(content)) {
 			Log.e("login", "login was NOT successful");
@@ -141,33 +140,20 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 		printResponseHeader(response);
 
-		String[] kontenUrls = parseNoten(response.getEntity().getContent());
+		List<String> kontoUrls = parseNoten(response.getEntity().getContent());
 
-		// for (String kontoUrl : kontenUrls) {
+		for (String kontoUrl : kontoUrls) {
 
-		String kontoUrl = kontenUrls[1];
+			if (DEBUG) Log.d("url", kontoUrl);
 
-		Log.d("-> url", kontoUrl);
+			getRequest = new HttpGet(Html.fromHtml(kontoUrl).toString());
+			response = client.execute(getRequest);
 
-		getRequest = new HttpGet(Html.fromHtml(kontoUrl).toString());
-		response = client.execute(getRequest);
+			printResponseHeader(response);
 
-		printResponseHeader(response);
+			parseNotenTab(response.getEntity().getContent(), dbAdapter);
 
-		parseNotenTab(response.getEntity().getContent(), dbAdapter);
-
-		// String kontoUrl2 = kontenUrls[0];
-		//
-		// Log.d("-> url", kontoUrl2);
-		//
-		// getRequest = new HttpGet(Html.fromHtml(kontoUrl2).toString());
-		// response = client.execute(getRequest);
-		//
-		// printResponseHeader(response);
-		//
-		// parseNotenTab(response.getEntity().getContent(), dbAdapter);
-
-		// }
+		}
 
 	}
 
@@ -179,11 +165,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 		final String ERROR_TEXT = "Anmeldung fehlgeschlagen";
 
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		factory.setValidating(false);
-		factory.setFeature(Xml.FEATURE_RELAXED, true);
-		factory.setNamespaceAware(true);
-		XmlPullParser xpp = factory.newPullParser();
+		XmlPullParser xpp = getXmlPullParser();
 
 		xpp.setInput(new StringReader(content));
 		int eventType = xpp.getEventType();
@@ -203,9 +185,10 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		return false;
 	}
 
-	private void printResponseContent(String content) {
-		if (content != null) {
-			if (DEBUG) Log.v("content", content);
+	@SuppressWarnings("unused")
+	private void printContent(String content) {
+		if (DEBUG && content != null) {
+			Log.v("content", content);
 		}
 	}
 
@@ -230,11 +213,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		String name = "";
 		String mark = "";
 
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		factory.setValidating(false);
-		factory.setFeature(Xml.FEATURE_RELAXED, true);
-		factory.setNamespaceAware(true);
-		XmlPullParser xpp = factory.newPullParser();
+		XmlPullParser xpp = getXmlPullParser();
 
 		xpp.setInput(new InputStreamReader(htmlPage));
 		int eventType = xpp.getEventType();
@@ -251,7 +230,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 			// search for row which is not heading
 			if (foundTab && !foundRow && eventType == XmlPullParser.START_TAG) {
 				if (xpp.getName().equals("tr")) {
-					Log.v("parseNotenTab()", xpp.getName());
+					// if (DEBUG) Log.v("parseNotenTab()", xpp.getName());
 					foundRow = true;
 				}
 			}
@@ -259,10 +238,9 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 			// search for first element in row
 			if (foundRow && eventType == XmlPullParser.START_TAG) {
 				if (xpp.getName().equals("td")) {
-					Log.v("parseNotenTab()", xpp.getName());
 					eventType = xpp.next();
 					if (eventType == XmlPullParser.TEXT) {
-						Log.i("Prüfungsnummer", xpp.getText());
+						if (DEBUG) Log.i("Prüfungsnummer", xpp.getText());
 						// Log.w("Position", xpp.getPositionDescription());
 					}
 
@@ -271,11 +249,11 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 					eventType = xpp.next();
 					eventType = xpp.next();
 
-					Log.w("Position", xpp.getPositionDescription());
+					// Log.w("Position", xpp.getPositionDescription());
 					if (eventType == XmlPullParser.TEXT) {
 						name = xpp.getText();
-						Log.i("Prüfungstext", name);
-						Log.w("Position", xpp.getPositionDescription());
+						if (DEBUG) Log.i("Prüfungstext", name);
+						// Log.w("Position", xpp.getPositionDescription());
 					}
 
 					eventType = xpp.next();
@@ -288,12 +266,15 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 					eventType = xpp.next();
 					eventType = xpp.next();
 
-					Log.w("Position", xpp.getPositionDescription());
+					// Log.w("Position", xpp.getPositionDescription());
 					if (eventType == XmlPullParser.TEXT) {
-						String text = xpp.getText();
-						mark = Html.fromHtml(text).subSequence(18, 21).toString();
-						Log.i("Note", mark);
-						Log.w("Position", xpp.getPositionDescription());
+						Log.w("befor getText()", xpp.getPositionDescription());
+						String text = Html.fromHtml(xpp.getText()).toString();
+						Log.w("after getText()", xpp.getPositionDescription());
+						if (text != null && text.length() != 0) {
+							mark = text.subSequence(18, 21).toString();
+							if (DEBUG) Log.i("Note", mark);
+						}
 					}
 
 					dbAdapter.createMark(name, mark);
@@ -313,6 +294,15 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 			eventType = xpp.next();
 
 		}
+	}
+
+	private XmlPullParser getXmlPullParser() throws XmlPullParserException {
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setValidating(false);
+		factory.setFeature(Xml.FEATURE_RELAXED, true);
+		factory.setNamespaceAware(true);
+		XmlPullParser xpp = factory.newPullParser();
+		return xpp;
 	}
 
 	public class MySSLSocketFactory extends SSLSocketFactory {
@@ -376,11 +366,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 		final int ASSUMED_HREF_INDEX = 1;
 
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		factory.setValidating(false);
-		factory.setFeature(Xml.FEATURE_RELAXED, true);
-		factory.setNamespaceAware(true);
-		XmlPullParser xpp = factory.newPullParser();
+		XmlPullParser xpp = getXmlPullParser();
 
 		xpp.setInput(new StringReader(htmlPage));
 		int eventType = xpp.getEventType();
@@ -406,18 +392,12 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		return "";
 	}
 
-	private String[] parseNoten(InputStream htmlPage) throws XmlPullParserException, IOException {
+	private List<String> parseNoten(InputStream htmlPage) throws XmlPullParserException, IOException {
 
 		final int ASSUMED_HREF_INDEX = 1;
-		String link[] = { "", "" };
+		List<String> links = new ArrayList<String>();
 
-		int c = 0;
-
-		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-		factory.setValidating(false);
-		factory.setFeature(Xml.FEATURE_RELAXED, true);
-		factory.setNamespaceAware(true);
-		XmlPullParser xpp = factory.newPullParser();
+		XmlPullParser xpp = getXmlPullParser();
 
 		xpp.setInput(new InputStreamReader(htmlPage));
 		int eventType = xpp.getEventType();
@@ -426,15 +406,16 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 			if (eventType == XmlPullParser.START_TAG) {
 				if (xpp.getName().equalsIgnoreCase("a") && xpp.getAttributeCount() > 1) {
 					String attributeName0 = xpp.getAttributeName(0);
-					if (DEBUG) Log.v("AttributeName0", attributeName0);
+					// if (DEBUG) Log.v("AttributeName0", attributeName0);
 					String attributeName1 = xpp.getAttributeName(ASSUMED_HREF_INDEX);
-					// Log.v("AttributeName1", attributeName1);
+					// if (DEBUG) Log.v("AttributeName1", attributeName1);
 					if (attributeName0.equalsIgnoreCase("class") && attributeName1.equalsIgnoreCase("href")) {
 						String attributeValue0 = xpp.getAttributeValue(0);
-						// Log.v("AttributeValue1", attributeValue1);
+						// if (DEBUG) Log.v("AttributeValue1", attributeValue1);
 						if (attributeValue0.equals("Konto")) {
-							link[c++] = xpp.getAttributeValue("", "href");
-							Log.v("Link", link[c - 1]);
+							String attributeValue1 = xpp.getAttributeValue("", "href");
+							if (attributeValue1 != null) links.add(attributeValue1);
+							if (DEBUG) Log.v("added link", attributeValue1);
 						}
 					}
 				}
@@ -444,7 +425,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 		}
 
-		return link;
+		return links;
 	}
 
 }
