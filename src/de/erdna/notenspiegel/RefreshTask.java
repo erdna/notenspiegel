@@ -94,7 +94,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 		return null;
 	}
-	
+
 	@Override
 	protected void onPostExecute(Void result) {
 		Intent intent = new Intent(context, MainActivity.class);
@@ -276,7 +276,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 						if (text != null && text.length() != 0) {
 							mark = text.subSequence(18, 21).toString();
 							if (DEBUG) Log.i("Note", mark);
-						}
+						} else mark = "";
 					}
 
 					dbAdapter.createMark(name, mark);
