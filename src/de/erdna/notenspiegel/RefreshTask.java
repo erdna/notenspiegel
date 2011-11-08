@@ -122,7 +122,13 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		HttpResponse response = client.execute(request);
 
 		printResponseHeader(response);
-		printResponseContent(response);
+		//printResponseContent(response);
+		
+		if(loginFailed(response))
+			Log.e("login", "login was NOT successful");
+			//TODO do something, maybe throw an exception 
+		else 			
+			Log.i("login", "login was successful");
 
 		String urlNoten = parseMenu(response.getEntity().getContent());
 		Log.v("urlNoten", urlNoten);
@@ -160,6 +166,38 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 		// }
 
+	}
+
+	private boolean loginFailed(HttpResponse response) throws XmlPullParserException, IllegalStateException, IOException {
+		// usurely the status must be 401
+		// but Bochmann is stupid
+		// 401 - Not Authorised 
+		// The request needs user authentication
+		
+		final String ERROR_TEXT = "Anmeldung fehlgeschlagen";
+
+		XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+		factory.setValidating(false);
+		factory.setFeature(Xml.FEATURE_RELAXED, true);
+		factory.setNamespaceAware(true);
+		XmlPullParser xpp = factory.newPullParser();
+
+		xpp.setInput(new InputStreamReader(response.getEntity().getContent()));
+		int eventType = xpp.getEventType();
+		while (eventType != XmlPullParser.END_DOCUMENT) {
+
+			// search for tab with explicit heading
+			if (eventType == XmlPullParser.TEXT) {
+				if (xpp.getText().contains(ERROR_TEXT)) {
+					Log.v("parseNotenTab()", xpp.getText());
+					return true;
+				}
+			}
+			
+			eventType = xpp.next();
+			
+		}		
+		return false;
 	}
 
 	private void printResponseContent(HttpResponse response) throws IOException {
