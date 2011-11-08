@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends ListActivity {
@@ -18,6 +19,8 @@ public class MainActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
 		// Connect to DataSevice and DB
 		dbAdapter = new DbAdapter(this);
@@ -30,18 +33,18 @@ public class MainActivity extends ListActivity {
 		// Simple Cursor Adapter
 		String[] from = { DbAdapter.KEY_MARK_NAME, DbAdapter.KEY_MARK_MARK };
 		int[] to = { R.id.textViewMarkName, R.id.textViewMarkMark };
-		adapter = new SimpleCursorAdapter(this, R.layout.layout_mark_row,
-				cursor, from, to);
+		adapter = new SimpleCursorAdapter(this, R.layout.layout_mark_row, cursor, from, to);
 		setListAdapter(adapter);
 
 	}
-	
+
 	@Override
 	protected void onResume() {
+		setProgressBarIndeterminateVisibility(false);
 		adapter.changeCursor(dbAdapter.fetchAllMarks());
 		super.onResume();
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -53,13 +56,14 @@ public class MainActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_item_preferences:
-			Intent intent = new Intent(this,PreferencePage.class);
+			Intent intent = new Intent(this, PreferencePage.class);
 			startActivity(intent);
 			break;
 		case R.id.menu_item_refresh:
+			setProgressBarIndeterminateVisibility(true);
 			new RefreshTask().execute(this);
 			break;
-			
+
 		default:
 			break;
 		}
