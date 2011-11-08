@@ -77,6 +77,8 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 		dbAdapter.open();
 		dbAdapter.deleteAll();
 
+		// publishProgress(values)
+
 		try {
 			readMarksFromHisQis(url, dbAdapter);
 			// TODO do error handling
@@ -92,7 +94,7 @@ public class RefreshTask extends AsyncTask<Object, Void, Void> {
 
 		return null;
 	}
-
+	
 	@Override
 	protected void onPostExecute(Void result) {
 		Intent intent = new Intent(context, MainActivity.class);
