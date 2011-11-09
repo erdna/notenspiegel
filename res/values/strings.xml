@@ -3,6 +3,14 @@
     <string name="app_name">Notenspiegel</string>
     <string name="preferences">Preferences</string>
     <string name="refresh">Refresh</string>
-    <string name="username">User name</string>
+    <string name="username">Matriculation number</string>
     <string name="password">Password</string>
+    <string name="university">University</string>
+    <string-array name="listConnectorsName">
+        <item >HTW Dresden</item>
+        <item >TU Dresden</item>
+    </string-array>
+    <string name="university_summary">Choose your University</string>
+    <string name="username_summary">Enter your matriculation number</string>
+    <string name="password_summary">Enter your password</string>
 </resources>

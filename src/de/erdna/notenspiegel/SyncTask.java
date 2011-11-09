@@ -29,16 +29,26 @@ public class SyncTask extends AsyncTask<Object, Void, Void> {
 		// get username and password from SharedPreferences
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-		// build htw specific handler
-		HttpHandler parser = new HtwHttpHandler();
+		// get connector, htwdd or tudd
+		String university = preferences.getString("listUniversities", "htwdd");
+
+		HttpHandler handler = null;
+		if ("htwdd".equals(university)) {
+			// build HTW Dresden specific handler
+			handler = new HtwHttpHandler();
+		} else if ("tudd".equals(university)) {
+			// TODO instantiate connector TU Dresden
+		}
 
 		// give over username and password
-		parser.username = preferences.getString("username", "");
-		parser.password = preferences.getString("password", "");
+		handler.username = preferences.getString("username", "");
+		handler.password = preferences.getString("password", "");
 
 		// start syncing
 		SslConnector connector = new SslConnector();
-		connector.sync(parser, dbAdapter);
+		connector.sync(handler, dbAdapter);
+
+		dbAdapter.close();
 
 		return null;
 	}

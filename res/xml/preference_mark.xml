@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<EditTextPreference android:key="username"
-		android:title="@string/username">
-	</EditTextPreference>
-
-	<EditTextPreference android:key="password"
-		android:title="@string/password" android:password="true">
-	</EditTextPreference>
+	<EditTextPreference 
+		android:key="username"
+		android:title="@string/username"
+		android:summary="@string/username_summary"
+	/>
+	
+	<EditTextPreference
+		android:key="password"
+		android:title="@string/password"
+		android:summary="@string/password_summary"
+		android:password="true"/>
+	
+	<ListPreference 
+		android:key="listUniversities"
+		
+		android:enabled="false"
+		
+		android:title="@string/university"
+		android:summary="@string/university_summary"
+		android:defaultValue="htwdd" 
+		android:entries="@array/listConnectorsName"
+		android:entryValues="@array/listConnectors" />
 
 </PreferenceScreen>
