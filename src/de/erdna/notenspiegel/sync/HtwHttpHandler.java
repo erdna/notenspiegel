@@ -140,7 +140,7 @@ public class HtwHttpHandler extends HttpHandler {
 		for (String url : urls) {
 			try {
 
-				if (DEBUG) Log.d("url", url);
+				if (DEBUG) Log.d(TAG, url);
 
 				HttpGet request = new HttpGet(Html.fromHtml(url).toString());
 				HttpResponse response;
@@ -178,7 +178,7 @@ public class HtwHttpHandler extends HttpHandler {
 			// search for tab with explicit heading
 			if (eventType == XmlPullParser.TEXT) {
 				if (xpp.getText().contains(ERROR_TEXT)) {
-					if (DEBUG) Log.v("parseNotenTab()", xpp.getText());
+					if (DEBUG) Log.v(TAG, xpp.getText());
 					return true;
 				}
 			}
@@ -203,7 +203,7 @@ public class HtwHttpHandler extends HttpHandler {
 					if (attributeName.equalsIgnoreCase("href")) {
 						String link = xpp.getAttributeValue("", "href");
 						if (link.contains("=notenspiegel")) {
-							if (DEBUG) Log.v("Link", link);
+							if (DEBUG) Log.v(TAG, link);
 							return link;
 						}
 					}
@@ -238,7 +238,7 @@ public class HtwHttpHandler extends HttpHandler {
 						if (attributeValue0.equals("Konto")) {
 							String attributeValue1 = xpp.getAttributeValue("", "href");
 							if (attributeValue1 != null) links.add(attributeValue1);
-							if (DEBUG) Log.v("added link", attributeValue1);
+							if (DEBUG) Log.v(TAG, attributeValue1);
 						}
 					}
 				}
@@ -268,7 +268,7 @@ public class HtwHttpHandler extends HttpHandler {
 			// search for tab with explicit heading
 			if (eventType == XmlPullParser.TEXT) {
 				if (xpp.getText().equals(TAB_HEADING)) {
-					Log.v("parseNotenTab()", TAB_HEADING);
+					if (DEBUG) Log.v(TAG, TAB_HEADING);
 					foundTab = true;
 				}
 			}
@@ -286,7 +286,7 @@ public class HtwHttpHandler extends HttpHandler {
 				if (xpp.getName().equals("td")) {
 					eventType = xpp.next();
 					if (eventType == XmlPullParser.TEXT) {
-						if (DEBUG) Log.i("Prüfungsnummer", xpp.getText());
+						if (DEBUG) Log.i(TAG, xpp.getText());
 						// Log.w("Position", xpp.getPositionDescription());
 					}
 
@@ -298,7 +298,7 @@ public class HtwHttpHandler extends HttpHandler {
 					// Log.w("Position", xpp.getPositionDescription());
 					if (eventType == XmlPullParser.TEXT) {
 						name = xpp.getText();
-						if (DEBUG) Log.i("Prüfungstext", name);
+						if (DEBUG) Log.i(TAG, name);
 						// Log.w("Position", xpp.getPositionDescription());
 					}
 
@@ -317,7 +317,7 @@ public class HtwHttpHandler extends HttpHandler {
 						String text = Html.fromHtml(xpp.getText()).toString();
 						if (text != null && text.length() != 0) {
 							mark = text.subSequence(18, 21).toString();
-							if (DEBUG) Log.i("Note", mark);
+							if (DEBUG) Log.i(TAG, mark);
 						} else mark = "";
 					}
 
@@ -330,7 +330,7 @@ public class HtwHttpHandler extends HttpHandler {
 			// search for tale end tag and abort
 			if (foundTab && eventType == XmlPullParser.END_TAG) {
 				if (xpp.getName().equals("table")) {
-					Log.w("parseNotenTab", "table end tag found");
+					if (DEBUG) Log.w(TAG, "table end tag found");
 					break;
 				}
 			}

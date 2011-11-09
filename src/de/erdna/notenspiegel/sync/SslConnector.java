@@ -36,7 +36,7 @@ import de.erdna.notenspiegel.db.DbAdapter;
 import static de.erdna.notenspiegel.Constants.*;
 
 public class SslConnector {
-	
+
 	protected final String TAG = this.getClass().getSimpleName();
 
 	private class MySSLSocketFactory extends SSLSocketFactory {
@@ -73,28 +73,36 @@ public class SslConnector {
 	}
 
 	public void sync(HttpHandler handler, DbAdapter dbAdapter) {
-
 		// create client for ssl connection
 		HttpClient client = getNewHttpClient();
+		
+		try {
 
-		// login
-		if (!handler.login(client)) {
-			Log.e(TAG, "login was NOT successful");
-			// TODO inform user via Intent or anything
-			return;
-		}
-		if (DEBUG) Log.i(TAG, "login was successful");
+			// login
+			if (!handler.login(client)) {
+				Log.e(TAG, "login was NOT successful");
+				// TODO inform user via Intent or anything
+				throw new Exception();
+			}
+			if (DEBUG) Log.i(TAG, "login was successful");
 
-		// move to page with marks
-		if (!handler.moveToMarksGrid(client)) {
-			Log.e(TAG, "move to marks grid was NOT successful");
-			// TODO inform user via Intent or anything
-			return;
-		}
+			// move to page with marks
+			if (!handler.moveToMarksGrid(client)) {
+				Log.e(TAG, "move to marks grid was NOT successful");
+				// TODO inform user via Intent or anything
+				throw new Exception();
+			}
 
-		// save marks in db
-		if (!handler.saveMarksToDb(client, dbAdapter)) {
-			Log.e(TAG, "move to marks grid was NOT successful");
+			// save marks in db
+			if (!handler.saveMarksToDb(client, dbAdapter)) {
+				Log.e(TAG, "move to marks grid was NOT successful");
+				throw new Exception();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			client.getConnectionManager().shutdown();
 		}
 
 	}
