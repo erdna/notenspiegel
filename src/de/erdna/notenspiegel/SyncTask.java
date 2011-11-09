@@ -11,7 +11,7 @@ import de.erdna.notenspiegel.sync.HttpHandler;
 import de.erdna.notenspiegel.sync.HtwHttpHandler;
 import de.erdna.notenspiegel.sync.SslConnector;
 
-public class RefreshTask extends AsyncTask<Object, Void, Void> {
+public class SyncTask extends AsyncTask<Object, Void, Void> {
 
 	private Context context;
 
