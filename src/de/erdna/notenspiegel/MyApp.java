@@ -6,6 +6,7 @@ import android.app.Application;
 public class MyApp extends Application {
 
 	private DbAdapter dbAdapter;
+	private boolean isSyncing;
 
 	public synchronized DbAdapter getDbAdapter() {
 
@@ -14,6 +15,14 @@ public class MyApp extends Application {
 		}
 
 		return dbAdapter;
+	}
+
+	public synchronized boolean isSyncing() {
+		return isSyncing;
+	}
+
+	public synchronized void setSyncing(boolean isSyncing) {
+		this.isSyncing = isSyncing;
 	}
 
 }

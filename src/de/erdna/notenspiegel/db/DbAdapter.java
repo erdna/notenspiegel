@@ -61,8 +61,14 @@ public class DbAdapter {
 	}
 
 	public DbAdapter open() throws SQLException {
+		open(false);
+		return this;
+	}
+
+	public DbAdapter open(boolean readOnly) throws SQLException {
 		dbHelper = new DbHelper(context);
-		db = dbHelper.getWritableDatabase();
+		if (readOnly) db = dbHelper.getReadableDatabase();
+		else db = dbHelper.getWritableDatabase();
 		return this;
 	}
 
