@@ -127,8 +127,9 @@ public class SslConnector {
 	}
 
 	public void logout(HttpHandler handler) {
-		// TODO Auto-generated method stub
-
+		
+		client.getConnectionManager().shutdown();
+		
 	}
 
 	public HttpClient getNewHttpClient() {

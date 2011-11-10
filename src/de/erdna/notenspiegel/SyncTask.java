@@ -12,6 +12,8 @@ import de.erdna.notenspiegel.sync.HttpHandler;
 import de.erdna.notenspiegel.sync.HtwHttpHandler;
 import de.erdna.notenspiegel.sync.SslConnector;
 
+import static de.erdna.notenspiegel.Constants.*;
+
 public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 	private Context context;
@@ -52,25 +54,23 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 		httpHandler.password = preferences.getString("password", "");
 
 		// start syncing
+
+		SslConnector connector = new SslConnector();
+		// connector.sync(httpHandler, dbAdapter);
+
 		try {
-			SslConnector connector = new SslConnector();
-			// connector.sync(httpHandler, dbAdapter);
-
 			connector.login(httpHandler);
-			publishProgress("login");
-
+			if (DEBUG) publishProgress("login");
 			connector.moveToMarksGrid(httpHandler);
-			publishProgress("moved to marks grid");
-
+			if (DEBUG) publishProgress("moved to marks grid");
 			connector.saveMarksToDb(httpHandler, dbAdapter);
-			publishProgress("parsed grid");
-
-			connector.logout(httpHandler);
-			publishProgress("logout");
-
+			if (DEBUG) publishProgress("parsed grid");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getMessage();
+		} finally {
+			connector.logout(httpHandler);
+			if (DEBUG) publishProgress("logout");
 		}
 
 		dbAdapter.close();
