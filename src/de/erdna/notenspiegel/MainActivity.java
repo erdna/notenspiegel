@@ -61,7 +61,7 @@ public class MainActivity extends ListActivity {
 			break;
 		case R.id.menu_item_refresh:
 			setProgressBarIndeterminateVisibility(true);
-			new SyncTask().execute(this);
+			new SyncTask(this).execute(this,this.getApplication());
 			break;
 
 		default:

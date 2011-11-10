@@ -72,38 +72,62 @@ public class SslConnector {
 		}
 	}
 
-	public void sync(HttpHandler handler, DbAdapter dbAdapter) {
+	private HttpClient client;
+
+	public SslConnector() {
 		// create client for ssl connection
-		HttpClient client = getNewHttpClient();
-		
+		client = getNewHttpClient();
+	}
+
+	public void sync(HttpHandler handler, DbAdapter dbAdapter) {
+
 		try {
 
-			// login
-			if (!handler.login(client)) {
-				Log.e(TAG, "login was NOT successful");
-				// TODO inform user via Intent or anything
-				throw new Exception();
-			}
-			if (DEBUG) Log.i(TAG, "login was successful");
+			// login into ssl page
+			login(handler);
 
 			// move to page with marks
-			if (!handler.moveToMarksGrid(client)) {
-				Log.e(TAG, "move to marks grid was NOT successful");
-				// TODO inform user via Intent or anything
-				throw new Exception();
-			}
+			moveToMarksGrid(handler);
 
 			// save marks in db
-			if (!handler.saveMarksToDb(client, dbAdapter)) {
-				Log.e(TAG, "move to marks grid was NOT successful");
-				throw new Exception();
-			}
+			saveMarksToDb(handler, dbAdapter);
+
+			logout(handler);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			client.getConnectionManager().shutdown();
 		}
+
+	}
+
+	public void login(HttpHandler handler) throws Exception {
+		if (!handler.login(client)) {
+			Log.e(TAG, "login was NOT successful");
+			// TODO inform user via Intent or anything
+			throw new Exception("login was NOT successful");
+		}
+		if (DEBUG) Log.i(TAG, "login was successful");
+	}
+
+	public void moveToMarksGrid(HttpHandler handler) throws Exception {
+		if (!handler.moveToMarksGrid(client)) {
+			Log.e(TAG, "move to marks grid was NOT successful");
+			// TODO inform user via Intent or anything
+			throw new Exception("move to marks grid was NOT successful");
+		}
+	}
+
+	public void saveMarksToDb(HttpHandler handler, DbAdapter dbAdapter) throws Exception {
+		if (!handler.saveMarksToDb(client, dbAdapter)) {
+			Log.e(TAG, "move to marks grid was NOT successful");
+			throw new Exception("move to marks grid was NOT successful");
+		}
+	}
+
+	public void logout(HttpHandler handler) {
+		// TODO Auto-generated method stub
 
 	}
 
