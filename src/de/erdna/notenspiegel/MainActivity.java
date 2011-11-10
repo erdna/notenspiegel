@@ -3,8 +3,10 @@ package de.erdna.notenspiegel;
 import de.erdna.notenspiegel.db.DbAdapter;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,10 +23,11 @@ public class MainActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setProgressBarIndeterminateVisibility(((MyApp) getApplication()).isSyncing());
 
 		// Connect to DataSevice and DB
-		dbAdapter = new DbAdapter(this);
-		dbAdapter.open();
+		dbAdapter = ((MyApp) getApplication()).getDbAdapter();
+		dbAdapter.open(true);
 
 		// Get Cursor
 		Cursor cursor = dbAdapter.fetchAllMarks();
@@ -36,15 +39,40 @@ public class MainActivity extends ListActivity {
 		adapter = new SimpleCursorAdapter(this, R.layout.layout_mark_row, cursor, from, to);
 		setListAdapter(adapter);
 
+		// if nothing is configured start PreferencePage
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		if (preferences.getString("username", "").equals("")) {
+			Intent intent = new Intent(this, PreferencePage.class);
+			startActivity(intent);
+		}
+
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		dbAdapter.open(true);
 	}
 
 	@Override
 	protected void onResume() {
-		setProgressBarIndeterminateVisibility(false);
+		setProgressBarIndeterminateVisibility(((MyApp) getApplication()).isSyncing());
 		adapter.changeCursor(dbAdapter.fetchAllMarks());
 		super.onResume();
 	}
-	
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		dbAdapter.close();
+	}
+
+	@Override
+	protected void onDestroy() {
+		dbAdapter.close();
+		super.onDestroy();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -61,7 +89,7 @@ public class MainActivity extends ListActivity {
 			break;
 		case R.id.menu_item_refresh:
 			setProgressBarIndeterminateVisibility(true);
-			new SyncTask(this).execute(this,this.getApplication());
+			new SyncTask(this, getApplication()).execute();
 			break;
 
 		default:

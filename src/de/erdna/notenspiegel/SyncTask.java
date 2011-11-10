@@ -1,5 +1,6 @@
 package de.erdna.notenspiegel;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,21 +18,19 @@ import static de.erdna.notenspiegel.Constants.*;
 public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 	private Context context;
-	private MyApp app;
 	private DbAdapter dbAdapter;
+	private MyApp app;
 
-	public SyncTask(Context context) {
+	public SyncTask(Context context, Application application) {
 		this.context = context;
+		this.app = (MyApp) application;
 	}
 
 	@Override
 	protected Object doInBackground(Object... objects) {
 
-		// get appplications
-		app = (MyApp) objects[1];
-
-		// Connect to DataSevice and DB
-		dbAdapter = app.getDbAdapter();
+		// Connect to DB
+		dbAdapter = new DbAdapter(context);
 		dbAdapter.open();
 		dbAdapter.deleteAll();
 
@@ -87,6 +86,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+		app.setSyncing(true);
 	}
 
 	@Override
@@ -95,6 +95,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 		Intent intent = new Intent(context, MainActivity.class);
 		context.startActivity(intent);
 		Toast.makeText(context, (String) result, Toast.LENGTH_SHORT).show();
+		app.setSyncing(false);
 	}
 
 }

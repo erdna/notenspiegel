@@ -10,7 +10,7 @@
         <item >HTW Dresden</item>
         <item >TU Dresden</item>
     </string-array>
-    <string name="university_summary">Choose your University</string>
+    <string name="university_summary">Choose your University: HTW Dresden</string>
     <string name="username_summary">Enter your matriculation number</string>
     <string name="password_summary">Enter your password</string>
 </resources>
