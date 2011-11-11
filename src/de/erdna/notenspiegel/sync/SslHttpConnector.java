@@ -29,15 +29,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
-import android.util.Log;
-
-import de.erdna.notenspiegel.db.DbAdapter;
-
-import static de.erdna.notenspiegel.Constants.*;
-
-public class SslConnector {
-
-	protected final String TAG = this.getClass().getSimpleName();
+public class SslHttpConnector extends HttpConnector {
 
 	private class MySSLSocketFactory extends SSLSocketFactory {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -72,69 +64,70 @@ public class SslConnector {
 		}
 	}
 
-	private HttpClient client;
+	// private HttpClient client;
 
-	public SslConnector() {
+	public SslHttpConnector() {
 		// create client for ssl connection
 		client = getNewHttpClient();
 	}
 
-	@Deprecated
-	public void sync(HttpHandler handler, DbAdapter dbAdapter) {
+	// @Deprecated
+	// public void sync(HttpHandler handler, DbAdapter dbAdapter) {
+	//
+	// try {
+	//
+	// // login into ssl page
+	// login(handler);
+	//
+	// // move to page with marks
+	// moveToMarksGrid(handler);
+	//
+	// // save marks in db
+	// saveMarksToDb(handler, dbAdapter);
+	//
+	// // logout correctly and kill client
+	// logout(handler);
+	//
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// } finally {
+	// client.getConnectionManager().shutdown();
+	// }
+	//
+	// }
+	//
+	// public void login(HttpHandler handler) throws Exception {
+	// if (!handler.login(client)) {
+	// Log.e(TAG, "login was NOT successful");
+	// // TODO inform user via Intent or anything
+	// throw new Exception("login was NOT successful");
+	// }
+	// if (DEBUG) Log.i(TAG, "login was successful");
+	// }
+	//
+	// public void moveToMarksGrid(HttpHandler handler) throws Exception {
+	// if (!handler.moveToMarksGrid(client)) {
+	// Log.e(TAG, "move to marks grid was NOT successful");
+	// // TODO inform user via Intent or anything
+	// throw new Exception("move to marks grid was NOT successful");
+	// }
+	// }
+	//
+	// public void saveMarksToDb(HttpHandler handler, DbAdapter dbAdapter)
+	// throws Exception {
+	// if (!handler.saveMarksToDb(client, dbAdapter)) {
+	// Log.e(TAG, "move to marks grid was NOT successful");
+	// throw new Exception("move to marks grid was NOT successful");
+	// }
+	// }
+	//
+	// public void logout(HttpHandler handler) {
+	//
+	// client.getConnectionManager().shutdown();
+	//
+	// }
 
-		try {
-
-			// login into ssl page
-			login(handler);
-
-			// move to page with marks
-			moveToMarksGrid(handler);
-
-			// save marks in db
-			saveMarksToDb(handler, dbAdapter);
-			
-			// logout correctly and kill client
-			logout(handler);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			client.getConnectionManager().shutdown();
-		}
-
-	}
-	
-	public void login(HttpHandler handler) throws Exception {
-		if (!handler.login(client)) {
-			Log.e(TAG, "login was NOT successful");
-			// TODO inform user via Intent or anything
-			throw new Exception("login was NOT successful");
-		}
-		if (DEBUG) Log.i(TAG, "login was successful");
-	}
-
-	public void moveToMarksGrid(HttpHandler handler) throws Exception {
-		if (!handler.moveToMarksGrid(client)) {
-			Log.e(TAG, "move to marks grid was NOT successful");
-			// TODO inform user via Intent or anything
-			throw new Exception("move to marks grid was NOT successful");
-		}
-	}
-
-	public void saveMarksToDb(HttpHandler handler, DbAdapter dbAdapter) throws Exception {
-		if (!handler.saveMarksToDb(client, dbAdapter)) {
-			Log.e(TAG, "move to marks grid was NOT successful");
-			throw new Exception("move to marks grid was NOT successful");
-		}
-	}
-
-	public void logout(HttpHandler handler) {
-
-		client.getConnectionManager().shutdown();
-
-	}
-
-	public HttpClient getNewHttpClient() {
+	private HttpClient getNewHttpClient() {
 		try {
 			KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			trustStore.load(null, null);
