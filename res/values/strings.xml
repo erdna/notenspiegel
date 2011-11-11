@@ -13,4 +13,10 @@
     <string name="university_summary">HTW Dresden</string>
     <string name="username_summary">Matrikelnummer eingeben</string>
     <string name="password_summary">Passwort eingeben</string>
+    <string name="warning_certificate">Das Zertifikat von %s ist nicht vertrauenswürdig!</string>
+    <string name="btn_ignore">Ignorieren</string>
+    <string name="btn_abort">Abbrechen</string>
+    <string name="accept_untrusted_certificates">Alle Zertifikate zulassen</string>
+    <string name="accept_untrusted_certificates_summaryOn">Vertraut auch unsicheren Zertifikaten (z.B. HTW Dresden)</string>
+    <string name="accept_untrusted_certificates_summaryOff">Vertraut auch unsicheren Zertifikaten (z.B. HTW Dresden)</string>
 </resources>
