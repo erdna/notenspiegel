@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Notenspiegel</string>
-    <string name="preferences">Optionen</string>
+    <string name="preferences">Einstellungen</string>
     <string name="refresh">Aktualisieren</string>
     <string name="username">Matrikelnummer</string>
     <string name="password">Passwort</string>
