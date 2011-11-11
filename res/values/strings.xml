@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Notenspiegel</string>
     <string name="preferences">Einstellungen</string>
     <string name="refresh">Aktualisieren</string>
     <string name="username">Matrikelnummer</string>
     <string name="password">Passwort</string>
     <string name="university">Hochschule</string>
+
     <string-array name="listConnectorsName">
-        <item >HTW Dresden</item>
-        <item >TU Dresden</item>
+        <item>HTW Dresden</item>
+        <item>TU Dresden</item>
     </string-array>
+
     <string name="university_summary">HTW Dresden</string>
     <string name="username_summary">Matrikelnummer eingeben</string>
     <string name="password_summary">Passwort eingeben</string>
@@ -17,6 +20,7 @@
     <string name="btn_ignore">Ignorieren</string>
     <string name="btn_abort">Abbrechen</string>
     <string name="accept_untrusted_certificates">Alle Zertifikate zulassen</string>
-    <string name="accept_untrusted_certificates_summaryOn">Vertraut auch unsicheren Zertifikaten (z.B. HTW Dresden)</string>
-    <string name="accept_untrusted_certificates_summaryOff">Vertraut auch unsicheren Zertifikaten (z.B. HTW Dresden)</string>
+    <string name="accept_untrusted_certificates_summaryOn">Vertraut auch unsicheren Zertifikaten z.B. HTW Dresden</string>
+    <string name="accept_untrusted_certificates_summaryOff">Vertraut nur sicheren Zertifikaten</string>
+
 </resources>
