@@ -1,4 +1,4 @@
-package de.erdna.notenspiegel;
+package de.erdna.notenspiegel.sync;
 
 import android.app.Application;
 import android.content.Context;
@@ -8,10 +8,9 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import de.erdna.notenspiegel.MainActivity;
+import de.erdna.notenspiegel.MyApp;
 import de.erdna.notenspiegel.db.DbAdapter;
-import de.erdna.notenspiegel.sync.HttpHandler;
-import de.erdna.notenspiegel.sync.HtwHttpHandler;
-import de.erdna.notenspiegel.sync.SslConnector;
 
 import static de.erdna.notenspiegel.Constants.*;
 
@@ -20,6 +19,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 	private Context context;
 	private DbAdapter dbAdapter;
 	private MyApp app;
+	private SharedPreferences preferences;
 
 	public SyncTask(Context context, Application application) {
 		this.context = context;
@@ -31,11 +31,11 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 		// Connect to DB
 		dbAdapter = new DbAdapter(context);
-		dbAdapter.open();
+		dbAdapter.open(false);
 		dbAdapter.deleteAll();
 
 		// get username and password from SharedPreferences
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+		preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
 		// get connector, htwdd or tudd
 		String university = preferences.getString("listUniversities", "htwdd");
@@ -53,9 +53,9 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 		httpHandler.password = preferences.getString("password", "");
 
 		// start syncing
-
-		SslConnector connector = new SslConnector();
-		// connector.sync(httpHandler, dbAdapter);
+		HttpConnector connector;
+		if (preferences.getBoolean("acceptUntrustedCerts", false)) connector = new SslHttpConnector();
+		else connector = new HttpConnector();
 
 		try {
 			connector.login(httpHandler);

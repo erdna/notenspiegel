@@ -1,6 +1,7 @@
 package de.erdna.notenspiegel;
 
 import de.erdna.notenspiegel.db.DbAdapter;
+import de.erdna.notenspiegel.sync.SyncTask;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
