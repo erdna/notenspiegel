@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Notenspiegel</string>
-    <string name="preferences">Preferences</string>
-    <string name="refresh">Refresh</string>
-    <string name="username">Matriculation number</string>
-    <string name="password">Password</string>
-    <string name="university">University</string>
+    <string name="preferences">Optionen</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="username">Matrikelnummer</string>
+    <string name="password">Passwort</string>
+    <string name="university">Hochschule</string>
     <string-array name="listConnectorsName">
         <item >HTW Dresden</item>
         <item >TU Dresden</item>
     </string-array>
-    <string name="university_summary">Choose your University: HTW Dresden</string>
-    <string name="username_summary">Enter your matriculation number</string>
-    <string name="password_summary">Enter your password</string>
+    <string name="university_summary">HTW Dresden</string>
+    <string name="username_summary">Matrikelnummer eingeben</string>
+    <string name="password_summary">Passwort eingeben</string>
 </resources>
