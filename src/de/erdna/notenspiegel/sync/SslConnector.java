@@ -79,6 +79,7 @@ public class SslConnector {
 		client = getNewHttpClient();
 	}
 
+	@Deprecated
 	public void sync(HttpHandler handler, DbAdapter dbAdapter) {
 
 		try {
@@ -91,7 +92,8 @@ public class SslConnector {
 
 			// save marks in db
 			saveMarksToDb(handler, dbAdapter);
-
+			
+			// logout correctly and kill client
 			logout(handler);
 
 		} catch (Exception e) {
@@ -101,7 +103,7 @@ public class SslConnector {
 		}
 
 	}
-
+	
 	public void login(HttpHandler handler) throws Exception {
 		if (!handler.login(client)) {
 			Log.e(TAG, "login was NOT successful");
@@ -127,9 +129,9 @@ public class SslConnector {
 	}
 
 	public void logout(HttpHandler handler) {
-		
+
 		client.getConnectionManager().shutdown();
-		
+
 	}
 
 	public HttpClient getNewHttpClient() {

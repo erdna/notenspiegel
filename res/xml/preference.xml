@@ -20,8 +20,14 @@
 		
 		android:title="@string/university"
 		android:summary="@string/university_summary"
-		android:defaultValue="htwdd" 
+		android:defaultValue="htwdd"
 		android:entries="@array/listConnectorsName"
 		android:entryValues="@array/listConnectors" />
+	
+	<CheckBoxPreference
+		android:key="acceptUntrustedCerts"
+		android:title="@string/accept_untrusted_certificates"
+		android:defaultValue="false"
+	android:summaryOff="@string/accept_untrusted_certificates_summaryOff" android:summaryOn="@string/accept_untrusted_certificates_summaryOn"/>
 
 </PreferenceScreen>
