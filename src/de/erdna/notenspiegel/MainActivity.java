@@ -24,6 +24,7 @@ public class MainActivity extends ListActivity {
 	private DbAdapter dbAdapter;
 	private SimpleCursorAdapter adapter;
 	private Context context;
+	private SharedPreferences preferences;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -52,7 +53,7 @@ public class MainActivity extends ListActivity {
 		setListAdapter(adapter);
 
 		// if nothing is configured start PreferencePage
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences.getString("username", "").equals("")) {
 			Intent intent = new Intent(this, Options.class);
 			startActivity(intent);
@@ -107,6 +108,7 @@ public class MainActivity extends ListActivity {
 			startActivity(intent);
 			break;
 		case R.id.menu_item_refresh:
+			// TODO react on decission in options
 			showDialog(DIALOG_ACCEPT_CERT);
 			// setProgressBarIndeterminateVisibility(true);
 			// new SyncTask(this, getApplication()).execute();
@@ -125,7 +127,7 @@ public class MainActivity extends ListActivity {
 
 		case DIALOG_ACCEPT_CERT:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			// TODO add waring message to string resources and localice
+			// TODO add waring message to string resources and localize
 			builder.setMessage(getString(R.string.warning_certificate, "HTW Dresden"));
 			builder.setCancelable(false);
 			builder.setPositiveButton(R.string.btn_ignore, new DialogInterface.OnClickListener() {
