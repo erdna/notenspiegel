@@ -45,33 +45,31 @@ public class HttpConnector {
 	}
 
 	public void login(HttpHandler handler) throws Exception {
-		if (!handler.login(client)) {
-			Log.e(TAG, "login was NOT successful");
-			// TODO inform user via Intent or anything
-			throw new Exception("login was NOT successful");
-		}
-		if (DEBUG) Log.i(TAG, "login was successful");
+		handler.login(client);
+		if (DEBUG) Log.i(TAG, "login() was successful");
 	}
 
 	public void moveToMarksGrid(HttpHandler handler) throws Exception {
-		if (!handler.moveToMarksGrid(client)) {
-			Log.e(TAG, "move to marks grid was NOT successful");
-			// TODO inform user via Intent or anything
-			throw new Exception("move to marks grid was NOT successful");
-		}
+		handler.moveToMarksGrid(client);
+		if (DEBUG) Log.i(TAG, "moveToMarksGrid() was successful");
 	}
 
 	public void saveMarksToDb(HttpHandler handler, DbAdapter dbAdapter) throws Exception {
-		if (!handler.saveMarksToDb(client, dbAdapter)) {
-			Log.e(TAG, "move to marks grid was NOT successful");
-			throw new Exception("move to marks grid was NOT successful");
-		}
+		handler.saveMarksToDb(client, dbAdapter);
+		if (DEBUG) Log.i(TAG, "saveMarksToDb() was succesful");
 	}
 
 	public void logout(HttpHandler handler) {
+		try {
 
-		client.getConnectionManager().shutdown();
+			// TODO logout correctly by logout URL
+
+			// close connection
+			client.getConnectionManager().shutdown();
+
+		} catch (Exception e) {
+			// not necessary to know just throw away all connections
+		}
 
 	}
-
 }

@@ -12,7 +12,6 @@ import java.util.List;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -53,45 +52,31 @@ public class HtwHttpHandler extends HttpHandler {
 	}
 
 	@Override
-	public boolean login(HttpClient client) {
-		try {
+	public void login(HttpClient client) throws Exception {
 
-			// build post from specific htw url
-			HttpPost request = new HttpPost(Html.fromHtml(HTW_HISQIS_URL).toString());
+		// build post from specific htw url
+		HttpPost request = new HttpPost(Html.fromHtml(HTW_HISQIS_URL).toString());
 
-			// send password and user name
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-			nameValuePairs.add(new BasicNameValuePair("password", password));
-			nameValuePairs.add(new BasicNameValuePair("submit", " Ok "));
-			nameValuePairs.add(new BasicNameValuePair("username", username));
-			request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+		// send password and user name
+		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+		nameValuePairs.add(new BasicNameValuePair("password", password));
+		nameValuePairs.add(new BasicNameValuePair("submit", " Ok "));
+		nameValuePairs.add(new BasicNameValuePair("username", username));
+		request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 
-			HttpResponse response;
-			response = client.execute(request);
-			printResponseHeader(response);
+		HttpResponse response;
+		response = client.execute(request);
+		printResponseHeader(response);
 
-			String content = EntityUtils.toString(response.getEntity());
+		String content = EntityUtils.toString(response.getEntity());
 
-			if (loginFailed(content)) return false;
-
-			url = parseMenu(content);
-			if (DEBUG) Log.v(TAG, url);
-
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			return false;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-			return false;
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-			return false;
+		if (loginFailed(content)) {
+			Log.e(TAG, "login was NOT successful");
+			throw new Exception("login was NOT successful");
 		}
 
-		return true;
+		url = parseMenu(content);
+		if (DEBUG) Log.v(TAG, url);
 
 	}
 
@@ -102,39 +87,21 @@ public class HtwHttpHandler extends HttpHandler {
 	}
 
 	@Override
-	public boolean moveToMarksGrid(HttpClient client) {
-		try {
+	public void moveToMarksGrid(HttpClient client) throws Exception {
+		HttpGet request = new HttpGet(Html.fromHtml(url).toString());
+		HttpResponse response = client.execute(request);
 
-			HttpGet request = new HttpGet(Html.fromHtml(url).toString());
-			HttpResponse response = client.execute(request);
+		printResponseHeader(response);
 
-			printResponseHeader(response);
-
-			urls = parseNoten(response.getEntity().getContent());
-
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			return false;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-			return false;
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		return true;
+		urls = parseNoten(response.getEntity().getContent());
 	}
 
 	@Override
-	public boolean saveMarksToDb(HttpClient client, DbAdapter dbAdapter) {
+	public void saveMarksToDb(HttpClient client, DbAdapter dbAdapter) throws Exception {
 
 		if (urls == null || urls.isEmpty()) {
-			if (DEBUG) Log.e(TAG, "no urls were found");
-			return false;
+			if (DEBUG) Log.e(TAG, "saveMarksToDb() no urls were in moveToMarksGrid() found");
+			throw new Exception("no urls were found");
 		}
 
 		for (String url : urls) {
@@ -150,20 +117,14 @@ public class HtwHttpHandler extends HttpHandler {
 
 				parseNotenTab(response.getEntity().getContent(), dbAdapter);
 
-			} catch (ClientProtocolException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (XmlPullParserException e) {
-				e.printStackTrace();
+				continue;
 			}
 		}
-		return true;
 	}
 
-	private boolean loginFailed(String content) throws XmlPullParserException, IllegalStateException, IOException {
+	private boolean loginFailed(String content) throws Exception {
 		// surely the status must be 401
 		// but Bochmann is stupid
 		// 401 - Not Authorised
