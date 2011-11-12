@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import de.erdna.notenspiegel.MainActivity;
+import de.erdna.notenspiegel.GradesListActivity;
 import de.erdna.notenspiegel.MyApp;
 import de.erdna.notenspiegel.db.DbAdapter;
 
@@ -30,8 +30,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 	protected Object doInBackground(Object... objects) {
 
 		// Connect to DB
-		dbAdapter = new DbAdapter(context);
-		dbAdapter.open(false);
+		dbAdapter = app.getDbAdapter();
 		dbAdapter.deleteAll();
 
 		// get username and password from SharedPreferences
@@ -66,7 +65,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 			if (DEBUG) publishProgress("parsed grid");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return e.getMessage();
+			return e.getLocalizedMessage();
 		} finally {
 			connector.logout(httpHandler);
 			if (DEBUG) publishProgress("logout");
@@ -86,16 +85,23 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+
+		// set global sync flag on true
 		app.setSyncing(true);
 	}
 
 	@Override
 	protected void onPostExecute(Object result) {
 		super.onPostExecute(result);
-		Intent intent = new Intent(context, MainActivity.class);
-		context.startActivity(intent);
-		Toast.makeText(context, (String) result, Toast.LENGTH_SHORT).show();
+
+		// set global sync flag on false
 		app.setSyncing(false);
+
+		// send new intent to MainActivity
+		Intent intent = new Intent(context, GradesListActivity.class);
+		intent.putExtra(GradesListActivity.EXTRA_ERROR_MSG, (String) result);
+		context.startActivity(intent);
+
 	}
 
 }

@@ -14,8 +14,8 @@
         android:name=".MyApp" >
         <activity
             android:label="@string/app_name"
-            android:launchMode="singleInstance"
-            android:name="MainActivity" >
+            android:launchMode="singleTop"
+            android:name=".GradesListActivity" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 

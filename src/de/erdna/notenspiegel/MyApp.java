@@ -10,11 +10,9 @@ public class MyApp extends Application {
 
 	public synchronized DbAdapter getDbAdapter() {
 
-		if (dbAdapter == null) {
-			dbAdapter = new DbAdapter(getApplicationContext());
-		}
-
+		if (dbAdapter == null) dbAdapter = new DbAdapter(getApplicationContext());
 		return dbAdapter;
+
 	}
 
 	public synchronized boolean isSyncing() {
