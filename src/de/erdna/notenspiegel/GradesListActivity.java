@@ -31,6 +31,8 @@ public class GradesListActivity extends ListActivity {
 	private SharedPreferences preferences;
 	private Bundle extras;
 
+	// private Cursor cursor;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,33 +75,21 @@ public class GradesListActivity extends ListActivity {
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-	}
-
-	@Override
 	protected void onResume() {
 
 		if (extras != null) {
 			String errorMsg = extras.getString(EXTRA_ERROR_MSG);
 			if (errorMsg != null) Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show();
+			extras.clear();
 		}
 
 		setProgressBarIndeterminateVisibility(((MyApp) getApplication()).isSyncing());
+
+		// refresh list of grades
+		adapter.getCursor().close();
 		adapter.changeCursor(dbAdapter.fetchAllMarks());
+
 		super.onResume();
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		dbAdapter.close();
-	}
-
-	@Override
-	protected void onDestroy() {
-		dbAdapter.close();
-		super.onDestroy();
 	}
 
 	@Override
@@ -143,7 +133,6 @@ public class GradesListActivity extends ListActivity {
 
 		case DIALOG_ACCEPT_CERT:
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			// TODO add waring message to string resources and localize
 			builder.setMessage(getString(R.string.warning_certificate, "HTW Dresden"));
 			builder.setCancelable(false);
 			builder.setPositiveButton(R.string.btn_ignore, new DialogInterface.OnClickListener() {
