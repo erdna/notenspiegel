@@ -27,5 +27,6 @@
         android:summaryOff="@string/accept_untrusted_certificates_summaryOff"
         android:summaryOn="@string/accept_untrusted_certificates_summaryOn"
         android:title="@string/accept_untrusted_certificates" />
+    <Preference android:title="@string/legal_information" android:summary="@string/legal_information_summary" android:key="legalDisclaimer"/>
 
 </PreferenceScreen>
