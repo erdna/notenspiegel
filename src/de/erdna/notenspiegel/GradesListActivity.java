@@ -17,15 +17,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
-public class MainActivity extends ListActivity {
+public class GradesListActivity extends ListActivity {
 
 	private static final int DIALOG_ACCEPT_CERT = 1;
+
+	public static final String EXTRA_ERROR_MSG = "EXTRA_ERROR_MSG";
 
 	private DbAdapter dbAdapter;
 	private SimpleCursorAdapter adapter;
 	private Context context;
 	private SharedPreferences preferences;
+	private Bundle extras;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -41,7 +45,6 @@ public class MainActivity extends ListActivity {
 
 		// Connect to DataSevice and DB
 		dbAdapter = ((MyApp) getApplication()).getDbAdapter();
-		dbAdapter.open(true);
 
 		// Get Cursor
 		Cursor cursor = dbAdapter.fetchAllMarks();
@@ -63,13 +66,25 @@ public class MainActivity extends ListActivity {
 	}
 
 	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		// get extras if necessary
+		extras = intent.getExtras();
+	}
+
+	@Override
 	protected void onStart() {
 		super.onStart();
-		dbAdapter.open(true);
 	}
 
 	@Override
 	protected void onResume() {
+
+		if (extras != null) {
+			String errorMsg = extras.getString(EXTRA_ERROR_MSG);
+			if (errorMsg != null) Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show();
+		}
+
 		setProgressBarIndeterminateVisibility(((MyApp) getApplication()).isSyncing());
 		adapter.changeCursor(dbAdapter.fetchAllMarks());
 		super.onResume();
@@ -110,9 +125,9 @@ public class MainActivity extends ListActivity {
 			break;
 		case R.id.menu_item_refresh:
 			// TODO react on decission in options
-			showDialog(DIALOG_ACCEPT_CERT);
-			// setProgressBarIndeterminateVisibility(true);
-			// new SyncTask(this, getApplication()).execute();
+			// showDialog(DIALOG_ACCEPT_CERT);
+			setProgressBarIndeterminateVisibility(true);
+			new SyncTask(this, getApplication()).execute();
 			break;
 
 		default:
