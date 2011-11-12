@@ -4,7 +4,7 @@
     <item
         android:id="@+id/menu_item_preferences"
         android:icon="@drawable/ic_menu_preferences"
-        android:title="@string/preferences"></item>
+        android:title="@string/options"></item>
 
     <item
         android:id="@+id/menu_item_refresh"
