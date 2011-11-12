@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Notenspiegel</string>
     <string name="preferences">Preferences</string>
     <string name="refresh">Refresh</string>
     <string name="username">Matriculation number</string>
     <string name="password">Password</string>
     <string name="university">University</string>
+
     <string-array name="listConnectorsName">
-        <item >HTW Dresden</item>
-        <item >TU Dresden</item>
+        <item>HTW Dresden</item>
+        <item>TU Dresden</item>
     </string-array>
+
     <string name="university_summary">HTW Dresden</string>
     <string name="username_summary">Enter your matriculation number</string>
     <string name="password_summary">Enter your password</string>
+    <string name="warning_certificate">Certificate from %s is not valid!</string>
+    <string name="btn_ignore">Ignore</string>
+    <string name="btn_abort">Abort</string>
+    <string name="accept_untrusted_certificates">Trust all certificates</string>
+    <string name="accept_untrusted_certificates_summaryOn">Trust also insecure certificates e.g. HTW Dresden</string>
+    <string name="accept_untrusted_certificates_summaryOff">Trusts only secure certificates</string>
+
 </resources>
