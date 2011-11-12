@@ -23,6 +23,6 @@
     <string name="accept_untrusted_certificates_summaryOn">Vertraut auch unsicheren Zertifikaten\nz.B. HTW Dresden</string>
     <string name="accept_untrusted_certificates_summaryOff">Vertraut nur sicheren Zertifikaten</string>
     <string name="legal_information">Rechtliche Hinweise</string>
-    <string name="legal_information_summary">Author André Nitzschke\nDiese App ist keine offizielle Anwendung der Hochschule für Technik und Wirtschaft Dresden.</string>
+    <string name="legal_information_summary">Autor: André Nitzschke\nDiese App ist keine offizielle Anwendung der Hochschule für Technik und Wirtschaft Dresden.</string>
 
 </resources>
