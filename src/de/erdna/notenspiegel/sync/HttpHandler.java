@@ -12,12 +12,12 @@ public abstract class HttpHandler {
 	public String password;
 	public String url;
 
-	public abstract boolean login(HttpClient httpClient);
+	public abstract void login(HttpClient httpClient) throws Exception;
 
 	public abstract String getFullUserName(HttpClient httpClient);
 
-	public abstract boolean moveToMarksGrid(HttpClient httpClient);
+	public abstract void moveToMarksGrid(HttpClient httpClient) throws Exception;
 
-	public abstract boolean saveMarksToDb(HttpClient httpClient, DbAdapter dbAdapter);
+	public abstract void saveMarksToDb(HttpClient httpClient, DbAdapter dbAdapter) throws Exception;
 
 }

@@ -74,7 +74,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 		dbAdapter.close();
 
-		return "successful synced";
+		return "successfully synced";
 	}
 
 	@Override
