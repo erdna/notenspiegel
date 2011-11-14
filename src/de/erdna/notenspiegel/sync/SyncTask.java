@@ -71,9 +71,11 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 			if (DEBUG) publishProgress("logout");
 		}
 
-		dbAdapter.close();
+		//dbAdapter.close();
 
-		return "successfully synced";
+		if (DEBUG) publishProgress("successfully synced");
+
+		return "";
 	}
 
 	@Override
