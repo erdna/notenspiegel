@@ -53,7 +53,7 @@ public class GradesListActivity extends ListActivity {
 		startManagingCursor(cursor);
 
 		// Simple Cursor Adapter
-		String[] from = { DbAdapter.KEY_MARK_NAME, DbAdapter.KEY_MARK_MARK };
+		String[] from = { DbAdapter.KEY_GRADES_TEXT, DbAdapter.KEY_GRADES_GRADE };
 		int[] to = { R.id.textViewMarkName, R.id.textViewMarkMark };
 		adapter = new SimpleCursorAdapter(this, R.layout.layout_mark_row, cursor, from, to);
 		setListAdapter(adapter);

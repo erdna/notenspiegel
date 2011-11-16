@@ -13,25 +13,26 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 	// database constraints
 	private static final String DATABASE_NAME = "applicationdata";
-	private static final int DATABASE_VERSION = 1;
-
-	// create tables
-	private static final String CREATE_TABLE_MARK = "CREATE TABLE " + DbAdapter.TABLE_MARK + " (" + DbAdapter.KEY_MARK_ID
-			+ " integer primary key autoincrement, " + DbAdapter.KEY_MARK_NAME + " text not null, " + DbAdapter.KEY_MARK_MARK
-			+ " text not null);";
-
-	// drop tables
-	private static final String DROP_TABLE_MARK = "DROP TABLE IF EXISTS " + DbAdapter.TABLE_MARK + ";";
+	private static final int DATABASE_VERSION = 2;
 
 	// table marks
-	public static final String TABLE_MARK = "marks";
-	public static final String KEY_MARK_ID = "_id";
-	public static final String KEY_MARK_NAME = "name";
-	public static final String KEY_MARK_MARK = "mark";
+	public static final String TABLE_GRADES = "grades";
+	public static final String KEY_GRADES_ID = "_id";
+	public static final String KEY_GRADES_NR = "nr";
+	public static final String KEY_GRADES_SEM = "sem";
+	public static final String KEY_GRADES_TEXT = "text";
+	public static final String KEY_GRADES_GRADE = "grade";
+	public static final String KEY_GRADES_DATE = "date";
+
+	// create tables
+	private static final String CREATE_TABLE_GRADES = "CREATE TABLE " + TABLE_GRADES + " (" + KEY_GRADES_ID
+			+ " integer primary key autoincrement, " + KEY_GRADES_NR + " text, " + KEY_GRADES_SEM + " text, " + KEY_GRADES_TEXT
+			+ " text not null, " + KEY_GRADES_GRADE + " text, " + KEY_GRADES_DATE + " text);";
+
+	// drop tables
+	private static final String DROP_TABLE_GRADES = "DROP TABLE IF EXISTS " + TABLE_GRADES + ";";
 
 	protected final Context context;
-
-	// private SQLiteDatabase db;
 
 	public DbAdapter(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,31 +41,31 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(CREATE_TABLE_MARK);
+		db.execSQL(CREATE_TABLE_GRADES);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data!");
-		db.execSQL(DROP_TABLE_MARK);
+		db.execSQL(DROP_TABLE_GRADES);
 		onCreate(db);
 	}
 
-	public long createMark(String name, String mark) {
+	public long createMark(String text, String grade) {
 		ContentValues values = new ContentValues();
-		values.put(KEY_MARK_NAME, name);
-		values.put(KEY_MARK_MARK, mark);
-		return getWritableDatabase().insert(TABLE_MARK, null, values);
+		values.put(KEY_GRADES_TEXT, text);
+		values.put(KEY_GRADES_GRADE, grade);
+		return getWritableDatabase().insert(TABLE_GRADES, null, values);
 	}
 
 	public Cursor fetchAllMarks() {
-		Cursor cursor = getReadableDatabase().query(TABLE_MARK, null, null, null, null, null, null);
+		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null, null, null, null, null, null);
 		if (cursor != null) cursor.moveToFirst();
 		return cursor;
 	}
 
 	public long deleteAll() {
-		return getWritableDatabase().delete(TABLE_MARK, null, null);
+		return getWritableDatabase().delete(TABLE_GRADES, null, null);
 	}
 
 }
