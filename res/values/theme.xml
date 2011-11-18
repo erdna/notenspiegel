@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="custom_color_htw_yellow">#ff9d14</color>
+
+    <style name="CustomTheme" parent="android:Theme.Light"></style>
+
+</resources>

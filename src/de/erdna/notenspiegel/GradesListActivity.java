@@ -5,7 +5,6 @@ import de.erdna.notenspiegel.sync.SyncTask;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,14 +19,12 @@ import android.widget.SimpleCursorAdapter;
 
 public class GradesListActivity extends ListActivity {
 
-	private static final int DIALOG_ACCEPT_CERT = 1;
 	private static final int DIALOG_ERROR = 2;
 
 	public static final String EXTRA_ERROR_MSG = "EXTRA_ERROR_MSG";
 
 	private DbAdapter dbAdapter;
 	private SimpleCursorAdapter adapter;
-	private Context context;
 	private SharedPreferences preferences;
 	private Bundle extras;
 
@@ -38,15 +35,12 @@ public class GradesListActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// save own context at example for dialogs
-		context = this;
-
 		// activate progress indicator
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setProgressBarIndeterminateVisibility(((MyApp) getApplication()).isSyncing());
+		setProgressBarIndeterminateVisibility(((GradesApp) getApplication()).isSyncing());
 
 		// Connect to DataSevice and DB
-		dbAdapter = ((MyApp) getApplication()).getDbAdapter();
+		dbAdapter = ((GradesApp) getApplication()).getDbAdapter();
 
 		// Get Cursor
 		Cursor cursor = dbAdapter.fetchAllMarks();
@@ -54,8 +48,8 @@ public class GradesListActivity extends ListActivity {
 
 		// Simple Cursor Adapter
 		String[] from = { DbAdapter.KEY_GRADES_TEXT, DbAdapter.KEY_GRADES_GRADE };
-		int[] to = { R.id.textViewMarkName, R.id.textViewMarkMark };
-		adapter = new SimpleCursorAdapter(this, R.layout.layout_mark_row, cursor, from, to);
+		int[] to = { R.id.textViewGradeText, R.id.textViewGradeGrade };
+		adapter = new SimpleCursorAdapter(this, R.layout.list_item_grades, cursor, from, to);
 		setListAdapter(adapter);
 
 		// if nothing is configured start PreferencePage
@@ -87,7 +81,7 @@ public class GradesListActivity extends ListActivity {
 			}
 		}
 
-		setProgressBarIndeterminateVisibility(((MyApp) getApplication()).isSyncing());
+		setProgressBarIndeterminateVisibility(((GradesApp) getApplication()).isSyncing());
 
 		// refresh list of grades
 		adapter.getCursor().close();
@@ -106,7 +100,7 @@ public class GradesListActivity extends ListActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.menu_item_refresh);
-		item.setEnabled(!((MyApp) getApplication()).isSyncing());
+		item.setEnabled(!((GradesApp) getApplication()).isSyncing());
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -133,29 +127,8 @@ public class GradesListActivity extends ListActivity {
 		Dialog dialog;
 		switch (id) {
 
-		case DIALOG_ACCEPT_CERT:
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(getString(R.string.warning_certificate, "HTW Dresden"));
-			builder.setCancelable(false);
-			builder.setPositiveButton(R.string.btn_ignore, new DialogInterface.OnClickListener() {
-
-				public void onClick(DialogInterface dialog, int which) {
-					setProgressBarIndeterminateVisibility(true);
-					new SyncTask(context, getApplication()).execute();
-				}
-			});
-			builder.setNegativeButton(R.string.btn_abort, new DialogInterface.OnClickListener() {
-
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-			dialog = builder.create();
-			builder = null;
-			break;
-
 		case DIALOG_ERROR:
-			builder = new AlertDialog.Builder(this);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle(android.R.string.dialog_alert_title);
 			builder.setMessage("Wenn man diesen Text sieht, ist was schief gegangen!");
 			builder.setCancelable(true);
@@ -179,9 +152,6 @@ public class GradesListActivity extends ListActivity {
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
 		switch (id) {
-
-		case DIALOG_ACCEPT_CERT:
-			break;
 
 		case DIALOG_ERROR:
 			((AlertDialog) dialog).setMessage(errorMsg);

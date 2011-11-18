@@ -9,7 +9,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import de.erdna.notenspiegel.GradesListActivity;
-import de.erdna.notenspiegel.MyApp;
+import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.db.DbAdapter;
 
 import static de.erdna.notenspiegel.Constants.*;
@@ -18,12 +18,12 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 	private Context context;
 	private DbAdapter dbAdapter;
-	private MyApp app;
+	private GradesApp app;
 	private SharedPreferences preferences;
 
 	public SyncTask(Context context, Application application) {
 		this.context = context;
-		this.app = (MyApp) application;
+		this.app = (GradesApp) application;
 	}
 
 	@Override

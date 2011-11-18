@@ -3,7 +3,7 @@ package de.erdna.notenspiegel;
 import de.erdna.notenspiegel.db.DbAdapter;
 import android.app.Application;
 
-public class MyApp extends Application {
+public class GradesApp extends Application {
 
 	private DbAdapter dbAdapter;
 	private boolean isSyncing;

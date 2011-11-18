@@ -22,12 +22,13 @@ public class DbAdapter extends SQLiteOpenHelper {
 	public static final String KEY_GRADES_SEM = "sem";
 	public static final String KEY_GRADES_TEXT = "text";
 	public static final String KEY_GRADES_GRADE = "grade";
+	public static final String KEY_GRADES_TRIES = "tries";
 	public static final String KEY_GRADES_DATE = "date";
 
 	// create tables
 	private static final String CREATE_TABLE_GRADES = "CREATE TABLE " + TABLE_GRADES + " (" + KEY_GRADES_ID
-			+ " integer primary key autoincrement, " + KEY_GRADES_NR + " text, " + KEY_GRADES_SEM + " text, " + KEY_GRADES_TEXT
-			+ " text not null, " + KEY_GRADES_GRADE + " text, " + KEY_GRADES_DATE + " text);";
+			+ " integer primary key autoincrement, " + KEY_GRADES_NR + " text, " + KEY_GRADES_TEXT + " text, " + KEY_GRADES_SEM + " text, "
+			+ KEY_GRADES_GRADE + " text, " + KEY_GRADES_TRIES + " text, " + KEY_GRADES_DATE + " text);";
 
 	// drop tables
 	private static final String DROP_TABLE_GRADES = "DROP TABLE IF EXISTS " + TABLE_GRADES + ";";
@@ -51,10 +52,14 @@ public class DbAdapter extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public long createMark(String text, String grade) {
+	public long createMark(String nr, String text, String sem, String grade, String tries, String date) {
 		ContentValues values = new ContentValues();
+		values.put(KEY_GRADES_NR, nr);
 		values.put(KEY_GRADES_TEXT, text);
+		values.put(KEY_GRADES_SEM, sem);
 		values.put(KEY_GRADES_GRADE, grade);
+		values.put(KEY_GRADES_TRIES, tries);
+		values.put(KEY_GRADES_DATE, date);
 		return getWritableDatabase().insert(TABLE_GRADES, null, values);
 	}
 

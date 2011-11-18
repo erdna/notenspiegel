@@ -219,8 +219,12 @@ public class HtwHttpHandler extends HttpHandler {
 		boolean foundTab = false;
 		boolean foundRow = false;
 
-		String name = "";
-		String mark = "";
+		String nr = "";
+		String sem = "";
+		String text = "";
+		String grade = "";
+		String tries = "";
+		String date = "";
 
 		xpp.setInput(new InputStreamReader(htmlPage));
 		int eventType = xpp.getEventType();
@@ -237,7 +241,6 @@ public class HtwHttpHandler extends HttpHandler {
 			// search for row which is not heading
 			if (foundTab && !foundRow && eventType == XmlPullParser.START_TAG) {
 				if (xpp.getName().equals("tr")) {
-					// if (DEBUG) Log.v("parseNotenTab()", xpp.getName());
 					foundRow = true;
 				}
 			}
@@ -245,44 +248,74 @@ public class HtwHttpHandler extends HttpHandler {
 			// search for first element in row
 			if (foundRow && eventType == XmlPullParser.START_TAG) {
 				if (xpp.getName().equals("td")) {
-					eventType = xpp.next();
-					if (eventType == XmlPullParser.TEXT) {
-						if (DEBUG) Log.i(TAG, xpp.getText());
-						// Log.w("Position", xpp.getPositionDescription());
-					}
 
-					eventType = xpp.next();
-					eventType = xpp.next();
-					eventType = xpp.next();
+					// parse "Prüfungsnummer"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					nr = xpp.nextText();
+					if (DEBUG) Log.i(TAG, nr);
 					eventType = xpp.next();
 
-					// Log.w("Position", xpp.getPositionDescription());
-					if (eventType == XmlPullParser.TEXT) {
-						name = xpp.getText();
-						if (DEBUG) Log.i(TAG, name);
-						// Log.w("Position", xpp.getPositionDescription());
-					}
-
-					eventType = xpp.next();
-					eventType = xpp.next();
-					eventType = xpp.next();
+					// parse "Prüfungstext"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					text = xpp.nextText();
+					if (DEBUG) Log.i(TAG, text);
 					eventType = xpp.next();
 
-					eventType = xpp.next();
-					eventType = xpp.next();
-					eventType = xpp.next();
+					// parse "Semester"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					sem = Html.fromHtml(xpp.nextText()).toString().trim();
+					if (DEBUG) Log.i(TAG, sem);
 					eventType = xpp.next();
 
-					// Log.w("Position", xpp.getPositionDescription());
-					if (eventType == XmlPullParser.TEXT) {
-						String text = Html.fromHtml(xpp.getText()).toString();
-						if (text != null && text.length() != 0) {
-							mark = text.subSequence(18, 21).toString();
-							if (DEBUG) Log.i(TAG, mark);
-						} else mark = "";
-					}
+					// parse "Note"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					String temp = Html.fromHtml(xpp.nextText()).toString();
+					if (temp != null && temp.length() != 0) {
+						grade = temp.subSequence(18, 21).toString();
+						if (DEBUG) Log.i(TAG, grade);
+					} else grade = "";
+					eventType = xpp.next();
 
-					dbAdapter.createMark(name, mark);
+					// parse "Status"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					eventType = xpp.next();
+
+					// parse "Credits"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					eventType = xpp.next();
+
+					// parse "ECTS"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					eventType = xpp.next();
+
+					// parse "Vermerk"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					eventType = xpp.next();
+
+					// parse "Versuch"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					tries = xpp.nextText();
+					if (DEBUG) Log.i(TAG, tries);
+					eventType = xpp.next();
+
+					// parse "Prüfungsdatum"
+					while (eventType != XmlPullParser.START_TAG)
+						eventType = xpp.next();
+					date = Html.fromHtml(xpp.nextText()).toString();
+					if (DEBUG) Log.i(TAG, date);
+					eventType = xpp.next();
+
+					// write to DB
+					dbAdapter.createMark(nr, text, sem, grade, tries, date);
 
 					foundRow = false;
 				}
