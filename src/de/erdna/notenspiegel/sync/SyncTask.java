@@ -8,9 +8,9 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
-import de.erdna.notenspiegel.GradesListActivity;
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.db.DbAdapter;
+import de.erdna.notenspiegel.ui.GradesListActivity;
 
 import static de.erdna.notenspiegel.Constants.*;
 

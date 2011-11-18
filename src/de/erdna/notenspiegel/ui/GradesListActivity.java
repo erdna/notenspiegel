@@ -1,5 +1,7 @@
-package de.erdna.notenspiegel;
+package de.erdna.notenspiegel.ui;
 
+import de.erdna.notenspiegel.GradesApp;
+import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.DbAdapter;
 import de.erdna.notenspiegel.sync.SyncTask;
 import android.app.AlertDialog;
@@ -55,7 +57,7 @@ public class GradesListActivity extends ListActivity {
 		// if nothing is configured start PreferencePage
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		if (preferences.getString("username", "").equals("")) {
-			Intent intent = new Intent(this, Options.class);
+			Intent intent = new Intent(this, OptionsActivity.class);
 			startActivity(intent);
 		}
 
@@ -108,7 +110,7 @@ public class GradesListActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_item_preferences:
-			Intent intent = new Intent(this, Options.class);
+			Intent intent = new Intent(this, OptionsActivity.class);
 			startActivity(intent);
 			break;
 		case R.id.menu_item_refresh:

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:paddingLeft="5dip"
+        android:paddingLeft="4dip"
         android:text="textViewGradeText" />
 
     <ImageView
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textViewGradeText"
-        android:paddingLeft="5dip"
+        android:paddingLeft="4dip"
         android:text="textViewGradeGrade" />
 
 </RelativeLayout>
