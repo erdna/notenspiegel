@@ -1,5 +1,7 @@
 package de.erdna.notenspiegel.db;
 
+import static de.erdna.notenspiegel.Constants.DEBUG;
+
 import de.erdna.notenspiegel.Grade;
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,8 +30,9 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 	// create tables
 	private static final String CREATE_TABLE_GRADES = "CREATE TABLE " + TABLE_GRADES + " (" + KEY_GRADES_ID
-			+ " integer primary key autoincrement, " + KEY_GRADES_NR + " text, " + KEY_GRADES_TEXT + " text, " + KEY_GRADES_SEM + " text, "
-			+ KEY_GRADES_GRADE + " text, " + KEY_GRADES_TRY + " text, " + KEY_GRADES_DATE + " text);";
+			+ " integer primary key autoincrement, " + KEY_GRADES_NR + " text, " + KEY_GRADES_TEXT + " text, "
+			+ KEY_GRADES_SEM + " text, " + KEY_GRADES_GRADE + " text, " + KEY_GRADES_TRY + " text, " + KEY_GRADES_DATE
+			+ " text);";
 
 	// drop tables
 	private static final String DROP_TABLE_GRADES = "DROP TABLE IF EXISTS " + TABLE_GRADES + ";";
@@ -48,12 +51,36 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data!");
+		Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion
+				+ ", which will destroy all old data!");
 		db.execSQL(DROP_TABLE_GRADES);
 		onCreate(db);
 	}
 
-	public long createGrade(Grade grade) {
+	private boolean existsGrade(Grade grade) {
+		// this is my interpretation of an unique grade identifier
+		// be open to help me find a better solution!
+		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null,
+				KEY_GRADES_NR + " = '" + grade.mNr + "' AND " + KEY_GRADES_TRY + " = '" + grade.mTry + "'", null, null,
+				null, null);
+		int count = cursor.getCount();
+		cursor.close();
+		return count > 0;
+	}
+
+	public long createIfNotExitsGrade(Grade grade) {
+		// TODO look for exists grade and add it to db if not
+
+		if (existsGrade(grade)) {
+			if (DEBUG) Log.i(TAG, "existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
+		} else {
+			if (DEBUG) Log.e(TAG, "NOT existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
+			createGrade(grade);
+		}
+		return 0;
+	}
+
+	private long createGrade(Grade grade) {
 		ContentValues values = new ContentValues();
 		values.put(KEY_GRADES_NR, grade.mNr);
 		values.put(KEY_GRADES_TEXT, grade.mText);
@@ -68,6 +95,10 @@ public class DbAdapter extends SQLiteOpenHelper {
 		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null, null, null, null, null, null);
 		if (cursor != null) cursor.moveToFirst();
 		return cursor;
+	}
+
+	public int deleteGrade(long id) {
+		return getReadableDatabase().delete(TABLE_GRADES, "_id = " + id, null);
 	}
 
 	public long deleteAll() {

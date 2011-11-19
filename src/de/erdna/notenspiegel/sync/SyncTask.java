@@ -31,7 +31,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 		// Connect to DB
 		dbAdapter = app.getDbAdapter();
-		dbAdapter.deleteAll();
+		// dbAdapter.deleteAll();
 
 		// get username and password from SharedPreferences
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);

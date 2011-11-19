@@ -45,6 +45,9 @@ public class GradesListActivity extends ListActivity {
 		// Connect to DataSevice and DB
 		dbAdapter = ((GradesApp) getApplication()).getDbAdapter();
 
+		// activates context menu on list
+		registerForContextMenu(getListView());
+
 		// Get Cursor
 		Cursor cursor = dbAdapter.fetchAllMarks();
 		startManagingCursor(cursor);
@@ -96,9 +99,10 @@ public class GradesListActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Intent intent = new Intent(this, GradeActivity.class);
-		intent.putExtra(GradeActivity.EXTRA_GRADE_ID, id);
-		startActivity(intent);
+		// Intent intent = new Intent(this, GradeActivity.class);
+		// intent.putExtra(GradeActivity.EXTRA_GRADE_ID, id);
+		// startActivity(intent);
+		dbAdapter.deleteGrade(id);
 	}
 
 	@Override

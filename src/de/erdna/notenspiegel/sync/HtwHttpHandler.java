@@ -319,8 +319,8 @@ public class HtwHttpHandler extends HttpHandler {
 					eventType = xpp.next();
 
 					// write to DB
-					dbAdapter.createGrade(grade);
-					
+					dbAdapter.createIfNotExitsGrade(grade);
+
 					grade.clear();
 
 					foundRow = false;
