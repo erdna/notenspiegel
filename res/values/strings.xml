@@ -22,5 +22,14 @@
     <string name="accept_untrusted_certificates_summaryOff">Vertraut nur sicheren Zertifikaten</string>
     <string name="legal_information">Rechtliche Hinweise</string>
     <string name="legal_information_summary">Autor: André Nitzschke\nDiese App ist keine offizielle Anwendung der Hochschule für Technik und Wirtschaft Dresden.</string>
+    <string name="header_nr">Prüfungsnummer</string>
+    <string name="header_text">Prüfungstext</string>
+    <string name="header_sem">Semester</string>
+    <string name="header_grade">Note</string>
+    <string name="header_status">Status</string>
+    <string name="header_credits">Credits</string>
+    <string name="header_ects">ECTS</string>
+    <string name="header_notation">Vermerk</string>
+    <string name="header_date">Prüfungstermin</string>
 
 </resources>

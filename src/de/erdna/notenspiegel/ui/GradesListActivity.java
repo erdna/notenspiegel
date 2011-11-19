@@ -16,7 +16,9 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 public class GradesListActivity extends ListActivity {
@@ -32,7 +34,6 @@ public class GradesListActivity extends ListActivity {
 
 	private String errorMsg;
 
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,6 +91,14 @@ public class GradesListActivity extends ListActivity {
 		adapter.changeCursor(dbAdapter.fetchAllMarks());
 
 		super.onResume();
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		Intent intent = new Intent(this, GradeActivity.class);
+		intent.putExtra(GradeActivity.EXTRA_GRADE_ID, id);
+		startActivity(intent);
 	}
 
 	@Override
