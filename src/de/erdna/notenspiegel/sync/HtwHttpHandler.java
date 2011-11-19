@@ -27,6 +27,7 @@ import android.text.Html;
 import android.util.Log;
 import android.util.Xml;
 
+import de.erdna.notenspiegel.Grade;
 import de.erdna.notenspiegel.db.DbAdapter;
 
 public class HtwHttpHandler extends HttpHandler {
@@ -219,12 +220,7 @@ public class HtwHttpHandler extends HttpHandler {
 		boolean foundTab = false;
 		boolean foundRow = false;
 
-		String nr = "";
-		String sem = "";
-		String text = "";
-		String grade = "";
-		String tries = "";
-		String date = "";
+		Grade grade = new Grade();
 
 		xpp.setInput(new InputStreamReader(htmlPage));
 		int eventType = xpp.getEventType();
@@ -252,22 +248,22 @@ public class HtwHttpHandler extends HttpHandler {
 					// parse "Prüfungsnummer"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
-					nr = xpp.nextText();
-					if (DEBUG) Log.i(TAG, nr);
+					grade.mNr = xpp.nextText();
+					if (DEBUG) Log.i(TAG, grade.mNr);
 					eventType = xpp.next();
 
 					// parse "Prüfungstext"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
-					text = xpp.nextText();
-					if (DEBUG) Log.i(TAG, text);
+					grade.mText = xpp.nextText();
+					if (DEBUG) Log.i(TAG, grade.mText);
 					eventType = xpp.next();
 
 					// parse "Semester"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
-					sem = Html.fromHtml(xpp.nextText()).toString().trim();
-					if (DEBUG) Log.i(TAG, sem);
+					grade.mSem = Html.fromHtml(xpp.nextText()).toString().trim();
+					if (DEBUG) Log.i(TAG, grade.mSem);
 					eventType = xpp.next();
 
 					// parse "Note"
@@ -275,47 +271,57 @@ public class HtwHttpHandler extends HttpHandler {
 						eventType = xpp.next();
 					String temp = Html.fromHtml(xpp.nextText()).toString();
 					if (temp != null && temp.length() != 0) {
-						grade = temp.subSequence(18, 21).toString();
-						if (DEBUG) Log.i(TAG, grade);
-					} else grade = "";
+						grade.mGrade = temp.subSequence(18, 21).toString();
+						if (DEBUG) Log.i(TAG, grade.mGrade);
+					}
 					eventType = xpp.next();
 
 					// parse "Status"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
+					grade.mStatus = xpp.nextText();
+					if (DEBUG) Log.i(TAG, grade.mStatus);
 					eventType = xpp.next();
 
 					// parse "Credits"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
+					grade.mCredits = xpp.nextText();
+					if (DEBUG) Log.i(TAG, grade.mCredits);
 					eventType = xpp.next();
 
 					// parse "ECTS"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
+					grade.mEcts = xpp.nextText();
+					if (DEBUG) Log.i(TAG, grade.mEcts);
 					eventType = xpp.next();
 
-					// parse "Vermerk"
+					// parse "Vermerk" alias Notation
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
+					grade.mNotation = xpp.nextText();
+					if (DEBUG) Log.i(TAG, grade.mNotation);
 					eventType = xpp.next();
 
 					// parse "Versuch"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
-					tries = xpp.nextText();
-					if (DEBUG) Log.i(TAG, tries);
+					grade.mTry = xpp.nextText();
+					if (DEBUG) Log.i(TAG, grade.mTry);
 					eventType = xpp.next();
 
 					// parse "Prüfungsdatum"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
-					date = Html.fromHtml(xpp.nextText()).toString();
-					if (DEBUG) Log.i(TAG, date);
+					grade.mDate = Html.fromHtml(xpp.nextText()).toString();
+					if (DEBUG) Log.i(TAG, grade.mDate);
 					eventType = xpp.next();
 
 					// write to DB
-					dbAdapter.createMark(nr, text, sem, grade, tries, date);
+					dbAdapter.createGrade(grade);
+					
+					grade.clear();
 
 					foundRow = false;
 				}

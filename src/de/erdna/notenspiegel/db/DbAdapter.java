@@ -1,5 +1,6 @@
 package de.erdna.notenspiegel.db;
 
+import de.erdna.notenspiegel.Grade;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -22,13 +23,13 @@ public class DbAdapter extends SQLiteOpenHelper {
 	public static final String KEY_GRADES_SEM = "sem";
 	public static final String KEY_GRADES_TEXT = "text";
 	public static final String KEY_GRADES_GRADE = "grade";
-	public static final String KEY_GRADES_TRIES = "tries";
+	public static final String KEY_GRADES_TRY = "try";
 	public static final String KEY_GRADES_DATE = "date";
 
 	// create tables
 	private static final String CREATE_TABLE_GRADES = "CREATE TABLE " + TABLE_GRADES + " (" + KEY_GRADES_ID
 			+ " integer primary key autoincrement, " + KEY_GRADES_NR + " text, " + KEY_GRADES_TEXT + " text, " + KEY_GRADES_SEM + " text, "
-			+ KEY_GRADES_GRADE + " text, " + KEY_GRADES_TRIES + " text, " + KEY_GRADES_DATE + " text);";
+			+ KEY_GRADES_GRADE + " text, " + KEY_GRADES_TRY + " text, " + KEY_GRADES_DATE + " text);";
 
 	// drop tables
 	private static final String DROP_TABLE_GRADES = "DROP TABLE IF EXISTS " + TABLE_GRADES + ";";
@@ -52,14 +53,14 @@ public class DbAdapter extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public long createMark(String nr, String text, String sem, String grade, String tries, String date) {
+	public long createGrade(Grade grade) {
 		ContentValues values = new ContentValues();
-		values.put(KEY_GRADES_NR, nr);
-		values.put(KEY_GRADES_TEXT, text);
-		values.put(KEY_GRADES_SEM, sem);
-		values.put(KEY_GRADES_GRADE, grade);
-		values.put(KEY_GRADES_TRIES, tries);
-		values.put(KEY_GRADES_DATE, date);
+		values.put(KEY_GRADES_NR, grade.mNr);
+		values.put(KEY_GRADES_TEXT, grade.mText);
+		values.put(KEY_GRADES_SEM, grade.mSem);
+		values.put(KEY_GRADES_GRADE, grade.mGrade);
+		values.put(KEY_GRADES_TRY, grade.mTry);
+		values.put(KEY_GRADES_DATE, grade.mDate);
 		return getWritableDatabase().insert(TABLE_GRADES, null, values);
 	}
 
