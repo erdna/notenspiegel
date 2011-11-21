@@ -1,10 +1,10 @@
 package de.erdna.notenspiegel.ui;
 
 import de.erdna.notenspiegel.R;
-import android.app.Activity;
+import de.erdna.notenspiegel.ui.actionbar.ActionBarActivity;
 import android.os.Bundle;
 
-public class GradeActivity extends Activity {
+public class GradeActivity extends ActionBarActivity {
 
 	public static final String EXTRA_GRADE_ID = "grade_id";
 

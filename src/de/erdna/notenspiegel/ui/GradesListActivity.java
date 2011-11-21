@@ -4,10 +4,11 @@ import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.DbAdapter;
 import de.erdna.notenspiegel.sync.SyncTask;
+import de.erdna.notenspiegel.ui.actionbar.ActionBarActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -18,13 +19,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-public class GradesListActivity extends ListActivity {
+public class GradesListActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener {
 
 	private static final int DIALOG_ERROR = 2;
 
@@ -32,7 +34,7 @@ public class GradesListActivity extends ListActivity {
 	public static final String EXTRA_REFRESH = "EXTRA_REFRESH";
 
 	private DbAdapter dbAdapter;
-	private SimpleCursorAdapter adapter;
+	private SimpleCursorAdapter listAdapter;
 	private SharedPreferences preferences;
 	private Bundle extras;
 
@@ -41,16 +43,13 @@ public class GradesListActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		// activate progress indicator
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setProgressBarIndeterminateVisibility(((GradesApp) getApplication()).isSyncing());
+		getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
+
+		setContentView(R.layout.activity_simple_list);
 
 		// Connect to DataSevice and DB
 		dbAdapter = ((GradesApp) getApplication()).getDbAdapter();
-
-		// activates context menu on list
-		registerForContextMenu(getListView());
 
 		// Get Cursor
 		Cursor cursor = dbAdapter.fetchAllMarks();
@@ -59,8 +58,15 @@ public class GradesListActivity extends ListActivity {
 		// Simple Cursor Adapter
 		String[] from = { DbAdapter.KEY_GRADES_TEXT, DbAdapter.KEY_GRADES_GRADE };
 		int[] to = { R.id.textViewGradeText, R.id.textViewGradeGrade };
-		adapter = new SimpleCursorAdapter(this, R.layout.list_item_grades, cursor, from, to);
-		setListAdapter(adapter);
+		listAdapter = new SimpleCursorAdapter(this, R.layout.list_item_grades, cursor, from, to);
+
+		// create and assign adapter
+		ListView listView = (ListView) findViewById(R.id.list);
+		listView.setAdapter(listAdapter);
+		listView.setOnItemClickListener(this);
+
+		// activates context menu on list
+		registerForContextMenu(listView);
 
 		// if nothing is configured start PreferencePage
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -92,20 +98,24 @@ public class GradesListActivity extends ListActivity {
 
 		}
 
-		setProgressBarIndeterminateVisibility(((GradesApp) getApplication()).isSyncing());
+		getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
 
 		// refresh list of grades
-		adapter.changeCursor(dbAdapter.fetchAllMarks());
+		listAdapter.changeCursor(dbAdapter.fetchAllMarks());
 
 		super.onResume();
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
+	public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+		// @Override
+		// protected void onListItemClick(ListView l, View v, int position, long
+		// id) {
+		// super.onListItemClick(l, v, position, id);
 		Intent intent = new Intent(this, GradeActivity.class);
 		intent.putExtra(GradeActivity.EXTRA_GRADE_ID, id);
 		startActivity(intent);
+		// }
+
 	}
 
 	@Override
@@ -122,7 +132,7 @@ public class GradesListActivity extends ListActivity {
 		switch (item.getItemId()) {
 		case R.id.menuItemContextDelete:
 			dbAdapter.deleteGrade(info.id);
-			adapter.changeCursor(dbAdapter.fetchAllMarks());
+			listAdapter.changeCursor(dbAdapter.fetchAllMarks());
 			break;
 
 		case R.id.menuItemContextInfo:
@@ -144,21 +154,14 @@ public class GradesListActivity extends ListActivity {
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		MenuItem item = menu.findItem(R.id.menu_item_refresh);
-		item.setEnabled(!((GradesApp) getApplication()).isSyncing());
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.menu_item_preferences:
+		case R.id.menu_preferences:
 			Intent intent = new Intent(this, OptionsActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.menu_item_refresh:
-			setProgressBarIndeterminateVisibility(true);
+		case R.id.menu_refresh:
+			getActionBarHelper().setRefreshActionItemState(true);
 			new SyncTask(this, getApplication()).execute();
 			break;
 
@@ -210,4 +213,10 @@ public class GradesListActivity extends ListActivity {
 		super.onPrepareDialog(id, dialog);
 
 	}
+
+	public void onClick(DialogInterface dialog, int which) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
