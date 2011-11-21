@@ -98,7 +98,8 @@ public class DbAdapter extends SQLiteOpenHelper {
 	}
 
 	public Cursor fetchAllMarks() {
-		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null, null, null, null, null, null);
+		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null, null, null, null, null,
+				KEY_GRADES_NR + " DESC, " + KEY_GRADES_TRY + " ASC");
 		if (cursor != null) cursor.moveToFirst();
 		return cursor;
 	}
