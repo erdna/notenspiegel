@@ -25,9 +25,8 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 	// create tables
 	private static final String CREATE_TABLE_GRADES = "CREATE TABLE " + TABLE_GRADES + " (" + KEY_ID
-			+ " integer primary key autoincrement, " + KEY_NR + " text, " + KEY_TEXT + " text, "
-			+ KEY_SEM + " text, " + KEY_GRADE + " text, " + KEY_TRY + " text, " + KEY_DATE
-			+ " text);";
+			+ " integer primary key autoincrement, " + KEY_NR + " text, " + KEY_TEXT + " text, " + KEY_SEM + " text, "
+			+ KEY_GRADE + " text, " + KEY_TRY + " text, " + KEY_DATE + " text);";
 
 	// drop tables
 	private static final String DROP_TABLE_GRADES = "DROP TABLE IF EXISTS " + TABLE_GRADES + ";";
@@ -56,8 +55,7 @@ public class DbAdapter extends SQLiteOpenHelper {
 		// this is my interpretation of an unique grade identifier
 		// be open to help me find a better solution!
 		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null,
-				KEY_NR + " = '" + grade.mNr + "' AND " + KEY_TRY + " = '" + grade.mTry + "'", null, null,
-				null, null);
+				KEY_NR + " = '" + grade.mNr + "' AND " + KEY_TRY + " = '" + grade.mTry + "'", null, null, null, null);
 		int count = cursor.getCount();
 		cursor.close();
 		return count > 0;
@@ -74,6 +72,7 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 			// send action broadcast to receivers
 			Intent intent = new Intent(ACTION_NEW_GRADE);
+			intent.putExtra(EXTRA_GRADE_TEXT, grade.mText);
 			context.sendBroadcast(intent);
 
 		}
