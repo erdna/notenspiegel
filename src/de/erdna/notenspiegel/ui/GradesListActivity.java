@@ -88,8 +88,8 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		startManagingCursor(cursor);
 
 		// Simple Cursor Adapter
-		String[] from = { DbAdapter.KEY_GRADES_TEXT, DbAdapter.KEY_GRADES_GRADE };
-		int[] to = { R.id.textViewGradeText, R.id.textViewGradeGrade };
+		String[] from = { DbAdapter.KEY_GRADES_TRY, DbAdapter.KEY_GRADES_TEXT, DbAdapter.KEY_GRADES_GRADE };
+		int[] to = { R.id.textViewGradeTry, R.id.textViewGradeText, R.id.textViewGradeGrade };
 		listAdapter = new SimpleCursorAdapter(this, R.layout.list_item_grades, cursor, from, to);
 
 		// create and assign adapter
