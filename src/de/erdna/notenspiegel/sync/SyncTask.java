@@ -116,7 +116,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 			context.sendBroadcast(intent);
 
 			// send notification
-			// updateNotification();
+			updateNotification();
 
 		}
 	}
@@ -124,24 +124,17 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 	private void updateNotification() {
 		NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		// TODO add correct notification text
-		String text = "BlaBla";
+		String text = context.getString(R.string.notification_new_grades);
 
-		Notification notification = new Notification(R.drawable.ic_launcher, text, System.currentTimeMillis());
-		notification.flags = Notification.FLAG_NO_CLEAR;
+		Notification notification = new Notification(R.drawable.ic_stat_launcher, text, System.currentTimeMillis());
+		// notification.flags = Notification.FLAG_NO_CLEAR;
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context,
 				GradesListActivity.class), 0);
 
-		// String message;
-		// if (mLooperToursSyncer != null) {
-		// message = getString(R.string.syncing_tours);
-		// } else if (mLooperSubmitEventRequest != null) {
-		// message = getString(R.string.submitting_data);
-		// } else {
-		// message = text;
-		// }
+		String message = "TODO Anzahl der neunen Noten oder Fach";
 
-		notification.setLatestEventInfo(context, text, text, contentIntent);
+		notification.setLatestEventInfo(context, text, message, contentIntent);
 		manager.notify(NOTIFICATION, notification);
 	}
 }

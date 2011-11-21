@@ -62,6 +62,8 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 				// get action refresh
 				refreshGradeList();
 
+			} else if (ACTION_SYNC_DONE.equals(action)) {
+
 				getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
 
 			}
