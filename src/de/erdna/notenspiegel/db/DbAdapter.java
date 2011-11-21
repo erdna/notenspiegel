@@ -69,13 +69,13 @@ public class DbAdapter extends SQLiteOpenHelper {
 	}
 
 	public long createIfNotExitsGrade(Grade grade) {
-		// TODO look for exists grade and add it to db if not
 
 		if (existsGrade(grade)) {
 			if (DEBUG) Log.i(TAG, "existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
 		} else {
 			if (DEBUG) Log.e(TAG, "NOT existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
 			createGrade(grade);
+			//TODO send Intent to refresh all views 
 		}
 		return 0;
 	}

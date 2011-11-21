@@ -31,5 +31,6 @@
     <string name="header_ects">ECTS</string>
     <string name="header_notation">Vermerk</string>
     <string name="header_date">Prüfungstermin</string>
+    <string name="delete">Löschen</string>
 
 </resources>

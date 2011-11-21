@@ -13,11 +13,14 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -26,6 +29,7 @@ public class GradesListActivity extends ListActivity {
 	private static final int DIALOG_ERROR = 2;
 
 	public static final String EXTRA_ERROR_MSG = "EXTRA_ERROR_MSG";
+	public static final String EXTRA_REFRESH = "EXTRA_REFRESH";
 
 	private DbAdapter dbAdapter;
 	private SimpleCursorAdapter adapter;
@@ -85,12 +89,12 @@ public class GradesListActivity extends ListActivity {
 				showDialog(DIALOG_ERROR);
 				extras.clear();
 			}
+
 		}
 
 		setProgressBarIndeterminateVisibility(((GradesApp) getApplication()).isSyncing());
 
 		// refresh list of grades
-		adapter.getCursor().close();
 		adapter.changeCursor(dbAdapter.fetchAllMarks());
 
 		super.onResume();
@@ -99,16 +103,43 @@ public class GradesListActivity extends ListActivity {
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		// Intent intent = new Intent(this, GradeActivity.class);
-		// intent.putExtra(GradeActivity.EXTRA_GRADE_ID, id);
-		// startActivity(intent);
-		dbAdapter.deleteGrade(id);
+		Intent intent = new Intent(this, GradeActivity.class);
+		intent.putExtra(GradeActivity.EXTRA_GRADE_ID, id);
+		startActivity(intent);
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.grade_context_menu, menu);
+		menu.setHeaderTitle("Context füllen");
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		switch (item.getItemId()) {
+		case R.id.menuItemContextDelete:
+			dbAdapter.deleteGrade(info.id);
+			adapter.changeCursor(dbAdapter.fetchAllMarks());
+			break;
+
+		case R.id.menuItemContextInfo:
+			Intent intent = new Intent(this, GradeActivity.class);
+			intent.putExtra(GradeActivity.EXTRA_GRADE_ID, info.id);
+			startActivity(intent);
+
+		default:
+			break;
+		}
+		return super.onContextItemSelected(item);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_mark, menu);
+		inflater.inflate(R.menu.grade_menu, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
