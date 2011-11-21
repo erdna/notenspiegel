@@ -27,6 +27,14 @@
         </activity>
         <activity android:name=".ui.GradeActivity" />
         <activity android:name=".ui.OptionsActivity" />
+
+        <receiver android:name="Receiver" >
+            <intent-filter >
+                <action android:name="de.erdna.notenspiegel.ACTION_NEW_GRADE" />
+                <action android:name="de.erdna.notenspiegel.ACTION_SYNC_ERROR" />
+                <action android:name="de.erdna.notenspiegel.ACTION_SYNC_DONE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

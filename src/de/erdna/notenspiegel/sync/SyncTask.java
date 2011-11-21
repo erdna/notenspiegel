@@ -28,24 +28,6 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 	private GradesApp app;
 	private SharedPreferences preferences;
 
-	private int notificationCount;
-
-	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String action = intent.getAction();
-			if (ACTION_NEW_GRADE.equals(action)) {
-				Bundle extras = intent.getExtras();
-				if (extras != null) {
-					String text = extras.getString(EXTRA_GRADE_TEXT);
-					updateNotification(++notificationCount, text);
-				}
-			}
-
-		}
-	};
-
 	public SyncTask(Context context, Application application) {
 		this.context = context;
 		this.app = (GradesApp) application;
@@ -113,15 +95,6 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 		// set global sync flag on true
 		app.setSyncing(true);
 
-		notificationCount = 0;
-
-		// register broadcast receiver and actions
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(ACTION_NEW_GRADE);
-		// filter.addAction(ACTION_SYNC_ERROR);
-		// filter.addAction(ACTION_SYNC_DONE);
-		context.registerReceiver(broadcastReceiver, new IntentFilter(filter));
-
 	}
 
 	@Override
@@ -147,28 +120,6 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 		}
 
-		context.unregisterReceiver(broadcastReceiver);
-
 	}
 
-	private void updateNotification(int notificationCount, String text) {
-
-		NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-		if (notificationCount != 1) {
-			text = context.getString(R.string.notification_new_grades);
-			text = text.concat("(" + notificationCount + ")");
-		}
-
-		Notification notification = new Notification(R.drawable.ic_stat_launcher, text, System.currentTimeMillis());
-		notification.flags = Notification.FLAG_AUTO_CANCEL;
-
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context,
-				GradesListActivity.class), 0);
-
-		String message = "TODO Anzahl der neunen Noten oder Fach";
-
-		notification.setLatestEventInfo(context, text, message, contentIntent);
-		manager.notify(NOTIFICATION, notification);
-	}
 }
