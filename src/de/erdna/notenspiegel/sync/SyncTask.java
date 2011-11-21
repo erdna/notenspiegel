@@ -127,7 +127,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 		String text = context.getString(R.string.notification_new_grades);
 
 		Notification notification = new Notification(R.drawable.ic_stat_launcher, text, System.currentTimeMillis());
-		// notification.flags = Notification.FLAG_NO_CLEAR;
+		notification.flags = Notification.FLAG_AUTO_CANCEL;
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context,
 				GradesListActivity.class), 0);
