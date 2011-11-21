@@ -2,6 +2,7 @@ package de.erdna.notenspiegel.ui;
 
 import static de.erdna.notenspiegel.Constants.*;
 
+import de.erdna.notenspiegel.Grade;
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.DbAdapter;
@@ -88,7 +89,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		startManagingCursor(cursor);
 
 		// Simple Cursor Adapter
-		String[] from = { DbAdapter.KEY_GRADES_TRY, DbAdapter.KEY_GRADES_TEXT, DbAdapter.KEY_GRADES_GRADE };
+		String[] from = { Grade.KEY_TRY, Grade.KEY_TEXT, Grade.KEY_GRADE };
 		int[] to = { R.id.textViewGradeTry, R.id.textViewGradeText, R.id.textViewGradeGrade };
 		listAdapter = new SimpleCursorAdapter(this, R.layout.list_item_grades, cursor, from, to);
 
