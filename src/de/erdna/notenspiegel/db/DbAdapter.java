@@ -1,10 +1,11 @@
 package de.erdna.notenspiegel.db;
 
-import static de.erdna.notenspiegel.Constants.DEBUG;
+import static de.erdna.notenspiegel.Constants.*;
 
 import de.erdna.notenspiegel.Grade;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -74,8 +75,13 @@ public class DbAdapter extends SQLiteOpenHelper {
 			if (DEBUG) Log.i(TAG, "existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
 		} else {
 			if (DEBUG) Log.e(TAG, "NOT existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
+
 			createGrade(grade);
-			//TODO send Intent to refresh all views 
+
+			// send action broadcast to receivers
+			Intent intent = new Intent(ACTION_NEW_GRADE);
+			context.sendBroadcast(intent);
+
 		}
 		return 0;
 	}

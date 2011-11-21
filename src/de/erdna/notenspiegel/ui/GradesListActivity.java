@@ -1,5 +1,7 @@
 package de.erdna.notenspiegel.ui;
 
+import static de.erdna.notenspiegel.Constants.*;
+
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.DbAdapter;
@@ -7,7 +9,10 @@ import de.erdna.notenspiegel.sync.SyncTask;
 import de.erdna.notenspiegel.ui.actionbar.ActionBarActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,23 +35,48 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 	private static final int DIALOG_ERROR = 2;
 
-	public static final String EXTRA_ERROR_MSG = "EXTRA_ERROR_MSG";
-	public static final String EXTRA_REFRESH = "EXTRA_REFRESH";
-
 	private DbAdapter dbAdapter;
 	private SimpleCursorAdapter listAdapter;
 	private SharedPreferences preferences;
-	private Bundle extras;
 
 	private String errorMsg;
+
+	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+
+			if (ACTION_SYNC_ERROR.equals(action)) {
+
+				getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
+
+				Bundle extras = intent.getExtras();
+				if (extras != null) {
+					errorMsg = extras.getString(EXTRA_ERROR_MSG);
+					showDialog(DIALOG_ERROR);
+				}
+
+			} else if (ACTION_NEW_GRADE.equals(action)) {
+
+				// get action refresh
+				refreshGradeList();
+
+				getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
+
+			}
+
+		}
+
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_simple_list);
+
 		// activate progress indicator
 		getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
-
-		setContentView(R.layout.activity_simple_list);
 
 		// Connect to DataSevice and DB
 		dbAdapter = ((GradesApp) getApplication()).getDbAdapter();
@@ -78,44 +108,32 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	}
 
 	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		// get extras if necessary
-		extras = intent.getExtras();
-	}
-
-	@Override
 	protected void onResume() {
+		super.onResume();
 
-		if (extras != null) {
+		// register broadcast receiver and actions
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(ACTION_NEW_GRADE);
+		filter.addAction(ACTION_SYNC_ERROR);
+		filter.addAction(ACTION_SYNC_DONE);
+		registerReceiver(broadcastReceiver, new IntentFilter(filter));
 
-			errorMsg = extras.getString(EXTRA_ERROR_MSG);
-			if (errorMsg != null && errorMsg.length() > 0) {
-				// Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show();
-				showDialog(DIALOG_ERROR);
-				extras.clear();
-			}
-
-		}
+		refreshGradeList();
 
 		getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
 
-		// refresh list of grades
-		listAdapter.changeCursor(dbAdapter.fetchAllMarks());
+	}
 
-		super.onResume();
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(broadcastReceiver);
 	}
 
 	public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-		// @Override
-		// protected void onListItemClick(ListView l, View v, int position, long
-		// id) {
-		// super.onListItemClick(l, v, position, id);
 		Intent intent = new Intent(this, GradeActivity.class);
 		intent.putExtra(GradeActivity.EXTRA_GRADE_ID, id);
 		startActivity(intent);
-		// }
-
 	}
 
 	@Override
@@ -123,7 +141,10 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		super.onCreateContextMenu(menu, v, menuInfo);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.grade_context_menu, menu);
+
+		// TODO show correct header
 		menu.setHeaderTitle("Context füllen");
+
 	}
 
 	@Override
@@ -181,7 +202,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			builder.setTitle(android.R.string.dialog_alert_title);
 			builder.setMessage("Wenn man diesen Text sieht, ist was schief gegangen!");
 			builder.setCancelable(true);
-			builder.setIcon(android.R.drawable.ic_dialog_info);
+			builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setNeutralButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which) {
@@ -217,6 +238,11 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	public void onClick(DialogInterface dialog, int which) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private void refreshGradeList() {
+		listAdapter.getCursor().requery();
+		// mListAdapter.notifyDataSetChanged();
 	}
 
 }

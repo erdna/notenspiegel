@@ -1,6 +1,9 @@
 package de.erdna.notenspiegel.sync;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import de.erdna.notenspiegel.GradesApp;
+import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.DbAdapter;
 import de.erdna.notenspiegel.ui.GradesListActivity;
 
@@ -59,9 +63,9 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 		try {
 			connector.login(httpHandler);
 			if (DEBUG) publishProgress("login");
-			connector.moveToMarksGrid(httpHandler);
-			if (DEBUG) publishProgress("moved to marks grid");
-			connector.saveMarksToDb(httpHandler, dbAdapter);
+			connector.moveToGradesGrid(httpHandler);
+			if (DEBUG) publishProgress("moved to grades grid");
+			connector.saveGradesToDb(httpHandler, dbAdapter);
 			if (DEBUG) publishProgress("parsed grid");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,11 +75,9 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 			if (DEBUG) publishProgress("logout");
 		}
 
-		// dbAdapter.close();
-
 		if (DEBUG) publishProgress("successfully synced");
 
-		return "";
+		return null;
 	}
 
 	@Override
@@ -99,11 +101,47 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 		// set global sync flag on false
 		app.setSyncing(false);
 
-		// send new intent to MainActivity
-		Intent intent = new Intent(context, GradesListActivity.class);
-		intent.putExtra(GradesListActivity.EXTRA_ERROR_MSG, (String) result);
-		context.startActivity(intent);
+		if (result != null) {
 
+			// error happens
+			String errorMsg = (String) result;
+			Intent intent = new Intent(ACTION_SYNC_ERROR);
+			intent.putExtra(EXTRA_ERROR_MSG, errorMsg);
+			context.sendBroadcast(intent);
+
+		} else {
+
+			// send action broadcast to receivers
+			Intent intent = new Intent(ACTION_SYNC_DONE);
+			context.sendBroadcast(intent);
+
+			// send notification
+			// updateNotification();
+
+		}
 	}
 
+	private void updateNotification() {
+		NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		// TODO add correct notification text
+		String text = "BlaBla";
+
+		Notification notification = new Notification(R.drawable.ic_launcher, text, System.currentTimeMillis());
+		notification.flags = Notification.FLAG_NO_CLEAR;
+
+		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context,
+				GradesListActivity.class), 0);
+
+		// String message;
+		// if (mLooperToursSyncer != null) {
+		// message = getString(R.string.syncing_tours);
+		// } else if (mLooperSubmitEventRequest != null) {
+		// message = getString(R.string.submitting_data);
+		// } else {
+		// message = text;
+		// }
+
+		notification.setLatestEventInfo(context, text, text, contentIntent);
+		manager.notify(NOTIFICATION, notification);
+	}
 }

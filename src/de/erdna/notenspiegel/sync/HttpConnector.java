@@ -28,10 +28,10 @@ public class HttpConnector {
 			login(handler);
 
 			// move to page with marks
-			moveToMarksGrid(handler);
+			moveToGradesGrid(handler);
 
 			// save marks in db
-			saveMarksToDb(handler, dbAdapter);
+			saveGradesToDb(handler, dbAdapter);
 
 			// logout correctly and kill client
 			logout(handler);
@@ -49,12 +49,12 @@ public class HttpConnector {
 		if (DEBUG) Log.i(TAG, "login() was successful");
 	}
 
-	public void moveToMarksGrid(HttpHandler handler) throws Exception {
+	public void moveToGradesGrid(HttpHandler handler) throws Exception {
 		handler.moveToMarksGrid(client);
 		if (DEBUG) Log.i(TAG, "moveToMarksGrid() was successful");
 	}
 
-	public void saveMarksToDb(HttpHandler handler, DbAdapter dbAdapter) throws Exception {
+	public void saveGradesToDb(HttpHandler handler, DbAdapter dbAdapter) throws Exception {
 		handler.saveMarksToDb(client, dbAdapter);
 		if (DEBUG) Log.i(TAG, "saveMarksToDb() was succesful");
 	}
