@@ -34,12 +34,23 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
+        android:id="@+id/textViewGradeStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewGradeText"
+        android:paddingLeft="20dp"
+        android:text="nicht bestanden"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/list_light_grey" />
+
+    <TextView
         android:id="@+id/textViewGradeGrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/textViewGradeText"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="4dp"
+        android:paddingLeft="154dp"
         android:text="1,0"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -47,22 +58,11 @@
         android:id="@+id/textViewGradeNotation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textViewGradeGrade"
+        android:layout_below="@+id/textViewGradeText"
         android:layout_toRightOf="@+id/textViewGradeGrade"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
         android:text="mE"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/textViewGradeStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textViewGradeGrade"
-        android:layout_alignLeft="@+id/textViewGradeText"
-        android:paddingLeft="20dp"
-        android:text="bestanden"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/list_light_grey" />
 
 </RelativeLayout>

@@ -8,6 +8,7 @@ public class Grade {
 	public static final String KEY_TEXT = "text";
 	public static final String KEY_GRADE = "grade";
 	public static final String KEY_STATUS = "status";
+	public static final String KEY_CREDITS = "credits";
 	public static final String KEY_NOTATION = "notation";
 	public static final String KEY_TRY = "try";
 	public static final String KEY_DATE = "date";

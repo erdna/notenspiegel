@@ -327,7 +327,7 @@ public class HtwHttpHandler extends HttpHandler {
 				}
 			}
 
-			// search for tale end tag and abort
+			// search for table end tag and abort
 			if (foundTab && eventType == XmlPullParser.END_TAG) {
 				if (xpp.getName().equals("table")) {
 					if (DEBUG) Log.w(TAG, "table end tag found");

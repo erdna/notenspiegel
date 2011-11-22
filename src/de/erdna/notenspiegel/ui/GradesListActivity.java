@@ -60,7 +60,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 			} else if (ACTION_NEW_GRADE.equals(action)) {
 
-				// get action refresh
+				// if action is refresh
 				refreshGradeList();
 
 			} else if (ACTION_SYNC_DONE.equals(action)) {
@@ -89,8 +89,9 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		startManagingCursor(cursor);
 
 		// Simple Cursor Adapter
-		String[] from = { Grade.KEY_TRY, Grade.KEY_TEXT, Grade.KEY_GRADE };
-		int[] to = { R.id.textViewGradeTry, R.id.textViewGradeText, R.id.textViewGradeGrade };
+		String[] from = { Grade.KEY_TRY, Grade.KEY_TEXT, Grade.KEY_GRADE, Grade.KEY_STATUS, Grade.KEY_NOTATION };
+		int[] to = { R.id.textViewGradeTry, R.id.textViewGradeText, R.id.textViewGradeGrade, R.id.textViewGradeStatus,
+				R.id.textViewGradeNotation };
 		listAdapter = new SimpleCursorAdapter(this, R.layout.list_item_grades, cursor, from, to);
 
 		// create and assign adapter

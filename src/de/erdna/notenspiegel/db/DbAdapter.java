@@ -26,7 +26,8 @@ public class DbAdapter extends SQLiteOpenHelper {
 	// create tables
 	private static final String CREATE_TABLE_GRADES = "CREATE TABLE " + TABLE_GRADES + " (" + KEY_ID
 			+ " integer primary key autoincrement, " + KEY_NR + " text, " + KEY_TEXT + " text, " + KEY_SEM + " text, "
-			+ KEY_GRADE + " text, " + KEY_TRY + " text, " + KEY_DATE + " text);";
+			+ KEY_GRADE + " text, " + KEY_STATUS + " text, " + KEY_CREDITS + " text, " + KEY_NOTATION + " text, "
+			+ KEY_TRY + " text, " + KEY_DATE + " text);";
 
 	// drop tables
 	private static final String DROP_TABLE_GRADES = "DROP TABLE IF EXISTS " + TABLE_GRADES + ";";
@@ -85,6 +86,9 @@ public class DbAdapter extends SQLiteOpenHelper {
 		values.put(KEY_TEXT, grade.mText);
 		values.put(KEY_SEM, grade.mSem);
 		values.put(KEY_GRADE, grade.mGrade);
+		values.put(KEY_STATUS, grade.mStatus);
+		values.put(KEY_CREDITS, grade.mCredits);
+		values.put(KEY_NOTATION, grade.mNotation);
 		values.put(KEY_TRY, grade.mTry);
 		values.put(KEY_DATE, grade.mDate);
 		return getWritableDatabase().insert(TABLE_GRADES, null, values);
