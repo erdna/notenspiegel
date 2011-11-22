@@ -1,23 +1,15 @@
 package de.erdna.notenspiegel.sync;
 
 import android.app.Application;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import de.erdna.notenspiegel.GradesApp;
-import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.DbAdapter;
-import de.erdna.notenspiegel.ui.GradesListActivity;
 
 import static de.erdna.notenspiegel.Constants.*;
 
