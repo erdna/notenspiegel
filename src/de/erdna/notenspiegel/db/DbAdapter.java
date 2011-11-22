@@ -34,6 +34,9 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 	protected final Context context;
 
+	// TODO find better solution for new grade count 
+	private int newGradeCount = 0;
+
 	public DbAdapter(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
@@ -73,7 +76,8 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 			// send action broadcast to receivers
 			Intent intent = new Intent(ACTION_NEW_GRADE);
-			intent.putExtra(EXTRA_GRADE_TEXT, grade.mText);
+			intent.putExtra(EXTRA_GRADE_TEXT, grade.mText + " " + grade.mGrade);
+			intent.putExtra(EXTRA_GRADE_COUNT, ++newGradeCount);
 			context.sendBroadcast(intent);
 
 		}

@@ -16,10 +16,13 @@ public class Receiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		String action = intent.getAction();
 		if (ACTION_NEW_GRADE.equals(action)) {
+
 			Bundle extras = intent.getExtras();
 			if (extras != null) {
 				String text = extras.getString(EXTRA_GRADE_TEXT);
-				updateNotification(context, 1, text);
+				int count = extras.getInt(EXTRA_GRADE_COUNT);
+				updateNotification(context, count, text);
+
 			}
 		}
 
@@ -29,9 +32,14 @@ public class Receiver extends BroadcastReceiver {
 
 		NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+		// singular
+		String message = context.getString(R.string.notification_new_grade_msg);
+
+		// plural
 		if (notificationCount != 1) {
 			text = context.getString(R.string.notification_new_grades);
 			text = text.concat("(" + notificationCount + ")");
+			message = context.getString(R.string.notification_new_grades_msg);
 		}
 
 		Notification notification = new Notification(R.drawable.ic_stat_launcher, text, System.currentTimeMillis());
@@ -39,8 +47,6 @@ public class Receiver extends BroadcastReceiver {
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context,
 				GradesListActivity.class), 0);
-
-		String message = "TODO Anzahl der neunen Noten oder Fach";
 
 		notification.setLatestEventInfo(context, text, message, contentIntent);
 		manager.notify(NOTIFICATION, notification);
