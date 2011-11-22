@@ -8,7 +8,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 public class Receiver extends BroadcastReceiver {
 
@@ -38,8 +40,9 @@ public class Receiver extends BroadcastReceiver {
 		// plural
 		if (notificationCount != 1) {
 			text = context.getString(R.string.notification_new_grades);
-			text = text.concat("(" + notificationCount + ")");
-			message = context.getString(R.string.notification_new_grades_msg);
+			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+			message = sharedPreferences.getString(PREF_FULL_NAME, "Mister Nobody");
+			message = message.concat("(" + notificationCount + ")");
 		}
 
 		Notification notification = new Notification(R.drawable.ic_stat_launcher, text, System.currentTimeMillis());

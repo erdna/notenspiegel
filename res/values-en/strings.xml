@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">Notenspiegel</string>
-    <string name="options">Preferences</string>
+    <string name="title_options">Preferences</string>
+    <string name="title_grade">Grade</string>
     <string name="refresh">Refresh</string>
     <string name="username">Matriculation number</string>
     <string name="password">Password</string>

@@ -12,6 +12,9 @@ public class GradeActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_grade);
+		
+		// set title
+		setTitle(getString(R.string.title_grade));
 	}
 
 }

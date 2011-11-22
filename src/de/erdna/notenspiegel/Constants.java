@@ -12,6 +12,11 @@ public final class Constants {
 	public static final String ACTION_SYNC_ERROR = "de.erdna.notenspiegel.ACTION_SYNC_ERROR";
 	public static final String ACTION_SYNC_DONE = "de.erdna.notenspiegel.ACTION_SYNC_DONE";
 
+	public static final String PREF_USERNAME = "username";
+	public static final String PREF_PASSWORD = "password";
+	public static final String PREF_CERT = "acceptUntrustedCerts";
+	public static final String PREF_FULL_NAME = "fullName";
+
 	public static final int NOTIFICATION = 0;
 
 }

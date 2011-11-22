@@ -1,5 +1,6 @@
 package de.erdna.notenspiegel.ui;
 
+import static de.erdna.notenspiegel.Constants.*;
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.ui.actionbar.ActionBarPreferenceActivity;
@@ -18,7 +19,7 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 		addPreferencesFromResource(R.xml.preference);
 
 		// set title to options
-		setTitle(getString(R.string.options));
+		setTitle(getString(R.string.title_options));
 
 		// get shared preferences
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -44,9 +45,16 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 	}
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		if ("username".equals(key)) {
-			// TODO ask about deletion of content
+		if (PREF_USERNAME.equals(key)) {
+
+			// if username changed delete list
 			((GradesApp) getApplication()).getDbAdapter().deleteAll();
+
+			// delete password
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putString(PREF_PASSWORD, "");
+			editor.commit();
+
 		}
 
 	}
