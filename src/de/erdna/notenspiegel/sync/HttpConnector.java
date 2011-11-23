@@ -26,7 +26,7 @@ public class HttpConnector {
 		handler.login(client);
 		if (DEBUG) Log.i(TAG, "login() was successful");
 
-		String text = handler.fullname.replace("Herr", "").replace("Frau", "").replace(":", "").trim();
+		String text = handler.fullname;
 
 		// save full user name to SharedPreferences
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

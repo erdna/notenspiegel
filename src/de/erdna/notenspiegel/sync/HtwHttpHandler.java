@@ -160,6 +160,7 @@ public class HtwHttpHandler extends HttpHandler {
 			if (eventType == XmlPullParser.TEXT) {
 				if (foundTab && foundRow) {
 					fullname = Html.fromHtml(xpp.getText()).toString();
+					fullname = fullname.replace("Herr", "").replace("Frau", "").replace(":", "").trim();
 					if (DEBUG) Log.e(TAG, fullname);
 					break;
 				}
@@ -291,7 +292,7 @@ public class HtwHttpHandler extends HttpHandler {
 						eventType = xpp.next();
 					String temp = Html.fromHtml(xpp.nextText()).toString();
 					if (temp != null && temp.length() != 0) {
-						grade.mGrade = temp.replace("ERR: unresolved:", "").trim().toString();
+						grade.mGrade = temp.replace("ERR: unresolved:", "").toString().trim();
 						if (DEBUG) Log.i(TAG, grade.mGrade);
 					}
 					eventType = xpp.next();
