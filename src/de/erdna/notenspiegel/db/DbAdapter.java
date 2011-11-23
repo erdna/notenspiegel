@@ -34,9 +34,6 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 	protected final Context context;
 
-	// TODO find better solution for new grade count 
-	private int newGradeCount = 0;
-
 	public DbAdapter(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
@@ -66,22 +63,22 @@ public class DbAdapter extends SQLiteOpenHelper {
 	}
 
 	public long createIfNotExitsGrade(Grade grade) {
+		long ret = -1;
 
 		if (existsGrade(grade)) {
 			if (DEBUG) Log.i(TAG, "existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
 		} else {
 			if (DEBUG) Log.e(TAG, "NOT existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
 
-			createGrade(grade);
+			ret = createGrade(grade);
 
 			// send action broadcast to receivers
 			Intent intent = new Intent(ACTION_NEW_GRADE);
 			intent.putExtra(EXTRA_GRADE_TEXT, grade.mText + " " + grade.mGrade);
-			intent.putExtra(EXTRA_GRADE_COUNT, ++newGradeCount);
 			context.sendBroadcast(intent);
 
 		}
-		return 0;
+		return ret;
 	}
 
 	private long createGrade(Grade grade) {

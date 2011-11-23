@@ -33,8 +33,7 @@
     <string name="header_notation">Vermerk</string>
     <string name="header_date">Prüfungstermin</string>
     <string name="delete">Löschen</string>
+    <string name="notification_new_grade">Neue Note</string>
     <string name="notification_new_grades">Neue Noten</string>
-    <string name="notification_new_grade_msg">Eine neue Noten wurde im Notenspiegel gefunden!</string>
-    <string name="notification_new_grades_msg">Neue Noten wurden im Notenspiegel gefunden!</string>
 
 </resources>

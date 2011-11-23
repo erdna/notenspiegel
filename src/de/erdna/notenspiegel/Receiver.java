@@ -14,18 +14,24 @@ import android.preference.PreferenceManager;
 
 public class Receiver extends BroadcastReceiver {
 
+	private static int mSyncCount = 0;
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
+
 		String action = intent.getAction();
 		if (ACTION_NEW_GRADE.equals(action)) {
 
 			Bundle extras = intent.getExtras();
 			if (extras != null) {
 				String text = extras.getString(EXTRA_GRADE_TEXT);
-				int count = extras.getInt(EXTRA_GRADE_COUNT);
-				updateNotification(context, count, text);
+				updateNotification(context, ++mSyncCount, text);
 
 			}
+		} else if (ACTION_SYNC_DONE.equals(action)) {
+			mSyncCount = 0;
+		} else if (ACTION_SYNC_ERROR.equals(action)) {
+			mSyncCount = 0;
 		}
 
 	}
@@ -35,13 +41,13 @@ public class Receiver extends BroadcastReceiver {
 		NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		// singular
-		String message = context.getString(R.string.notification_new_grade_msg);
+		String message = context.getString(R.string.notification_new_grade);
 
 		// plural
 		if (notificationCount != 1) {
 			text = context.getString(R.string.notification_new_grades);
 			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-			message = sharedPreferences.getString(PREF_FULL_NAME, "Mister Nobody");
+			message = sharedPreferences.getString(PREF_FULL_NAME, "");
 			message = message.concat("(" + notificationCount + ")");
 		}
 
