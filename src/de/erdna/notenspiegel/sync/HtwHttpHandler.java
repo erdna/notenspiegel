@@ -1,6 +1,6 @@
 package de.erdna.notenspiegel.sync;
 
-import static de.erdna.notenspiegel.Constants.DEBUG;
+import static de.erdna.notenspiegel.Constants.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,26 +82,22 @@ public class HtwHttpHandler extends HttpHandler {
 	}
 
 	@Override
-	public String getFullUserName(HttpClient httpClient) {
-		// TODO implement search for correct name
-		return "Mister Nobody";
-	}
+	public void moveToGradesGrid(HttpClient client) throws Exception {
 
-	@Override
-	public void moveToMarksGrid(HttpClient client) throws Exception {
 		HttpGet request = new HttpGet(Html.fromHtml(url).toString());
 		HttpResponse response = client.execute(request);
 
 		printResponseHeader(response);
 
 		urls = parseNoten(response.getEntity().getContent());
+
 	}
 
 	@Override
 	public void saveMarksToDb(HttpClient client, DbAdapter dbAdapter) throws Exception {
 
 		if (urls == null || urls.isEmpty()) {
-			if (DEBUG) Log.e(TAG, "saveMarksToDb() no urls were in moveToMarksGrid() found");
+			if (DEBUG) Log.e(TAG, "saveMarksToDb() no urls were in parseNoten() found");
 			throw new Exception("no urls were found");
 		}
 
@@ -131,7 +127,10 @@ public class HtwHttpHandler extends HttpHandler {
 		// 401 - Not Authorised
 		// The request needs user authentication
 
-		final String ERROR_TEXT = "Anmeldung fehlgeschlagen";
+		final String LOGIN_FAILD_TEXT = "Anmeldung fehlgeschlagen";
+
+		boolean foundTab = false;
+		boolean foundRow = false;
 
 		xpp.setInput(new StringReader(content));
 		int eventType = xpp.getEventType();
@@ -139,15 +138,36 @@ public class HtwHttpHandler extends HttpHandler {
 
 			// search for tab with explicit heading
 			if (eventType == XmlPullParser.TEXT) {
-				if (xpp.getText().contains(ERROR_TEXT)) {
+				if (xpp.getText().contains(LOGIN_FAILD_TEXT)) {
 					if (DEBUG) Log.v(TAG, xpp.getText());
 					return true;
 				}
 			}
 
-			eventType = xpp.next();
+			// search for full user name
+			if (eventType == XmlPullParser.START_TAG) {
+				if (xpp.getName().equals("table")) {
+					foundTab = true;
+				}
+				if (foundTab && xpp.getName().equals("td") && xpp.getAttributeCount() == 2
+						&& xpp.getAttributeValue(1).equals("menu2_on")) {
 
+					foundRow = true;
+				}
+			}
+
+			// get full name and save
+			if (eventType == XmlPullParser.TEXT) {
+				if (foundTab && foundRow) {
+					fullname = Html.fromHtml(xpp.getText()).toString();
+					if (DEBUG) Log.e(TAG, fullname);
+					break;
+				}
+			}
+
+			eventType = xpp.next();
 		}
+
 		return false;
 	}
 
@@ -357,5 +377,4 @@ public class HtwHttpHandler extends HttpHandler {
 			Log.v("content", content);
 		}
 	}
-
 }

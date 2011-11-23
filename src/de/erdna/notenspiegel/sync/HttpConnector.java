@@ -1,10 +1,13 @@
 package de.erdna.notenspiegel.sync;
 
-import static de.erdna.notenspiegel.Constants.DEBUG;
+import static de.erdna.notenspiegel.Constants.*;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import de.erdna.notenspiegel.db.DbAdapter;
@@ -19,38 +22,21 @@ public class HttpConnector {
 		client = new DefaultHttpClient();
 	}
 
-	@Deprecated
-	public void sync(HttpHandler handler, DbAdapter dbAdapter) {
-
-		try {
-
-			// login into ssl page
-			login(handler);
-
-			// move to page with marks
-			moveToGradesGrid(handler);
-
-			// save marks in db
-			saveGradesToDb(handler, dbAdapter);
-
-			// logout correctly and kill client
-			logout(handler);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			client.getConnectionManager().shutdown();
-		}
-
-	}
-
-	public void login(HttpHandler handler) throws Exception {
+	public void login(HttpHandler handler, Context context) throws Exception {
 		handler.login(client);
 		if (DEBUG) Log.i(TAG, "login() was successful");
+
+		String text = handler.fullname.replace("Herr", "").replace("Frau", "").replace(":", "").trim();
+
+		// save full user name to SharedPreferences
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString(PREF_FULL_NAME, text);
+		editor.commit();
 	}
 
 	public void moveToGradesGrid(HttpHandler handler) throws Exception {
-		handler.moveToMarksGrid(client);
+		handler.moveToGradesGrid(client);
 		if (DEBUG) Log.i(TAG, "moveToMarksGrid() was successful");
 	}
 

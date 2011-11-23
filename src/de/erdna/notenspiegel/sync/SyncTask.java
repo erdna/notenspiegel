@@ -55,7 +55,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 		else connector = new HttpConnector();
 
 		try {
-			connector.login(httpHandler);
+			connector.login(httpHandler, context);
 			if (DEBUG) publishProgress("login");
 			connector.moveToGradesGrid(httpHandler);
 			if (DEBUG) publishProgress("moved to grades grid");

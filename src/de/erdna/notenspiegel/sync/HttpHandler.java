@@ -11,12 +11,11 @@ public abstract class HttpHandler {
 	public String username;
 	public String password;
 	public String url;
+	public String fullname;
 
 	public abstract void login(HttpClient httpClient) throws Exception;
 
-	public abstract String getFullUserName(HttpClient httpClient);
-
-	public abstract void moveToMarksGrid(HttpClient httpClient) throws Exception;
+	public abstract void moveToGradesGrid(HttpClient httpClient) throws Exception;
 
 	public abstract void saveMarksToDb(HttpClient httpClient, DbAdapter dbAdapter) throws Exception;
 

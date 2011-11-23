@@ -53,6 +53,7 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 			// delete password
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			editor.putString(PREF_PASSWORD, "");
+			editor.putString(PREF_FULL_NAME, "");
 			editor.commit();
 
 		}
