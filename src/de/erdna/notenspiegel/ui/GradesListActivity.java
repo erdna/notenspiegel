@@ -31,12 +31,14 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 public class GradesListActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener {
 
 	private static final int DIALOG_ERROR = 2;
 
 	private DbAdapter dbAdapter;
+	private ListView listView;
 	private SimpleCursorAdapter listAdapter;
 	private SharedPreferences preferences;
 
@@ -99,7 +101,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		listAdapter = new SimpleCursorAdapter(this, R.layout.list_item_grades, cursor, from, to);
 
 		// create and assign adapter
-		ListView listView = (ListView) findViewById(R.id.list);
+		listView = (ListView) findViewById(R.id.list);
 		listView.setAdapter(listAdapter);
 		listView.setOnItemClickListener(this);
 
@@ -153,8 +155,11 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.grade_context_menu, menu);
 
-		// TODO show correct header
-		menu.setHeaderTitle("Context füllen");
+		// set title to context menu
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+		View item = info.targetView;
+		TextView textView = (TextView) item.findViewById(R.id.textViewGradeText);
+		menu.setHeaderTitle(textView.getText());
 
 	}
 
