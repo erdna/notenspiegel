@@ -1,5 +1,7 @@
 package de.erdna.notenspiegel.sync;
 
+import javax.net.ssl.SSLException;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import de.erdna.notenspiegel.GradesApp;
+import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.DbAdapter;
 
 import static de.erdna.notenspiegel.Constants.*;
@@ -61,6 +64,9 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 			if (DEBUG) publishProgress("moved to grades grid");
 			connector.saveGradesToDb(httpHandler, dbAdapter);
 			if (DEBUG) publishProgress("parsed grid");
+		} catch (SSLException e) {
+			e.printStackTrace();
+			return context.getString(R.string.ssl_error,"HTW Dresden");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getLocalizedMessage();

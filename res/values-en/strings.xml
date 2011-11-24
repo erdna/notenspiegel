@@ -36,5 +36,6 @@
     <string name="delete">Löschen</string>
     <string name="notification_new_grade">Neue Note</string>
     <string name="notification_new_grades">Neue Noten</string>
+    <string name="ssl_error">Activate \'Trust all certificates\' in Preferences to get Grades from %s.</string>
 
 </resources>
