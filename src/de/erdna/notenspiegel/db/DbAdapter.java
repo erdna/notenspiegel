@@ -1,9 +1,8 @@
 package de.erdna.notenspiegel.db;
 
 import static de.erdna.notenspiegel.Constants.*;
-import static de.erdna.notenspiegel.Grade.*;
+import static de.erdna.notenspiegel.db.Grade.*;
 
-import de.erdna.notenspiegel.Grade;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -110,4 +109,26 @@ public class DbAdapter extends SQLiteOpenHelper {
 		return getWritableDatabase().delete(TABLE_GRADES, null, null);
 	}
 
+	public Grade fetchGrade(long mId) {
+		Grade grade = new Grade();
+
+		String[] columns = new String[] { Grade.KEY_NR, Grade.KEY_TEXT, Grade.KEY_SEM, Grade.KEY_GRADE,
+				Grade.KEY_STATUS, Grade.KEY_CREDITS, Grade.KEY_NOTATION, Grade.KEY_DATE };
+
+		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, columns, "_id = ?",
+				new String[] { Long.toString(mId) }, null, null, null, "1");
+		cursor.moveToFirst();
+
+		if (cursor.getCount() > 0) {
+			grade.mNr = cursor.getString(0);
+			grade.mText = cursor.getString(1);
+			grade.mSem = cursor.getString(2);
+			grade.mGrade = cursor.getString(3);
+			grade.mStatus = cursor.getString(4);
+			grade.mCredits = cursor.getString(5);
+			grade.mNotation = cursor.getString(6);
+			grade.mDate = cursor.getString(7);
+		}
+		return grade;
+	}
 }

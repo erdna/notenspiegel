@@ -1,4 +1,4 @@
-package de.erdna.notenspiegel;
+package de.erdna.notenspiegel.db;
 
 public class Grade {
 

@@ -2,10 +2,10 @@ package de.erdna.notenspiegel.ui;
 
 import static de.erdna.notenspiegel.Constants.*;
 
-import de.erdna.notenspiegel.Grade;
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.DbAdapter;
+import de.erdna.notenspiegel.db.Grade;
 import de.erdna.notenspiegel.sync.SyncTask;
 import de.erdna.notenspiegel.ui.actionbar.ActionBarActivity;
 import android.app.AlertDialog;
@@ -175,6 +175,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		case R.id.menuItemContextInfo:
 			Intent intent = new Intent(this, GradeActivity.class);
 			intent.putExtra(GradeActivity.EXTRA_GRADE_ID, info.id);
+			// intent.putExtra(GradeActivity.EXTRA_GRADE_TEXT, info.text);
 			startActivity(intent);
 
 		default:

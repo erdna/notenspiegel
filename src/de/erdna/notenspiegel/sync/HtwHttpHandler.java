@@ -27,8 +27,8 @@ import android.text.Html;
 import android.util.Log;
 import android.util.Xml;
 
-import de.erdna.notenspiegel.Grade;
 import de.erdna.notenspiegel.db.DbAdapter;
+import de.erdna.notenspiegel.db.Grade;
 
 public class HtwHttpHandler extends HttpHandler {
 

@@ -16,7 +16,7 @@
         android:name=".GradesApp"
         android:theme="@style/AppTheme" >
         <activity
-            android:label=""
+            android:label="@string/app_name"
             android:launchMode="singleTop"
             android:name=".ui.GradesListActivity" >
             <intent-filter >
