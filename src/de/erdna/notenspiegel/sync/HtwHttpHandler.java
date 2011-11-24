@@ -73,7 +73,7 @@ public class HtwHttpHandler extends HttpHandler {
 
 		if (loginFailed(content)) {
 			Log.e(TAG, "login was NOT successful");
-			throw new Exception("login was NOT successful");
+			throw new Exception("login failed, username or password not correct");
 		}
 
 		url = parseMenu(content);
