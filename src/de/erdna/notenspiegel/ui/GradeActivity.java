@@ -43,6 +43,7 @@ public class GradeActivity extends ActionBarActivity {
 		setText(R.id.textViewDetailsCredits, grade.mCredits);
 		setText(R.id.textViewDetailsEcts, grade.mEcts);
 		setText(R.id.textViewDetailsNotation, grade.mNotation);
+		setText(R.id.textViewDetailsTry, grade.mTry);
 		setText(R.id.textViewDetailsDate, grade.mDate);
 
 	}

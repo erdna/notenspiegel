@@ -92,11 +92,22 @@
         android:textColor="@color/details_grey" />
 
     <TextView
-        android:id="@+id/textViewDetailsDateTxt"
+        android:id="@+id/textViewDetailsTryTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textViewDetailsNotationTxt"
+        android:paddingRight="4dp"
+        android:text="@string/details_try"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/details_grey" />
+
+    <TextView
+        android:id="@+id/textViewDetailsDateTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textViewDetailsTryTxt"
         android:paddingRight="4dp"
         android:text="@string/details_date"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -170,6 +181,16 @@
         android:layout_toRightOf="@+id/textViewDetailsNotationTxt"
         android:maxLines="1"
         android:text="mE"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textViewDetailsTry"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textViewDetailsTryTxt"
+        android:layout_toRightOf="@+id/textViewDetailsTryTxt"
+        android:maxLines="1"
+        android:text="1"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView

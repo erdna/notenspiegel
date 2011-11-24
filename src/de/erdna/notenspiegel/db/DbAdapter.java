@@ -113,7 +113,7 @@ public class DbAdapter extends SQLiteOpenHelper {
 		Grade grade = new Grade();
 
 		String[] columns = new String[] { Grade.KEY_NR, Grade.KEY_TEXT, Grade.KEY_SEM, Grade.KEY_GRADE,
-				Grade.KEY_STATUS, Grade.KEY_CREDITS, Grade.KEY_NOTATION, Grade.KEY_DATE };
+				Grade.KEY_STATUS, Grade.KEY_CREDITS, Grade.KEY_NOTATION, Grade.KEY_TRY, Grade.KEY_DATE };
 
 		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, columns, "_id = ?",
 				new String[] { Long.toString(mId) }, null, null, null, "1");
@@ -127,7 +127,8 @@ public class DbAdapter extends SQLiteOpenHelper {
 			grade.mStatus = cursor.getString(4);
 			grade.mCredits = cursor.getString(5);
 			grade.mNotation = cursor.getString(6);
-			grade.mDate = cursor.getString(7);
+			grade.mTry = cursor.getString(7);
+			grade.mDate = cursor.getString(8);
 		}
 		return grade;
 	}

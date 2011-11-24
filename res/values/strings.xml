@@ -31,6 +31,7 @@
     <string name="details_credits">Credits:</string>
     <string name="details_ects">ECTS:</string>
     <string name="details_notation">Vermerk:</string>
+    <string name="details_try">Versuch:</string>
     <string name="details_date">Prüfungstermin:</string>
     <string name="delete">Löschen</string>
     <string name="notification_new_grade">Neue Note</string>

@@ -22,5 +22,19 @@
     <string name="accept_untrusted_certificates_summaryOn">Trust also insecure certificates\ne.g. HTW Dresden</string>
     <string name="accept_untrusted_certificates_summaryOff">Trusts only secure certificates</string>
     <string name="legal_information">Legal information</string>
+    <string name="legal_information_summary">Author: André Nitzschke\nThis app is not an official application from the University of Applied Sciences Dresden.</string>
+    <string name="details_nr">Number of Exam:</string>
+    <string name="details_text">Name of Exam:</string>
+    <string name="details_sem">Semester:</string>
+    <string name="details_grade">Grade:</string>
+    <string name="details_status">Status:</string>
+    <string name="details_credits">Credits:</string>
+    <string name="details_ects">ECTS:</string>
+    <string name="details_notation">Notation:</string>
+    <string name="details_try">Try:</string>
+    <string name="details_date">Date of Exam:</string>
+    <string name="delete">Löschen</string>
+    <string name="notification_new_grade">Neue Note</string>
+    <string name="notification_new_grades">Neue Noten</string>
 
 </resources>
