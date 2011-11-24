@@ -78,8 +78,12 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_simple_list);
 
-		// activate progress indicator
-		getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
+		// if nothing is configured start PreferencePage
+		preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		if (preferences.getString("username", "").equals("")) {
+			Intent intent = new Intent(this, OptionsActivity.class);
+			startActivity(intent);
+		}
 
 		// Connect to DataSevice and DB
 		dbAdapter = ((GradesApp) getApplication()).getDbAdapter();
@@ -102,12 +106,15 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		// activates context menu on list
 		registerForContextMenu(listView);
 
-		// if nothing is configured start PreferencePage
-		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		if (preferences.getString("username", "").equals("")) {
-			Intent intent = new Intent(this, OptionsActivity.class);
-			startActivity(intent);
-		}
+	}
+
+	@Override
+	protected void onStart() {
+
+		// set title and activate progress indicator
+		setTitle(R.string.app_name);
+		getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
+		super.onStart();
 
 	}
 
