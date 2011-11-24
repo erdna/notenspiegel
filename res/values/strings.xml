@@ -37,5 +37,6 @@
     <string name="notification_new_grade">Neue Note</string>
     <string name="notification_new_grades">Neue Noten</string>
     <string name="ssl_error">Um die Noten der %s abrufen zu können, muss \'Allen Zertifikaten vertrauen\' aktiviert sein.</string>
+    <string name="server_error">Server nicht errreichbar %s</string>
 
 </resources>

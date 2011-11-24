@@ -1,5 +1,7 @@
 package de.erdna.notenspiegel.sync;
 
+import java.net.UnknownHostException;
+
 import javax.net.ssl.SSLException;
 
 import android.app.Application;
@@ -64,9 +66,12 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 			if (DEBUG) publishProgress("moved to grades grid");
 			connector.saveGradesToDb(httpHandler, dbAdapter);
 			if (DEBUG) publishProgress("parsed grid");
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			return context.getString(R.string.server_error, e.getLocalizedMessage());
 		} catch (SSLException e) {
 			e.printStackTrace();
-			return context.getString(R.string.ssl_error,"HTW Dresden");
+			return context.getString(R.string.ssl_error, "HTW Dresden");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return e.getLocalizedMessage();
