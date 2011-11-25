@@ -54,14 +54,11 @@ public class Receiver extends BroadcastReceiver {
 		Notification notification = new Notification(R.drawable.ic_stat_launcher, text, System.currentTimeMillis());
 		notification.flags = Notification.FLAG_AUTO_CANCEL;
 
+		// set LED lights
+		notification.defaults |= Notification.DEFAULT_LIGHTS;
+
 		// set virbration
 		notification.defaults |= Notification.DEFAULT_VIBRATE;
-
-		// set LED lights to red
-		notification.ledARGB = 0xff00ff00;
-		notification.ledOnMS = 300;
-		notification.ledOffMS = 1000;
-		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context,
 				GradesListActivity.class), 0);
