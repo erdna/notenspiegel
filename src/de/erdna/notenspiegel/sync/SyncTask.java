@@ -48,6 +48,8 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 			httpHandler = new HtwHttpHandler();
 		} else if ("tudd".equals(university)) {
 			// TODO instantiate connector TU Dresden
+		} else if ("unipa".equals(university)) {
+			// TODO instantiate connector Uni Passau
 		}
 
 		// give over username and password
@@ -56,10 +58,17 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 		// start syncing
 		HttpConnector connector;
-		if (preferences.getBoolean("acceptUntrustedCerts", false)) connector = new SslHttpConnector();
-		else connector = new HttpConnector();
+		// Instantiate connector
+		if (preferences.getBoolean("acceptUntrustedCerts", false)) {
+			// trust all certificates
+			connector = new SslHttpConnector();
+		} else {
+			// truts just certificates with root certs
+			connector = new HttpConnector();
+		}
 
 		try {
+			// doing the dirty stuff
 			connector.login(httpHandler, context);
 			if (DEBUG) publishProgress("login");
 			connector.moveToGradesGrid(httpHandler);
@@ -117,7 +126,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 		} else {
 
-			// send action broadcast to receivers
+			// send action broadcast to receivers that syncing is done
 			Intent intent = new Intent(ACTION_SYNC_DONE);
 			context.sendBroadcast(intent);
 
