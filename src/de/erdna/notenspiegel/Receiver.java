@@ -39,7 +39,7 @@ public class Receiver extends BroadcastReceiver {
 	private void updateNotification(Context context, int notificationCount, String text) {
 
 		NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
+		
 		// singular
 		String message = context.getString(R.string.notification_new_grade);
 
@@ -57,7 +57,7 @@ public class Receiver extends BroadcastReceiver {
 		// set LED lights
 		notification.defaults |= Notification.DEFAULT_LIGHTS;
 
-		// set virbration
+		// set vibration
 		notification.defaults |= Notification.DEFAULT_VIBRATE;
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context,

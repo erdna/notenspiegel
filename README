@@ -1,0 +1,11 @@
+Check on new Version:
+* Check versionCode and versionName in Manifest File
+* erase unused code
+* commit and create tag of versionName in Git
+* check that all version work on 1.6 till 4.0
+
+Version: 1.2 (versionCode="4"):
+* Virbration bei neuen Noten
+* LED leuchten bei neuen Noten
+
+Version 1.1 (versionCode="3"):
