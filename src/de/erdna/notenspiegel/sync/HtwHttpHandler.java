@@ -1,6 +1,7 @@
 package de.erdna.notenspiegel.sync;
 
 import static de.erdna.notenspiegel.Constants.*;
+import static de.erdna.notenspiegel.Utilities.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +10,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -358,24 +358,6 @@ public class HtwHttpHandler extends HttpHandler {
 
 			eventType = xpp.next();
 
-		}
-	}
-
-	private void printResponseHeader(HttpResponse response) {
-		if (DEBUG) {
-			System.out.println("----------------------------------------");
-			System.out.println(response.getStatusLine());
-			for (Header header : response.getAllHeaders()) {
-				System.out.println(header.toString());
-			}
-			System.out.println("----------------------------------------");
-		}
-	}
-
-	@SuppressWarnings("unused")
-	private void printContent(String content) {
-		if (DEBUG && content != null) {
-			Log.v("content", content);
 		}
 	}
 }

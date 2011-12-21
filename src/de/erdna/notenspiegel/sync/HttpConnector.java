@@ -37,12 +37,12 @@ public class HttpConnector {
 
 	public void moveToGradesGrid(HttpHandler handler) throws Exception {
 		handler.moveToGradesGrid(client);
-		if (DEBUG) Log.i(TAG, "moveToMarksGrid() was successful");
+		if (DEBUG) Log.i(TAG, "moveToGradesGrid() was successful");
 	}
 
 	public void saveGradesToDb(HttpHandler handler, DbAdapter dbAdapter) throws Exception {
 		handler.saveMarksToDb(client, dbAdapter);
-		if (DEBUG) Log.i(TAG, "saveMarksToDb() was succesful");
+		if (DEBUG) Log.i(TAG, "saveGradesToDb() was succesful");
 	}
 
 	public void logout(HttpHandler handler) {

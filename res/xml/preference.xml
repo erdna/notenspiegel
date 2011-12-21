@@ -14,7 +14,6 @@
 
     <ListPreference
         android:defaultValue="htwdd"
-        android:enabled="false"
         android:entries="@array/listConnectorsName"
         android:entryValues="@array/listConnectors"
         android:key="listUniversities"

@@ -47,7 +47,8 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 			// build HTW Dresden specific handler
 			httpHandler = new HtwHttpHandler();
 		} else if ("tudd".equals(university)) {
-			// TODO instantiate connector TU Dresden
+			// build TU Dresden specific handler
+			httpHandler = new TuddHttpHandler();
 		} else if ("unipa".equals(university)) {
 			// TODO instantiate connector Uni Passau
 		}
