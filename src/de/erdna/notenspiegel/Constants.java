@@ -15,6 +15,7 @@ public final class Constants {
 	public static final String PREF_PASSWORD = "password";
 	public static final String PREF_CERT = "acceptUntrustedCerts";
 	public static final String PREF_FULL_NAME = "fullName";
+	public static final String PREF_UNIVERSITIES = "listUniversities";
 
 	public static final int NOTIFICATION = 0;
 

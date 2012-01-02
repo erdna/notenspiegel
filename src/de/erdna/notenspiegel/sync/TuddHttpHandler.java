@@ -59,6 +59,7 @@ public class TuddHttpHandler extends HttpHandler {
 		printResponseHeader(response);
 		
 		String content = EntityUtils.toString(response.getEntity());
+		printContent(content);
 		
 
 	}
