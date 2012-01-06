@@ -54,8 +54,11 @@ public class DbAdapter extends SQLiteOpenHelper {
 	private boolean existsGrade(Grade grade) {
 		// this is my interpretation of an unique grade identifier
 		// be open to help me find a better solution!
-		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null,
-				KEY_NR + " = '" + grade.mNr + "' AND " + KEY_TRY + " = '" + grade.mTry + "'", null, null, null, null);
+		Cursor cursor = getReadableDatabase().query(
+				TABLE_GRADES,
+				null,
+				KEY_NR + " = '" + grade.mNr + "' AND " + KEY_TRY + " = '" + grade.mTry + "' AND " + KEY_DATE + " = '"
+						+ grade.mDate + "'", null, null, null, null);
 		int count = cursor.getCount();
 		cursor.close();
 		return count > 0;
