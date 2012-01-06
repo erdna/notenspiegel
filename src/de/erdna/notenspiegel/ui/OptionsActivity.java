@@ -27,6 +27,8 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 		// get shared preferences
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+		setSummaryOfListPreference(PREF_UNIVERSITIES);
+
 	}
 
 	@Override
@@ -48,30 +50,36 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 	}
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+		if (PREF_USERNAME.equals(key) || PREF_UNIVERSITIES.equals(key)) {
+
+			// if username or university changed delete list of grades
+			((GradesApp) getApplication()).getDbAdapter().deleteAll();
+		}
+
 		if (PREF_USERNAME.equals(key)) {
 			if (DEBUG) Toast.makeText(this, "key username changed", Toast.LENGTH_SHORT).show();
 
-			// if username changed delete list
-			((GradesApp) getApplication()).getDbAdapter().deleteAll();
-
-			// delete password
+			// delete full name and password
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			editor.putString(PREF_FULL_NAME, "");
 			editor.commit();
-
 		}
 
 		if (PREF_UNIVERSITIES.equals(key)) {
 			if (DEBUG) Toast.makeText(this, "key listUniversities changed", Toast.LENGTH_SHORT).show();
 
-			// change summary in listUniversities
-			Preference pref = findPreference(key);
-			if (pref instanceof ListPreference) {
-				ListPreference listPref = (ListPreference) pref;
-				pref.setSummary(listPref.getEntry());
-			}
-
+			setSummaryOfListPreference(key);
 		}
 
+	}
+
+	private void setSummaryOfListPreference(String key) {
+		// set summary to value in list selected before
+		Preference pref = findPreference(key);
+		if (pref instanceof ListPreference) {
+			ListPreference listPref = (ListPreference) pref;
+			pref.setSummary(listPref.getEntry());
+		}
 	}
 }
