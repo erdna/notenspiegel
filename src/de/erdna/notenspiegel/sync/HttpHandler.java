@@ -17,6 +17,6 @@ public abstract class HttpHandler {
 
 	public abstract void moveToGradesGrid(HttpClient httpClient) throws Exception;
 
-	public abstract void saveMarksToDb(HttpClient httpClient, DbAdapter dbAdapter) throws Exception;
+	public abstract void saveGradesToDb(HttpClient httpClient, DbAdapter dbAdapter) throws Exception;
 
 }

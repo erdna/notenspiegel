@@ -11,7 +11,7 @@
 
     <string-array name="listConnectorsName">
         <item>HTW Dresden</item>
-        <item>TU Dresden</item>
+        <item>TU Dresden (beta)</item>
     </string-array>
 
     <string name="university_summary">HTW Dresden</string>

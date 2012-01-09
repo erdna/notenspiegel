@@ -68,9 +68,10 @@ public class DbAdapter extends SQLiteOpenHelper {
 		long ret = -1;
 
 		if (existsGrade(grade)) {
-			if (DEBUG) Log.i(TAG, "existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
+			if (DEBUG) Log.i(TAG, "grade exists already (nr,try,date) " + grade.mNr + "," + grade.mTry + ","
+					+ grade.mDate);
 		} else {
-			if (DEBUG) Log.e(TAG, "NOT existsGrade() nr: " + grade.mNr + " try: " + grade.mTry);
+			if (DEBUG) Log.i(TAG, "create grade (nr,try,date) " + grade.mNr + "," + grade.mTry + "," + grade.mDate);
 
 			ret = createGrade(grade);
 

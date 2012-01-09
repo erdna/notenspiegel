@@ -41,7 +41,7 @@ public class HttpConnector {
 	}
 
 	public void saveGradesToDb(HttpHandler handler, DbAdapter dbAdapter) throws Exception {
-		handler.saveMarksToDb(client, dbAdapter);
+		handler.saveGradesToDb(client, dbAdapter);
 		if (DEBUG) Log.i(TAG, "saveGradesToDb() was succesful");
 	}
 

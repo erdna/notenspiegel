@@ -65,8 +65,7 @@ public class HtwHttpHandler extends HttpHandler {
 		nameValuePairs.add(new BasicNameValuePair("username", username));
 		request.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 
-		HttpResponse response;
-		response = client.execute(request);
+		HttpResponse response = client.execute(request);
 		printResponseHeader(response);
 
 		String content = EntityUtils.toString(response.getEntity());
@@ -89,15 +88,15 @@ public class HtwHttpHandler extends HttpHandler {
 
 		printResponseHeader(response);
 
-		urls = parseNoten(response.getEntity().getContent());
+		urls = parseGradesTabUrls(response.getEntity().getContent());
 
 	}
 
 	@Override
-	public void saveMarksToDb(HttpClient client, DbAdapter dbAdapter) throws Exception {
+	public void saveGradesToDb(HttpClient client, DbAdapter dbAdapter) throws Exception {
 
 		if (urls == null || urls.isEmpty()) {
-			if (DEBUG) Log.e(TAG, "saveMarksToDb() no urls were in parseNoten() found");
+			if (DEBUG) Log.e(TAG, "saveGradesToDb() no urls were in parseNoten() found");
 			throw new Exception("no urls were found");
 		}
 
@@ -112,7 +111,7 @@ public class HtwHttpHandler extends HttpHandler {
 
 				printResponseHeader(response);
 
-				parseNotenTab(response.getEntity().getContent(), dbAdapter);
+				parseGradeTab(response.getEntity().getContent(), dbAdapter);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -123,7 +122,7 @@ public class HtwHttpHandler extends HttpHandler {
 
 	private boolean loginFailed(String content) throws Exception {
 		// surely the status must be 401
-		// but Bochmann is stupid
+		// but Bochmann is s****d
 		// 401 - Not Authorised
 		// The request needs user authentication
 
@@ -200,7 +199,7 @@ public class HtwHttpHandler extends HttpHandler {
 		return "";
 	}
 
-	private List<String> parseNoten(InputStream htmlPage) throws XmlPullParserException, IOException {
+	private List<String> parseGradesTabUrls(InputStream htmlPage) throws XmlPullParserException, IOException {
 
 		final int ASSUMED_HREF_INDEX = 1;
 		List<String> links = new ArrayList<String>();
@@ -234,7 +233,7 @@ public class HtwHttpHandler extends HttpHandler {
 		return links;
 	}
 
-	private void parseNotenTab(InputStream htmlPage, DbAdapter dbAdapter) throws XmlPullParserException, IOException {
+	private void parseGradeTab(InputStream htmlPage, DbAdapter dbAdapter) throws XmlPullParserException, IOException {
 
 		final String TAB_HEADING = "N o t e n s p i e g e l";
 
