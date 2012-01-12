@@ -1,9 +1,10 @@
 Eine kleine App die alle Noten aus dem HISQIS Portal in einer Liste anzeigt. Dazu ist die Matrikelnummer und das Passwort einzutragen. Der zeit funktioniert es nur für Studenten der Hochschule für Technik und Wirtschaft Dresden.
 
 Version: 1.2 (versionCode="4"):
-* Virbration bei neuen Noten
+* Virbration bei neuen Noten, nicht aber beim ersten abrufen
 * LED leuchten bei neuen Noten
 * Unterstützung für Studenten der TU Dresden (beta)
+* Suchfunktion über Noten hinzugefügt
 
 Version 1.1 (versionCode="3")[im Market]:
 * neues Design

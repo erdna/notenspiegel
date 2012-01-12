@@ -98,7 +98,7 @@ public class DbAdapter extends SQLiteOpenHelper {
 		return getWritableDatabase().insert(TABLE_GRADES, null, values);
 	}
 
-	public Cursor fetchAllMarks() {
+	public Cursor fetchAllGrades() {
 		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null, null, null, null, null,
 				KEY_NR + " DESC, " + KEY_TRY + " ASC");
 		if (cursor != null) cursor.moveToFirst();
@@ -138,9 +138,20 @@ public class DbAdapter extends SQLiteOpenHelper {
 	}
 
 	public boolean isTableGradesNotEmpty() {
-		Cursor cursor = getReadableDatabase().query(TABLE_GRADES,null,null, null, null, null, null);
+		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null, null, null, null, null, null);
 		int count = cursor.getCount();
 		cursor.close();
 		return count > 0;
+	}
+
+	public Cursor searchGrades(String query) {
+
+		// search text contains
+		String s = '%' + query.trim() + '%';
+		Cursor cursor = getReadableDatabase().query(TABLE_GRADES, null,
+				KEY_TEXT + " LIKE ? OR " + KEY_NOTATION + " LIKE ?", new String[] { s, s }, null, null,
+				KEY_NR + " DESC, " + KEY_TRY + " ASC");
+		if (cursor != null) cursor.moveToFirst();
+		return cursor;
 	}
 }

@@ -10,6 +10,7 @@ import de.erdna.notenspiegel.sync.SyncTask;
 import de.erdna.notenspiegel.ui.actionbar.ActionBarActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,6 +33,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class GradesListActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener {
 
@@ -90,9 +92,33 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		// Connect to DataSevice and DB
 		dbAdapter = ((GradesApp) getApplication()).getDbAdapter();
 
-		// Get Cursor
-		Cursor cursor = dbAdapter.fetchAllMarks();
-		startManagingCursor(cursor);
+		// Get the intent, verify the action and get the query
+		Cursor cursor = null;
+		Intent intent = getIntent();
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+
+			if (DEBUG) Toast.makeText(this, "ACTION_SEARCH", Toast.LENGTH_LONG).show();
+
+			// search text
+			String query = intent.getStringExtra(SearchManager.QUERY);
+
+			// set title to search text
+			setTitle(getString(R.string.search_result) + ": '" + query.trim() + "'");
+
+			// react on search intent
+			cursor = dbAdapter.searchGrades(query);
+			startManagingCursor(cursor);
+
+		} else {
+
+			// set title
+			setTitle(R.string.app_name);
+
+			// normal behavior
+			cursor = dbAdapter.fetchAllGrades();
+			startManagingCursor(cursor);
+
+		}
 
 		// Simple Cursor Adapter
 		String[] from = { Grade.KEY_TRY, Grade.KEY_TEXT, Grade.KEY_GRADE, Grade.KEY_STATUS, Grade.KEY_NOTATION };
@@ -113,8 +139,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	@Override
 	protected void onStart() {
 
-		// set title and activate progress indicator
-		setTitle(R.string.app_name);
+		// activate progress indicator
 		getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
 		super.onStart();
 
@@ -169,7 +194,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		switch (item.getItemId()) {
 		case R.id.menuItemContextDelete:
 			dbAdapter.deleteGrade(info.id);
-			listAdapter.changeCursor(dbAdapter.fetchAllMarks());
+			listAdapter.changeCursor(dbAdapter.fetchAllGrades());
 			break;
 
 		case R.id.menuItemContextInfo:
@@ -186,8 +211,11 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.grade_menu, menu);
+		Intent intent = getIntent();
+		if (!Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.grade_menu, menu);
+		}
 		return super.onCreateOptionsMenu(menu);
 	}
 

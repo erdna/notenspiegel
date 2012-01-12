@@ -4,6 +4,8 @@
     <string name="app_name">Notenspiegel</string>
     <string name="title_options">Preferences</string>
     <string name="title_grade">Grade</string>
+    <string name="search_hint">"Search Grades"</string>
+    <string name="search_result">"Search result"</string>
     <string name="refresh">Refresh</string>
     <string name="username">Matriculation number</string>
     <string name="password">Password</string>
@@ -37,5 +39,6 @@
     <string name="notification_new_grade">Neue Note</string>
     <string name="notification_new_grades">Neue Noten</string>
     <string name="ssl_error">Activate \'Trust all certificates\' in Preferences to get Grades from %s.</string>
-	<string name="server_error">Server not reachable %s</string>
+    <string name="server_error">Server not reachable %s</string>
+
 </resources>
