@@ -39,14 +39,14 @@ public class Receiver extends BroadcastReceiver {
 	private void updateNotification(Context context, int notificationCount, String text) {
 
 		NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
 		// singular
 		String message = context.getString(R.string.notification_new_grade);
 
 		// plural
 		if (notificationCount != 1) {
 			text = context.getString(R.string.notification_new_grades);
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 			message = sharedPreferences.getString(PREF_FULL_NAME, "");
 			message = message.concat("(" + notificationCount + ")");
 		}
@@ -58,7 +58,7 @@ public class Receiver extends BroadcastReceiver {
 		notification.defaults |= Notification.DEFAULT_LIGHTS;
 
 		// set vibration
-		notification.defaults |= Notification.DEFAULT_VIBRATE;
+		if (sharedPreferences.getBoolean(PREF_VIBRATE, false)) notification.defaults |= Notification.DEFAULT_VIBRATE;
 
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context,
 				GradesListActivity.class), 0);

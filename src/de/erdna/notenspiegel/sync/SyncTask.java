@@ -8,6 +8,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
@@ -38,6 +39,11 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 		// get username and password from SharedPreferences
 		preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+		// if grades table is empty deactivate vibrate
+		Editor editor = preferences.edit();
+		editor.putBoolean(PREF_VIBRATE, dbAdapter.isTableGradesNotEmpty());
+		editor.commit();
 
 		// get connector, htwdd or tudd
 		String university = preferences.getString("listUniversities", "htwdd");

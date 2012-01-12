@@ -136,4 +136,11 @@ public class DbAdapter extends SQLiteOpenHelper {
 		}
 		return grade;
 	}
+
+	public boolean isTableGradesNotEmpty() {
+		Cursor cursor = getReadableDatabase().query(TABLE_GRADES,null,null, null, null, null, null);
+		int count = cursor.getCount();
+		cursor.close();
+		return count > 0;
+	}
 }
