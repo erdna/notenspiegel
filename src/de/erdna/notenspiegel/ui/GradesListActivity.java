@@ -37,12 +37,13 @@ import android.widget.Toast;
 
 public class GradesListActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener {
 
-	private static final int DIALOG_ERROR = 2;
+	private static final int DIALOG_ERROR = 1;
 
 	private DbAdapter dbAdapter;
 	private ListView listView;
 	private SimpleCursorAdapter listAdapter;
 	private SharedPreferences preferences;
+	private boolean isSearchResult = false;
 
 	private String errorMsg;
 
@@ -95,7 +96,8 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		// Get the intent, verify the action and get the query
 		Cursor cursor = null;
 		Intent intent = getIntent();
-		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+		isSearchResult = Intent.ACTION_SEARCH.equals(intent.getAction());
+		if (isSearchResult) {
 
 			if (DEBUG) Toast.makeText(this, "ACTION_SEARCH", Toast.LENGTH_LONG).show();
 
@@ -211,8 +213,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		Intent intent = getIntent();
-		if (!Intent.ACTION_SEARCH.equals(intent.getAction())) {
+		if (!isSearchResult) {
 			MenuInflater inflater = getMenuInflater();
 			inflater.inflate(R.menu.grade_menu, menu);
 		}
@@ -229,6 +230,9 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		case R.id.menu_refresh:
 			getActionBarHelper().setRefreshActionItemState(true);
 			new SyncTask(this, getApplication()).execute();
+			break;
+		case R.id.menu_search:
+			onSearchRequested();
 			break;
 
 		default:
