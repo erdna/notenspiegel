@@ -1,13 +1,16 @@
 Eine kleine App die alle Noten aus dem HISQIS Portal in einer Liste anzeigt. Dazu ist die Matrikelnummer und das Passwort einzutragen. Der zeit funktioniert es nur für Studenten der Hochschule für Technik und Wirtschaft Dresden.
 
-Version: 1.2 (versionCode="4"):
-* Virbration bei neuen Noten, nicht aber beim ersten abrufen
+Version 1.3 (versionCode="5"):
+* nach Semester Gruppieren
+
+Version: 1.2 (versionCode="4")[im Market]:
+* Virbration bei neuen Noten, nicht aber beim ersten Abrufen
 * LED leuchten bei neuen Noten
 * Suchfunktion über Noten hinzugefügt
 * Version wird in den Optionen angezeigt
-* Unterstützung für Studenten der TU Dresden (beta), getestet auf Android 2.2, 2.3.3 und 2.3.6
+* Unterstützung für Studenten der TU Dresden (beta)
 
-Version 1.1 (versionCode="3")[im Market]:
+Version 1.1 (versionCode="3"):
 * neues Design
 * Detailinformationen zu Noten hinzugefügt
 * kleinere Bugfixes
@@ -23,3 +26,9 @@ Check on new Version:
 * erase unused code
 * commit and create tag of versionName in Git
 * check that all version are working on Android 1.6 till 4.0
+* export notenspiegel.apk to new folder named like verisonName
+* upload new version to Android Market
+* activate new apk file
+* IPORTANT: change 'Recent Changes'!
+* change [im Market] in this README file to new version
+* increase versionName and versionCode 
