@@ -3,9 +3,9 @@ Eine kleine App die alle Noten aus dem HISQIS Portal in einer Liste anzeigt. Daz
 Version: 1.2 (versionCode="4"):
 * Virbration bei neuen Noten, nicht aber beim ersten abrufen
 * LED leuchten bei neuen Noten
-* Unterstützung für Studenten der TU Dresden (beta)
 * Suchfunktion über Noten hinzugefügt
 * Version wird in den Optionen angezeigt
+* Unterstützung für Studenten der TU Dresden (beta), getestet auf Android 2.2, 2.3.3 und 2.3.6
 
 Version 1.1 (versionCode="3")[im Market]:
 * neues Design
