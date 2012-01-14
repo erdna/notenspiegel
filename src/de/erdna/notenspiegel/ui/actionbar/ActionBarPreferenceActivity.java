@@ -17,6 +17,8 @@ import android.view.MenuInflater;
  * android.support.v4.app.FragmentActivity instead of {@link Activity}.
  */
 public abstract class ActionBarPreferenceActivity extends PreferenceActivity {
+	protected final String TAG = this.getClass().getSimpleName();
+
 	final ActionBarHelper mActionBarHelper = ActionBarHelper.createInstance(this);
 
 	/**

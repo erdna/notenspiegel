@@ -11,9 +11,13 @@
     <string name="password">Password</string>
     <string name="university">University</string>
 
-    <string-array name="listConnectorsName">
+    <string-array name="listConnectorNames">
         <item>HTW Dresden</item>
         <item>TU Dresden (beta)</item>
+    </string-array>
+    <string-array name="listConnectorValues">
+        <item>htwdd</item>
+        <item>tudd</item>
     </string-array>
 
     <string name="university_summary">HTW Dresden</string>
@@ -24,7 +28,7 @@
     <string name="accept_untrusted_certificates_summaryOn">Trust also insecure certificates\ne.g. HTW Dresden</string>
     <string name="accept_untrusted_certificates_summaryOff">Trusts only secure certificates</string>
     <string name="legal_information">Legal information</string>
-    <string name="legal_information_summary">Author: André Nitzschke\nThis app is not an official application from the University of Applied Sciences Dresden.</string>
+    <string name="legal_information_summary">Author: André Nitzschke, Version: %s\nThis is not an official application from the University of Applied Sciences Dresden.</string>
     <string name="details_nr">Number of Exam:</string>
     <string name="details_text">Name of Exam:</string>
     <string name="details_sem">Semester:</string>

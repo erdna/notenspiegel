@@ -5,7 +5,6 @@
         android:key="username"
         android:summary="@string/username_summary"
         android:title="@string/username" />
-
     <EditTextPreference
         android:key="password"
         android:password="true"
@@ -13,10 +12,10 @@
         android:title="@string/password" />
 
     <ListPreference
-        android:key="listUniversities"
         android:defaultValue="htwdd"
-        android:entries="@array/listConnectorsName"
-        android:entryValues="@array/listConnectors"
+        android:entries="@array/listConnectorNames"
+        android:entryValues="@array/listConnectorValues"
+        android:key="listUniversities"
         android:summary="@string/university_summary"
         android:title="@string/university" />
 

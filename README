@@ -5,6 +5,7 @@ Version: 1.2 (versionCode="4"):
 * LED leuchten bei neuen Noten
 * Unterstützung für Studenten der TU Dresden (beta)
 * Suchfunktion über Noten hinzugefügt
+* Version wird in den Optionen angezeigt
 
 Version 1.1 (versionCode="3")[im Market]:
 * neues Design
@@ -16,6 +17,7 @@ Version 1.1 (versionCode="3")[im Market]:
 * Android 4.0 Unterstützung
 
 Check on new Version:
+* check with Lint
 * set DEBUG flag in Constants to false
 * Check versionCode and versionName in Manifest File
 * erase unused code

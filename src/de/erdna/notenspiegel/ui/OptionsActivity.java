@@ -6,10 +6,13 @@ import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.ui.actionbar.ActionBarPreferenceActivity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 public class OptionsActivity extends ActionBarPreferenceActivity implements OnSharedPreferenceChangeListener {
@@ -28,6 +31,16 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 		setSummaryOfListPreference(PREF_UNIVERSITIES);
+
+		// set version name to legal information
+		try {
+			PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+			String legal = getString(R.string.legal_information_summary, packageInfo.versionName);
+			findPreference(PREF_LEGAL).setSummary(legal);
+		} catch (NameNotFoundException e) {
+			Log.e(TAG, "Could not get versionName, package name not found!");
+			if (DEBUG) e.printStackTrace();
+		}
 
 	}
 
