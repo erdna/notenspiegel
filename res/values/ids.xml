@@ -22,6 +22,7 @@
     <item name="actionbar_compat_item_refresh" type="id"/>
     <item name="menu_refresh" type="id"/>
     <item name="menu_preferences" type="id"/>
+    <item name="button_refresh" type="id"/>
     <item name="list" type="id"/>
 
 </resources>

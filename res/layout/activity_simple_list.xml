@@ -8,4 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <Button
+        android:id="@id/button_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="syncGradeList"
+        android:text="@string/refresh"
+        android:visibility="invisible" />
+
 </FrameLayout>

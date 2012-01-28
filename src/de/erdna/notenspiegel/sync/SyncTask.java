@@ -42,7 +42,7 @@ public class SyncTask extends AsyncTask<Object, Object, Object> {
 
 		// if grades table is empty deactivate vibrate
 		Editor editor = preferences.edit();
-		editor.putBoolean(PREF_VIBRATE, dbAdapter.isTableGradesNotEmpty());
+		editor.putBoolean(PREF_VIBRATE, !dbAdapter.isTableGradesEmpty());
 		editor.commit();
 
 		// get connector, htwdd or tudd

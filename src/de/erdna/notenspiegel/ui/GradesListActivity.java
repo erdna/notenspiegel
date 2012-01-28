@@ -30,6 +30,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -63,14 +64,20 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 					showDialog(DIALOG_ERROR);
 				}
 
+				// refresh list
+				refreshGradeList();
+
 			} else if (ACTION_NEW_GRADE.equals(action)) {
 
-				// if action is refresh
+				// refresh list
 				refreshGradeList();
 
 			} else if (ACTION_SYNC_DONE.equals(action)) {
 
 				getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
+
+				// refresh list
+				refreshGradeList();
 
 			}
 
@@ -202,7 +209,6 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		case R.id.menuItemContextInfo:
 			Intent intent = new Intent(this, GradeActivity.class);
 			intent.putExtra(GradeActivity.EXTRA_GRADE_ID, info.id);
-			// intent.putExtra(GradeActivity.EXTRA_GRADE_TEXT, info.text);
 			startActivity(intent);
 
 		default:
@@ -228,8 +234,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			startActivity(intent);
 			break;
 		case R.id.menu_refresh:
-			getActionBarHelper().setRefreshActionItemState(true);
-			new SyncTask(this, getApplication()).execute();
+			syncGradeList(null);
 			break;
 		case R.id.menu_search:
 			onSearchRequested();
@@ -284,14 +289,37 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 	}
 
-	public void onClick(DialogInterface dialog, int which) {
-		// TODO Auto-generated method stub
+	public void syncGradeList(View view) {
+		if (view != null) view.setVisibility(View.INVISIBLE);
+		syncGradeList();
+	}
+
+	private void syncGradeList() {
+		getActionBarHelper().setRefreshActionItemState(true);
+		new SyncTask(this, getApplication()).execute();
+	}
+
+	public void refreshGradeList() {
+		listAdapter.getCursor().requery();
+
+		// show refresh button in center when db is empty
+		final Button button = (Button) findViewById(R.id.button_refresh);
+		if (dbAdapter.isTableGradesEmpty()) {
+
+			button.setVisibility(View.VISIBLE);
+
+		} else {
+
+			button.setVisibility(View.INVISIBLE);
+
+		}
 
 	}
 
-	private void refreshGradeList() {
-		listAdapter.getCursor().requery();
-		// mListAdapter.notifyDataSetChanged();
+	public void onClick(DialogInterface dialog, int which) {
+		// onClick from OnClickListner
+		// at example to react on ok button clicked
+		
 	}
 
 }
