@@ -6,6 +6,9 @@
         android:icon="@drawable/ic_menu_preferences"
         android:title="@string/title_options"/>
     <item
+        android:id="@id/menu_average"
+        android:title="@string/title_average"/>
+    <item
         android:id="@+id/menu_search"
         android:icon="@drawable/ic_action_search"
         android:orderInCategory="0"

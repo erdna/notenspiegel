@@ -39,6 +39,7 @@ import android.widget.Toast;
 public class GradesListActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener {
 
 	private static final int DIALOG_ERROR = 1;
+	private static final int DIALOG_AVERAGE = 2;
 
 	private DbAdapter dbAdapter;
 	private ListView listView;
@@ -233,6 +234,9 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			Intent intent = new Intent(this, OptionsActivity.class);
 			startActivity(intent);
 			break;
+		case R.id.menu_average:
+			showDialog(DIALOG_AVERAGE);
+			break;
 		case R.id.menu_refresh:
 			syncGradeList(null);
 			break;
@@ -249,14 +253,30 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		Dialog dialog;
+		AlertDialog.Builder builder;
 		switch (id) {
 
 		case DIALOG_ERROR:
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder = new AlertDialog.Builder(this);
 			builder.setTitle(android.R.string.dialog_alert_title);
 			builder.setMessage("Wenn man diesen Text sieht, ist was schief gegangen!");
 			builder.setCancelable(true);
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
+			builder.setNeutralButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			dialog = builder.create();
+			break;
+
+		case DIALOG_AVERAGE:
+			builder = new AlertDialog.Builder(this);
+			builder.setTitle(R.string.title_average);
+			builder.setMessage("Wenn man diesen Text sieht, ist was schief gegangen!");
+			builder.setCancelable(true);
+			// builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setNeutralButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which) {
@@ -271,6 +291,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			break;
 		}
 		return dialog;
+
 	}
 
 	@Override
@@ -279,6 +300,11 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 		case DIALOG_ERROR:
 			((AlertDialog) dialog).setMessage(errorMsg);
+			break;
+
+		case DIALOG_AVERAGE:
+//			((AlertDialog) dialog).setMessage("Calc garde average!");
+			((AlertDialog) dialog).setMessage(dbAdapter.getGardeAverage());
 			break;
 
 		default:
@@ -319,7 +345,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	public void onClick(DialogInterface dialog, int which) {
 		// onClick from OnClickListner
 		// at example to react on ok button clicked
-		
+
 	}
 
 }

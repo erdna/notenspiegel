@@ -4,6 +4,7 @@
     <string name="app_name">Notenspiegel</string>
     <string name="title_options">Einstellungen</string>
     <string name="title_grade">Note</string>
+    <string name="title_average">Notendurchschnitt</string>
     <string name="search_hint">Noten durchsuchen</string>
     <string name="search_result">Suchergebnis</string>
     <string name="refresh">Aktualisieren</string>

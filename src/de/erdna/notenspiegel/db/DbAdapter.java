@@ -154,4 +154,22 @@ public class DbAdapter extends SQLiteOpenHelper {
 		if (cursor != null) cursor.moveToFirst();
 		return cursor;
 	}
+
+	public String getGardeAverage() {
+		final String SQL_AVERAGE = "SELECT " + KEY_CREDITS + " ," + KEY_GRADE + " FROM " + TABLE_GRADES;
+		Cursor cursor = getReadableDatabase().rawQuery(SQL_AVERAGE, null);
+
+		// calc average
+		int credits = 0;
+		float tmp = 0;
+		while (cursor.moveToNext()) {
+			int credit = cursor.getInt(0);
+			credits += credit;
+			String string = cursor.getString(1).replaceAll("[^0-9,]", "").replace(",", ".");
+			float grade = Float.parseFloat(string);
+			tmp += (grade * credit);
+		}
+		String average = String.format("%.2f",(tmp / credits));
+		return "count:\t\t" + cursor.getCount() + "\ncredits:\t" + credits + "\naverage:\t" + average;
+	}
 }
