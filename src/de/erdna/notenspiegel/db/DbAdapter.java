@@ -158,23 +158,47 @@ public class DbAdapter extends SQLiteOpenHelper {
 	/**
 	 * calc average (alpha)
 	 * 
-	 * Just for HTW students with new regulations affected to the Bologna Process.
+	 * Just for HTW students with new regulations affected to the Bologna
+	 * Process.
+	 * 
 	 * @return Number as String
 	 */
 	public String getGardeAverage() {
 		final String SQL_AVERAGE = "SELECT " + KEY_CREDITS + " ," + KEY_GRADE + " FROM " + TABLE_GRADES;
 		Cursor cursor = getReadableDatabase().rawQuery(SQL_AVERAGE, null);
 
-		int credits = 0;
-		float tmp = 0;
+		int sumCredits = 0;
+		float weightedGarde = 0;
+		int countCredits = 0;
 		while (cursor.moveToNext()) {
-			int credit = cursor.getInt(0);
-			credits += credit;
-			String string = cursor.getString(1).replaceAll("[^0-9,]", "").replace(",", ".");
-			float grade = Float.parseFloat(string);
-			tmp += (grade * credit);
+
+			// credits
+			int credits = 0;
+			try {
+				credits = cursor.getInt(0);
+			} catch (Exception e) {
+				if (DEBUG) Log.e(TAG, e.getLocalizedMessage());
+			}
+			
+			// for weighted average
+			sumCredits += credits;
+			if (credits > 0) countCredits++;
+
+			// grades
+			float grade = 0;
+			try {
+				String string = cursor.getString(1).replaceAll("[^0-9,]", "").replace(",", ".");
+				grade = Float.parseFloat(string);
+			} catch (Exception e) {
+				if (DEBUG) Log.e(TAG, e.getLocalizedMessage());
+			}
+
+			// weighted garde
+			weightedGarde += (grade * credits);
 		}
-		String average = String.format("%.2f", (tmp / credits));
-		return "count:\t\t" + cursor.getCount() + "\ncredits:\t" + credits + "\naverage:\t" + average;
+		cursor.close();
+		String average = String.format("%.2f", (weightedGarde / sumCredits));
+		return "count(all grades):\t" + cursor.getCount() + "\ncount(credits > 0):\t" + countCredits
+				+ "\ncredits reached:\t\t" + sumCredits + "\nweighted average:\t" + average;
 	}
 }
