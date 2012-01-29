@@ -303,7 +303,6 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			break;
 
 		case DIALOG_AVERAGE:
-//			((AlertDialog) dialog).setMessage("Calc garde average!");
 			((AlertDialog) dialog).setMessage(dbAdapter.getGardeAverage());
 			break;
 
@@ -345,7 +344,6 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	public void onClick(DialogInterface dialog, int which) {
 		// onClick from OnClickListner
 		// at example to react on ok button clicked
-
 	}
 
 }

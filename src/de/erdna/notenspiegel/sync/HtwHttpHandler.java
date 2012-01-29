@@ -1,7 +1,7 @@
 package de.erdna.notenspiegel.sync;
 
 import static de.erdna.notenspiegel.Constants.*;
-import static de.erdna.notenspiegel.Utilities.*;
+import static de.erdna.notenspiegel.utils.Utilities.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -289,11 +289,8 @@ public class HtwHttpHandler extends HttpHandler {
 					// parse "Note"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
-					String temp = Html.fromHtml(xpp.nextText()).toString();
-					if (temp != null && temp.length() != 0) {
-						grade.mGrade = temp.replace("ERR: unresolved:", "").toString().trim();
-						if (DEBUG) Log.i(TAG, grade.mGrade);
-					}
+					cleanGrade(xpp.nextText(), grade.mGrade);
+					if (DEBUG) Log.i(TAG, grade.mGrade);
 					eventType = xpp.next();
 
 					// parse "Status"

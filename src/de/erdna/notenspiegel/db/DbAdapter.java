@@ -155,11 +155,16 @@ public class DbAdapter extends SQLiteOpenHelper {
 		return cursor;
 	}
 
+	/**
+	 * calc average (alpha)
+	 * 
+	 * Just for HTW students with new regulations affected to the Bologna Process.
+	 * @return Number as String
+	 */
 	public String getGardeAverage() {
 		final String SQL_AVERAGE = "SELECT " + KEY_CREDITS + " ," + KEY_GRADE + " FROM " + TABLE_GRADES;
 		Cursor cursor = getReadableDatabase().rawQuery(SQL_AVERAGE, null);
 
-		// calc average
 		int credits = 0;
 		float tmp = 0;
 		while (cursor.moveToNext()) {
@@ -169,7 +174,7 @@ public class DbAdapter extends SQLiteOpenHelper {
 			float grade = Float.parseFloat(string);
 			tmp += (grade * credit);
 		}
-		String average = String.format("%.2f",(tmp / credits));
+		String average = String.format("%.2f", (tmp / credits));
 		return "count:\t\t" + cursor.getCount() + "\ncredits:\t" + credits + "\naverage:\t" + average;
 	}
 }

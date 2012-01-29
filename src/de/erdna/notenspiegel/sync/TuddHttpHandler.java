@@ -1,7 +1,7 @@
 package de.erdna.notenspiegel.sync;
 
 import static de.erdna.notenspiegel.Constants.DEBUG;
-import static de.erdna.notenspiegel.Utilities.*;
+import static de.erdna.notenspiegel.utils.Utilities.*;
 
 import java.io.IOException;
 import java.io.InputStream;
