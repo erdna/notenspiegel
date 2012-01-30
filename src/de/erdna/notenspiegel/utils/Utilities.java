@@ -9,6 +9,9 @@ import android.text.Html;
 import android.util.Log;
 
 public final class Utilities {
+
+	private final static String TAG = Utilities.class.getClass().getSimpleName();
+
 	public static final void printResponseHeader(HttpResponse response) {
 		if (DEBUG) {
 			System.out.println("----------------------------------------");
@@ -26,11 +29,15 @@ public final class Utilities {
 		}
 	}
 
-	public static final void cleanGrade(String dirtyText, String cleanText) {
+	public static final String cleanGrade(String dirtyText) {
+		if (DEBUG) Log.e(TAG, "\tcleanGrade");
+		if (DEBUG) Log.e(TAG, "\tdirtyText:\t" + dirtyText);
 		String temp = Html.fromHtml(dirtyText).toString();
 		if (temp != null && temp.length() != 0) {
-			cleanText = temp.replace("ERR: unresolved:", "").replaceAll("[^0-9,]", "").trim();
+			temp = temp.replace("ERR: unresolved:", "").replaceAll("[^0-9,]", "").trim();
 		}
+		if (DEBUG) Log.e(TAG, "\tcleanText:\t" + temp);
+		return temp;
 	}
 
 }

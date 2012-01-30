@@ -289,7 +289,7 @@ public class HtwHttpHandler extends HttpHandler {
 					// parse "Note"
 					while (eventType != XmlPullParser.START_TAG)
 						eventType = xpp.next();
-					cleanGrade(xpp.nextText(), grade.mGrade);
+					grade.mGrade = cleanGrade(xpp.nextText());
 					if (DEBUG) Log.i(TAG, grade.mGrade);
 					eventType = xpp.next();
 
