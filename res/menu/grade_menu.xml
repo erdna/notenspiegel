@@ -7,6 +7,7 @@
         android:title="@string/title_options"/>
     <item
         android:id="@id/menu_average"
+        android:icon="@drawable/ic_menu_average"
         android:title="@string/title_average"/>
     <item
         android:id="@+id/menu_search"

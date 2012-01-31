@@ -163,13 +163,12 @@ public class DbAdapter extends SQLiteOpenHelper {
 	 * 
 	 * @return Number as String
 	 */
-	public String getGardeAverage() {
+	public Average getGardeAverage() {
 		final String SQL_AVERAGE = "SELECT " + KEY_CREDITS + " ," + KEY_GRADE + " FROM " + TABLE_GRADES;
 		Cursor cursor = getReadableDatabase().rawQuery(SQL_AVERAGE, null);
 
-		int sumCredits = 0;
-		float weightedGarde = 0;
-		int countCredits = 0;
+		Average average = new Average();
+
 		while (cursor.moveToNext()) {
 
 			// credits
@@ -179,10 +178,10 @@ public class DbAdapter extends SQLiteOpenHelper {
 			} catch (Exception e) {
 				if (DEBUG) Log.e(TAG, e.getLocalizedMessage());
 			}
-			
+
 			// for weighted average
-			sumCredits += credits;
-			if (credits > 0) countCredits++;
+			average.mSumCredits += credits;
+			if (credits > 0) average.mCountWithCredits++;
 
 			// grades
 			float grade = 0;
@@ -194,11 +193,11 @@ public class DbAdapter extends SQLiteOpenHelper {
 			}
 
 			// weighted garde
-			weightedGarde += (grade * credits);
+			average.mWeightedGarde += (grade * credits);
 		}
+		average.mCountAll = cursor.getCount();
 		cursor.close();
-		String average = String.format("%.2f", (weightedGarde / sumCredits));
-		return "count(all grades):\t" + cursor.getCount() + "\ncount(credits > 0):\t" + countCredits
-				+ "\ncredits reached:\t\t" + sumCredits + "\nweighted average:\t" + average;
+
+		return average;
 	}
 }

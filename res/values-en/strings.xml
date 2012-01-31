@@ -46,5 +46,9 @@
     <string name="notification_new_grades">Neue Noten</string>
     <string name="ssl_error">Activate \'Trust all certificates\' in Preferences to get Grades from %s.</string>
     <string name="server_error">Server not reachable %s</string>
+    <string name="average_count_all">count(all grades):\t%s</string>
+    <string name="average_count_credits">count(credits > 0):\t%s</string>
+    <string name="average_sum_credits">credits reached:\t\t%s</string>
+    <string name="average_weighted">weighted average:\t%s</string>
 
 </resources>

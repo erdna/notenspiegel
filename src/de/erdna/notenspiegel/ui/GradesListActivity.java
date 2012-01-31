@@ -4,6 +4,7 @@ import static de.erdna.notenspiegel.Constants.*;
 
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
+import de.erdna.notenspiegel.db.Average;
 import de.erdna.notenspiegel.db.DbAdapter;
 import de.erdna.notenspiegel.db.Grade;
 import de.erdna.notenspiegel.sync.SyncTask;
@@ -276,7 +277,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			builder.setTitle(R.string.title_average);
 			builder.setMessage("Wenn man diesen Text sieht, ist was schief gegangen!");
 			builder.setCancelable(true);
-			// builder.setIcon(android.R.drawable.ic_dialog_alert);
+			builder.setIcon(R.drawable.ic_menu_average);
 			builder.setNeutralButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which) {
@@ -303,7 +304,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			break;
 
 		case DIALOG_AVERAGE:
-			((AlertDialog) dialog).setMessage(dbAdapter.getGardeAverage());
+			((AlertDialog) dialog).setMessage(formatGradeAverage(dbAdapter.getGardeAverage()));
 			break;
 
 		default:
@@ -346,4 +347,10 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		// at example to react on ok button clicked
 	}
 
+	private String formatGradeAverage(Average average) {
+		return getString(R.string.average_count_all, average.mCountAll) + "\n"
+				+ getString(R.string.average_count_credits, average.mCountWithCredits) + "\n"
+				+ getString(R.string.average_sum_credits, average.mSumCredits) + "\n"
+				+ getString(R.string.average_weighted, average.getAverage());
+	}
 }
