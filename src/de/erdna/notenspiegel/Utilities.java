@@ -1,4 +1,4 @@
-package de.erdna.notenspiegel.utils;
+package de.erdna.notenspiegel;
 
 import static de.erdna.notenspiegel.Constants.*;
 
@@ -30,13 +30,13 @@ public final class Utilities {
 	}
 
 	public static final String cleanGrade(String dirtyText) {
-		if (DEBUG) Log.e(TAG, "\tcleanGrade");
-		if (DEBUG) Log.e(TAG, "\tdirtyText:\t" + dirtyText);
+		if (DEBUG) Log.v(TAG, "\tcleanGrade");
+		if (DEBUG) Log.v(TAG, "\tdirtyText:\t" + dirtyText);
 		String temp = Html.fromHtml(dirtyText).toString();
 		if (temp != null && temp.length() != 0) {
 			temp = temp.replace("ERR: unresolved:", "").replaceAll("[^0-9,]", "").trim();
 		}
-		if (DEBUG) Log.e(TAG, "\tcleanText:\t" + temp);
+		if (DEBUG) Log.v(TAG, "\tcleanText:\t" + temp);
 		return temp;
 	}
 
