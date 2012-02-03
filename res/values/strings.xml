@@ -45,10 +45,10 @@
     <string name="notification_new_grade">Neue Note</string>
     <string name="notification_new_grades">Neue Noten</string>
     <string name="ssl_error">Um die Noten der %s abrufen zu können, muss \'Allen Zertifikaten vertrauen\' aktiviert sein.</string>
-    <string name="server_error">Server nicht errreichbar %s</string>
-    <string name="average_count_all">Gesamtanzahl:\t\t\t\t\t%s</string>
-    <string name="average_count_credits">Anzahl (Credits > 0):\t\t\t%s</string>
-    <string name="average_sum_credits">Erreichte Credits:\t\t\t\t%s</string>
-    <string name="average_weighted">Gewichteter Durchschnitt:\t%s</string>
+    <string name="server_error">Server nicht errreichbar</string>
+    <string name="average_count_all">Gesamtanzahl:</string>
+    <string name="average_count_credits">Anzahl (Credits > 0):</string>
+    <string name="average_sum_credits">Erreichte Credits:</string>
+    <string name="average_weighted">Gewichteter Durchschnitt:</string>
 
 </resources>
