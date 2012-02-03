@@ -15,6 +15,15 @@
         android:textColor="#FFF" />
 
     <TextView
+        android:id="@+id/textDialogCountAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textDialogCountAllTxt"
+        android:layout_toRightOf="@+id/textDialogAverageTxt"
+        android:text="42"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
         android:id="@+id/textDialogCountCreditsTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +31,15 @@
         android:layout_below="@+id/textDialogCountAllTxt"
         android:text="@string/average_count_credits"
         android:textColor="#FFF" />
+
+    <TextView
+        android:id="@+id/textDialogCountCredits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textDialogCountCreditsTxt"
+        android:layout_toRightOf="@+id/textDialogAverageTxt"
+        android:text="32"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/textDialogSumCreditsTxt"
@@ -33,12 +51,31 @@
         android:textColor="#FFF" />
 
     <TextView
+        android:id="@+id/textDialogSumCredits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textDialogSumCreditsTxt"
+        android:layout_toRightOf="@+id/textDialogAverageTxt"
+        android:text="150"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
         android:id="@+id/textDialogAverageTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textDialogSumCreditsTxt"
         android:text="@string/average_weighted"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFF" />
+
+    <TextView
+        android:id="@+id/textDialogAverage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textDialogAverageTxt"
+        android:layout_toRightOf="@+id/textDialogAverageTxt"
+        android:text="3,21"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
