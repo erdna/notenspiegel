@@ -273,18 +273,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			break;
 
 		case DIALOG_AVERAGE:
-			builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.title_average);
-			builder.setMessage("Wenn man diesen Text sieht, ist was schief gegangen!");
-			builder.setCancelable(true);
-			builder.setIcon(R.drawable.ic_menu_average);
-			builder.setNeutralButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
-
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-			dialog = builder.create();
+			dialog = new AverageGradeDialog(this);
 			break;
 
 		default:
@@ -304,7 +293,8 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			break;
 
 		case DIALOG_AVERAGE:
-			((AlertDialog) dialog).setMessage(formatGradeAverage(dbAdapter.getGardeAverage()));
+			// ((AverageGradeDialog)
+			// dialog).setMessage(formatGradeAverage(dbAdapter.getGardeAverage()));
 			break;
 
 		default:
