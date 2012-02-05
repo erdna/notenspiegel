@@ -51,5 +51,6 @@
     <string name="average_count_credits">count(credits > 0):</string>
     <string name="average_sum_credits">credits reached:</string>
     <string name="average_weighted">weighted average:</string>
+    <string name="average_without_guarantee">All calculations are without guarantee!</string>
 
 </resources>

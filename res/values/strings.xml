@@ -51,5 +51,6 @@
     <string name="average_count_credits">Anzahl Noten (Credits > 0):</string>
     <string name="average_sum_credits">Erreichte Credits:</string>
     <string name="average_weighted">Gewichteter Durchschnitt:</string>
+    <string name="average_without_guarantee">Alle Berechnungen erfolgen ohne Gewähr!</string>
 
 </resources>
