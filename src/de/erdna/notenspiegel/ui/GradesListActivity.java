@@ -342,11 +342,5 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		// onClick from OnClickListner
 		// at example to react on ok button clicked
 	}
-
-	private String formatGradeAverage(Average average) {
-		return getString(R.string.average_count_all, average.mCountAll) + "\n"
-				+ getString(R.string.average_count_credits, average.mCountWithCredits) + "\n"
-				+ getString(R.string.average_sum_credits, average.mSumCredits) + "\n"
-				+ getString(R.string.average_weighted, average.getAverage());
-	}
+	
 }
