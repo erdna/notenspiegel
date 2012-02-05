@@ -293,8 +293,14 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			break;
 
 		case DIALOG_AVERAGE:
-			// ((AverageGradeDialog)
-			// dialog).setMessage(formatGradeAverage(dbAdapter.getGardeAverage()));
+			AverageGradeDialog averageGradeDialog = ((AverageGradeDialog) dialog);
+			Average gardeAverage = dbAdapter.getGardeAverage();
+			averageGradeDialog.setCountAll(gardeAverage.getCountAll());
+			averageGradeDialog.setCountCredits(gardeAverage.getCountWithCredits());
+			averageGradeDialog.setSumCredits(gardeAverage.getSumCredits());
+			averageGradeDialog.setAverage(gardeAverage.getAverage());
+
+			// ((AverageGradeDialog)dialog).setMessage(formatGradeAverage(dbAdapter.getGardeAverage()));
 			break;
 
 		default:

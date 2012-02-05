@@ -18,7 +18,20 @@ public class Average {
 	public int mCountWithCredits;
 	public int mCountAll;
 
+	public String getCountAll() {
+		return String.format("%d", mCountAll);
+	}
+
+	public String getCountWithCredits() {
+		return String.format("%d", mCountWithCredits);
+	}
+
+	public String getSumCredits() {
+		return String.format("%d", mSumCredits);
+	}
+
 	public String getAverage() {
 		return String.format("%.2f", (mWeightedGarde / mSumCredits));
 	}
+
 }
