@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/average_count_all"
-        android:textColor="#FFF" />
+        android:text="@string/average_count_all" />
 
     <TextView
         android:id="@+id/textDialogCountAll"
@@ -30,8 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textDialogCountAllTxt"
-        android:text="@string/average_count_credits"
-        android:textColor="#FFF" />
+        android:text="@string/average_count_credits" />
 
     <TextView
         android:id="@+id/textDialogCountCredits"
@@ -49,8 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textDialogCountCreditsTxt"
-        android:text="@string/average_sum_credits"
-        android:textColor="#FFF" />
+        android:text="@string/average_sum_credits" />
 
     <TextView
         android:id="@+id/textDialogSumCredits"
@@ -69,8 +66,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textDialogSumCreditsTxt"
         android:text="@string/average_weighted"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FFF" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/textDialogAverage"
