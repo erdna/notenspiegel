@@ -3,6 +3,7 @@ package de.erdna.notenspiegel.ui;
 import de.erdna.notenspiegel.R;
 import android.app.Dialog;
 import android.content.Context;
+import android.view.MotionEvent;
 import android.widget.TextView;
 
 public class AverageGradeDialog extends Dialog {
@@ -31,6 +32,12 @@ public class AverageGradeDialog extends Dialog {
 	public void setAverage(String average) {
 		TextView text = (TextView) findViewById(R.id.textDialogAverage);
 		text.setText(average);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		dismiss();
+		return true;
 	}
 
 }
