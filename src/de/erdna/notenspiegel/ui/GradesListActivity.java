@@ -81,6 +81,9 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 				// refresh list
 				refreshGradeList();
 
+				// show successfully synchronized
+				Toast.makeText(context, R.string.successfully_synced, Toast.LENGTH_LONG).show();
+
 			}
 
 		}
@@ -347,7 +350,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 	public void onClick(DialogInterface dialog, int which) {
 		// onClick from OnClickListner
-		// at example to react on ok button clicked
+		// at example to react on button clicked
 	}
 
 }
