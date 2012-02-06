@@ -229,26 +229,34 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	}
 
 	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (((GradesApp) getApplication()).isSyncing()) {
+			return false;
+		} else {
+			return super.onPrepareOptionsMenu(menu);
+		}
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_preferences:
 			Intent intent = new Intent(this, OptionsActivity.class);
 			startActivity(intent);
-			break;
+			return true;
 		case R.id.menu_average:
 			showDialog(DIALOG_AVERAGE);
-			break;
+			return true;
 		case R.id.menu_refresh:
 			syncGradeList(null);
-			break;
+			return true;
 		case R.id.menu_search:
 			onSearchRequested();
-			break;
+			return true;
 
 		default:
-			break;
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -299,8 +307,6 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			averageGradeDialog.setCountCredits(gardeAverage.getCountWithCredits());
 			averageGradeDialog.setSumCredits(gardeAverage.getSumCredits());
 			averageGradeDialog.setAverage(gardeAverage.getAverage());
-
-			// ((AverageGradeDialog)dialog).setMessage(formatGradeAverage(dbAdapter.getGardeAverage()));
 			break;
 
 		default:
@@ -312,7 +318,8 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	}
 
 	public void syncGradeList(View view) {
-		if (view != null) view.setVisibility(View.INVISIBLE);
+		final Button button = (Button) findViewById(R.id.button_refresh);
+		button.setVisibility(View.INVISIBLE);
 		syncGradeList();
 	}
 
@@ -324,9 +331,9 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	public void refreshGradeList() {
 		listAdapter.getCursor().requery();
 
-		// show refresh button in center when db is empty
+		// show refresh button in center when db is empty and is not syncing
 		final Button button = (Button) findViewById(R.id.button_refresh);
-		if (dbAdapter.isTableGradesEmpty()) {
+		if (dbAdapter.isTableGradesEmpty() && !((GradesApp) getApplication()).isSyncing()) {
 
 			button.setVisibility(View.VISIBLE);
 
@@ -342,5 +349,5 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		// onClick from OnClickListner
 		// at example to react on ok button clicked
 	}
-	
+
 }

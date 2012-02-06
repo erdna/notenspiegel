@@ -83,6 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textDialogAverageTxt"
+        android:paddingTop="10dp"
         android:text="@string/average_without_guarantee"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
