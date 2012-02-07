@@ -178,10 +178,7 @@ public class DbAdapter extends SQLiteOpenHelper {
 			} catch (Exception e) {
 				if (DEBUG) Log.e(TAG, e.getLocalizedMessage());
 			}
-
-			// for weighted average
 			average.mSumCredits += credits;
-			if (credits > 0) average.mCountWithCredits++;
 
 			// grades
 			float grade = 0;
@@ -192,8 +189,10 @@ public class DbAdapter extends SQLiteOpenHelper {
 				if (DEBUG) Log.e(TAG, e.getLocalizedMessage());
 			}
 
-			// weighted garde
-			average.mWeightedGarde += (grade * credits);
+			// for weighted average
+			average.mWeightedGarde += grade * credits;
+			if (grade > 0) average.mSumCreditsWithGrade += credits;
+			if (credits > 0) average.mCountWithCredits++;
 		}
 		average.mCountAll = cursor.getCount();
 		cursor.close();

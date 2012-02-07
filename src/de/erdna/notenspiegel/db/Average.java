@@ -17,6 +17,7 @@ public class Average {
 	public float mWeightedGarde;
 	public int mCountWithCredits;
 	public int mCountAll;
+	public int mSumCreditsWithGrade;
 
 	public String getCountAll() {
 		return String.format("%d", mCountAll);
@@ -31,7 +32,7 @@ public class Average {
 	}
 
 	public String getAverage() {
-		return String.format("%.2f", (mWeightedGarde / mSumCredits));
+		return String.format("%.2f", (mWeightedGarde / mSumCreditsWithGrade));
 	}
 
 }
