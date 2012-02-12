@@ -1,9 +1,13 @@
 package de.erdna.notenspiegel.ui;
 
 import static de.erdna.notenspiegel.Constants.*;
+
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.ui.actionbar.ActionBarPreferenceActivity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
@@ -31,6 +35,7 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 		setSummaryOfListPreference(PREF_UNIVERSITIES);
+		setSummaryOfListPreference(PREF_INTERVAL);
 
 		// set version name to legal information
 		try {
@@ -64,15 +69,16 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
+		if (DEBUG) Toast.makeText(this, "key " + key + " changed", Toast.LENGTH_SHORT).show();
+
 		if (PREF_USERNAME.equals(key) || PREF_UNIVERSITIES.equals(key)) {
 
 			// if username or university changed delete list of grades
 			((GradesApp) getApplication()).getDbAdapter().deleteAll();
+
 		}
 
 		if (PREF_USERNAME.equals(key)) {
-			if (DEBUG) Toast.makeText(this, "key username changed", Toast.LENGTH_SHORT).show();
-
 			// delete full name and password
 			SharedPreferences.Editor editor = sharedPreferences.edit();
 			editor.putString(PREF_FULL_NAME, "");
@@ -80,11 +86,32 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 		}
 
 		if (PREF_UNIVERSITIES.equals(key)) {
-			if (DEBUG) Toast.makeText(this, "key listUniversities changed", Toast.LENGTH_SHORT).show();
-
+			// set summary
 			setSummaryOfListPreference(key);
 		}
 
+		if (PREF_INTERVAL.equals(key)) {
+			// set summary
+			setSummaryOfListPreference(key);
+
+			long interval = Long.valueOf(sharedPreferences.getString(PREF_INTERVAL, "0"));
+
+			setAutoSync(interval);
+
+		}
+
+	}
+
+	private void setAutoSync(long interval) {
+		Intent intent = new Intent(ACTION_START_SYNCSERVICE);
+		PendingIntent operation = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		if (interval <= 0) {
+			alarmManager.cancel(operation);
+		} else {
+			long triggerAtTime = System.currentTimeMillis() + interval;
+			alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerAtTime, interval, operation);
+		}
 	}
 
 	private void setSummaryOfListPreference(String key) {

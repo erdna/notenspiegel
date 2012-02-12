@@ -22,7 +22,6 @@
         <item>tudd</item>
     </string-array>
 
-    <string name="university_summary">HTW Dresden</string>
     <string name="username_summary">Enter your matriculation number</string>
     <string name="password_summary">Enter your password</string>
     <string name="btn_ok">Ok</string>
@@ -53,5 +52,25 @@
     <string name="average_weighted">weighted average:</string>
     <string name="average_without_guarantee">All calculations are without guarantee!</string>
     <string name="successfully_synced">successfully synced</string>
+    <string name="auto_sync">Auto synchronization</string>
+
+    <string-array name="listIntervalNames">
+        <item>7 days</item>
+        <item>3 days</item>
+        <item>24 hours</item>
+        <item>6 hours</item>
+        <item>1 hour</item>
+        <item>30 minutes</item>
+        <item>disable</item>
+    </string-array>
+    <string-array name="listIntervalValues">
+        <item>604800000</item>
+        <item>259200000</item>
+        <item>86400000</item>
+        <item>21600000</item>
+        <item>3600000</item>
+        <item>1800000</item>
+        <item>0</item>
+    </string-array>
 
 </resources>

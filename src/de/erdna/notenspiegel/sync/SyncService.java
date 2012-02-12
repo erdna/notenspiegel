@@ -1,11 +1,6 @@
 package de.erdna.notenspiegel.sync;
 
-import static de.erdna.notenspiegel.Constants.ACTION_SYNC_DONE;
-import static de.erdna.notenspiegel.Constants.ACTION_SYNC_ERROR;
-import static de.erdna.notenspiegel.Constants.ACTION_SYNC_STARTED;
-import static de.erdna.notenspiegel.Constants.DEBUG;
-import static de.erdna.notenspiegel.Constants.EXTRA_ERROR_MSG;
-import static de.erdna.notenspiegel.Constants.PREF_VIBRATE;
+import static de.erdna.notenspiegel.Constants.*;
 
 import java.net.UnknownHostException;
 
@@ -57,7 +52,7 @@ public class SyncService extends Service {
 			editor.commit();
 
 			// get connector, htwdd or tudd
-			String university = preferences.getString("listUniversities", "htwdd");
+			String university = preferences.getString(PREF_UNIVERSITIES, "htwdd");
 
 			HttpHandler httpHandler = null;
 			if ("htwdd".equals(university)) {
@@ -77,7 +72,7 @@ public class SyncService extends Service {
 			// start syncing
 			HttpConnector connector;
 			// Instantiate connector
-			if (preferences.getBoolean("acceptUntrustedCerts", false)) {
+			if (preferences.getBoolean(PREF_CERT, false)) {
 				// trust all certificates
 				connector = new SslHttpConnector();
 			} else {
@@ -107,7 +102,7 @@ public class SyncService extends Service {
 				if (DEBUG) publishProgress("logout");
 			}
 
-			if (DEBUG) publishProgress("successfully synced");
+			publishProgress(getString(R.string.successfully_synced));
 
 			return null;
 		}
@@ -162,8 +157,15 @@ public class SyncService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		app = (GradesApp) getApplication();
 		context = getApplicationContext();
+		if (app.isSyncing()) stopSelf();
 		new SyncTask(context, app).execute();
 		return START_NOT_STICKY;
+	}
+
+	@Override
+	public void onDestroy() {
+		if (DEBUG) Toast.makeText(context, "Service destroyed", Toast.LENGTH_LONG).show();
+		super.onDestroy();
 	}
 
 	@Override

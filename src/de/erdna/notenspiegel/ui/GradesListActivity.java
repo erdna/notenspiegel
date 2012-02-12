@@ -54,14 +54,15 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (DEBUG) Toast.makeText(context, action, Toast.LENGTH_SHORT).show();
 			if (ACTION_SYNC_STARTED.equals(action)) {
+				if (DEBUG) Toast.makeText(context, action, Toast.LENGTH_SHORT).show();
 
 				getActionBarHelper().setRefreshActionItemState(true);
 				final Button button = (Button) findViewById(R.id.button_refresh);
 				if (button != null) button.setVisibility(View.INVISIBLE);
 
 			} else if (ACTION_SYNC_ERROR.equals(action)) {
+				if (DEBUG) Toast.makeText(context, action, Toast.LENGTH_SHORT).show();
 
 				getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
 
@@ -80,6 +81,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 				refreshGradeList();
 
 			} else if (ACTION_SYNC_DONE.equals(action)) {
+				if (DEBUG) Toast.makeText(context, action, Toast.LENGTH_SHORT).show();
 
 				getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
 

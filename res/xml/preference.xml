@@ -16,7 +16,7 @@
         android:entries="@array/listConnectorNames"
         android:entryValues="@array/listConnectorValues"
         android:key="listUniversities"
-        android:summary="@string/university_summary"
+        android:summary=""
         android:title="@string/university" />
 
     <CheckBoxPreference
@@ -25,6 +25,14 @@
         android:summaryOff="@string/accept_untrusted_certificates_summaryOff"
         android:summaryOn="@string/accept_untrusted_certificates_summaryOn"
         android:title="@string/accept_untrusted_certificates" />
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/listIntervalNames"
+        android:entryValues="@array/listIntervalValues"
+        android:key="listInterval"
+        android:summary=""
+        android:title="@string/auto_sync" />
 
     <Preference
         android:enabled="false"

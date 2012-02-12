@@ -19,13 +19,14 @@ public class Receiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-
+		
+		Intent service = new Intent(context, SyncService.class);
+		
 		String action = intent.getAction();
 		if (ACTION_START_SYNCSERVICE.equals(action)) {
 			// called if alarm manager encountered sync action
 			// or someone clicked on refresh in ui
 
-			Intent service = new Intent(context, SyncService.class);
 			context.startService(service);
 
 		} else if (ACTION_SYNC_STARTED.equals(action)) {
@@ -44,11 +45,13 @@ public class Receiver extends BroadcastReceiver {
 			// called when sync was successful
 
 			mSyncCount = 0;
+			context.stopService(service);
 
 		} else if (ACTION_SYNC_ERROR.equals(action)) {
 			// called when sync received an http, ssl or parser error
 
 			mSyncCount = 0;
+			context.stopService(service);
 
 		}
 
