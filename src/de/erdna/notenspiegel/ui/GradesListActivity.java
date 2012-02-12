@@ -7,7 +7,6 @@ import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.Average;
 import de.erdna.notenspiegel.db.DbAdapter;
 import de.erdna.notenspiegel.db.Grade;
-import de.erdna.notenspiegel.sync.SyncTask;
 import de.erdna.notenspiegel.ui.actionbar.ActionBarActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -55,8 +54,14 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
+			if (DEBUG) Toast.makeText(context, action, Toast.LENGTH_SHORT).show();
+			if (ACTION_SYNC_STARTED.equals(action)) {
 
-			if (ACTION_SYNC_ERROR.equals(action)) {
+				getActionBarHelper().setRefreshActionItemState(true);
+				final Button button = (Button) findViewById(R.id.button_refresh);
+				if (button != null) button.setVisibility(View.INVISIBLE);
+
+			} else if (ACTION_SYNC_ERROR.equals(action)) {
 
 				getActionBarHelper().setRefreshActionItemState(((GradesApp) getApplication()).isSyncing());
 
@@ -69,7 +74,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 				// refresh list
 				refreshGradeList();
 
-			} else if (ACTION_NEW_GRADE.equals(action)) {
+			} else if (ACTION_DB_NEWGRADE.equals(action)) {
 
 				// refresh list
 				refreshGradeList();
@@ -97,7 +102,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 		// if nothing is configured start PreferencePage
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		if (preferences.getString("username", "").equals("")) {
+		if (preferences.getString(PREF_USERNAME, "").equals("")) {
 			Intent intent = new Intent(this, OptionsActivity.class);
 			startActivity(intent);
 		}
@@ -165,8 +170,9 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 		// register broadcast receiver and actions
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(ACTION_NEW_GRADE);
+		filter.addAction(ACTION_SYNC_STARTED);
 		filter.addAction(ACTION_SYNC_ERROR);
+		filter.addAction(ACTION_DB_NEWGRADE);
 		filter.addAction(ACTION_SYNC_DONE);
 		registerReceiver(broadcastReceiver, new IntentFilter(filter));
 
@@ -321,14 +327,14 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 	}
 
 	public void syncGradeList(View view) {
-		final Button button = (Button) findViewById(R.id.button_refresh);
-		button.setVisibility(View.INVISIBLE);
 		syncGradeList();
 	}
 
 	private void syncGradeList() {
-		getActionBarHelper().setRefreshActionItemState(true);
-		new SyncTask(this, getApplication()).execute();
+
+		Intent intent = new Intent(ACTION_START_SYNCSERVICE);
+		sendBroadcast(intent);
+
 	}
 
 	public void refreshGradeList() {

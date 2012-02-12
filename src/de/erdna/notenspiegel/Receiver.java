@@ -1,6 +1,7 @@
 package de.erdna.notenspiegel;
 
 import static de.erdna.notenspiegel.Constants.*;
+import de.erdna.notenspiegel.sync.SyncService;
 import de.erdna.notenspiegel.ui.GradesListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -20,7 +21,18 @@ public class Receiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 
 		String action = intent.getAction();
-		if (ACTION_NEW_GRADE.equals(action)) {
+		if (ACTION_START_SYNCSERVICE.equals(action)) {
+			// called if alarm manager encountered sync action
+			// or someone clicked on refresh in ui
+
+			Intent service = new Intent(context, SyncService.class);
+			context.startService(service);
+
+		} else if (ACTION_SYNC_STARTED.equals(action)) {
+			// called when sync task has began to sync
+
+		} else if (ACTION_DB_NEWGRADE.equals(action)) {
+			// called after each new grade synchronized
 
 			Bundle extras = intent.getExtras();
 			if (extras != null) {
@@ -29,9 +41,15 @@ public class Receiver extends BroadcastReceiver {
 
 			}
 		} else if (ACTION_SYNC_DONE.equals(action)) {
+			// called when sync was successful
+
 			mSyncCount = 0;
+
 		} else if (ACTION_SYNC_ERROR.equals(action)) {
+			// called when sync received an http, ssl or parser error
+
 			mSyncCount = 0;
+
 		}
 
 	}

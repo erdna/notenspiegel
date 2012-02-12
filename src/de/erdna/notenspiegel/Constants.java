@@ -7,7 +7,11 @@ public final class Constants {
 	public static final String EXTRA_ERROR_MSG = "EXTRA_ERROR_MSG";
 	public static final String EXTRA_GRADE_TEXT = "EXTRA_GRADE_TEXT";
 
-	public static final String ACTION_NEW_GRADE = "de.erdna.notenspiegel.ACTION_NEW_GRADE";
+	public static final String ACTION_START_SYNCSERVICE = "de.erdna.notenspiegel.ACTION_START_SYNCSERVICE";
+
+	public static final String ACTION_DB_NEWGRADE = "de.erdna.notenspiegel.ACTION_DB_NEWGRADE";
+
+	public static final String ACTION_SYNC_STARTED = "de.erdna.notenspiegel.ACTION_SYNC_STARTED";
 	public static final String ACTION_SYNC_ERROR = "de.erdna.notenspiegel.ACTION_SYNC_ERROR";
 	public static final String ACTION_SYNC_DONE = "de.erdna.notenspiegel.ACTION_SYNC_DONE";
 
@@ -18,6 +22,7 @@ public final class Constants {
 	public static final String PREF_UNIVERSITIES = "listUniversities";
 	public static final String PREF_VIBRATE = "vibrate";
 	public static final String PREF_LEGAL = "legalDisclaimer";
+	public static final String PREF_INTERVALL = "intervall";
 
 	public static final int NOTIFICATION = 0;
 

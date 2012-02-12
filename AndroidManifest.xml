@@ -35,11 +35,14 @@
 
         <receiver android:name="Receiver" >
             <intent-filter>
-                <action android:name="de.erdna.notenspiegel.ACTION_NEW_GRADE" />
+                <action android:name="de.erdna.notenspiegel.ACTION_START_SYNCSERVICE" />
                 <action android:name="de.erdna.notenspiegel.ACTION_SYNC_ERROR" />
+                <action android:name="de.erdna.notenspiegel.ACTION_DB_NEWGRADE" />
                 <action android:name="de.erdna.notenspiegel.ACTION_SYNC_DONE" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".sync.SyncService" />
     </application>
 
 </manifest>
