@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 public class Receiver extends BroadcastReceiver {
 
@@ -19,9 +20,9 @@ public class Receiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		
+
 		Intent service = new Intent(context, SyncService.class);
-		
+
 		String action = intent.getAction();
 		if (ACTION_START_SYNCSERVICE.equals(action)) {
 			// called if alarm manager encountered sync action
@@ -46,6 +47,9 @@ public class Receiver extends BroadcastReceiver {
 
 			mSyncCount = 0;
 			context.stopService(service);
+
+			// show successfully synchronized
+			Toast.makeText(context, R.string.successfully_synced, Toast.LENGTH_LONG).show();
 
 		} else if (ACTION_SYNC_ERROR.equals(action)) {
 			// called when sync received an http, ssl or parser error

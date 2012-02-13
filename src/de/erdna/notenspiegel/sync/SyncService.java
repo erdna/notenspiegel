@@ -102,8 +102,6 @@ public class SyncService extends Service {
 				if (DEBUG) publishProgress("logout");
 			}
 
-			publishProgress(getString(R.string.successfully_synced));
-
 			return null;
 		}
 
@@ -154,12 +152,11 @@ public class SyncService extends Service {
 	}
 
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
+	public void onStart(Intent intent, int startId) {
 		app = (GradesApp) getApplication();
 		context = getApplicationContext();
 		if (app.isSyncing()) stopSelf();
 		new SyncTask(context, app).execute();
-		return START_NOT_STICKY;
 	}
 
 	@Override
