@@ -104,15 +104,26 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 
 	}
 
+	/**
+	 * Set interval of auto synchronization with AlarmManager.
+	 * 
+	 * @param interval
+	 *            in milliseconds: 604800000(7 days), 259200000(3 days),
+	 *            86400000(24 hours), 21600000(6 hours) 3600000(1 hours)
+	 *            1800000(30 minutes) 0(disable)
+	 */
 	private void setAutoSync(long interval) {
 		Intent intent = new Intent(ACTION_START_SYNCSERVICE);
 		PendingIntent operation = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		if (interval <= 0) {
 			alarmManager.cancel(operation);
-		} else {
+		} else if (interval <= 3600000) {
 			long triggerAtTime = System.currentTimeMillis() + interval;
 			alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerAtTime, interval, operation);
+		} else {
+			long triggerAtTime = System.currentTimeMillis() + interval;
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtTime, interval, operation);
 		}
 	}
 
