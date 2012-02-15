@@ -4,14 +4,12 @@ public final class Constants {
 
 	public static final boolean DEBUG = true;
 
-	public static final String EXTRA_ERROR_MSG = "EXTRA_ERROR_MSG";
-	public static final String EXTRA_GRADE_TEXT = "EXTRA_GRADE_TEXT";
-	public static final String EXTRA_GRADE_ID = "EXTRA_GRADE_ID";
+	public static final String EXTRA_ERROR_MSG = "de.erdna.notenspiegel.EXTRA_ERROR_MSG";
+	public static final String EXTRA_GRADE_TEXT = "de.erdna.notenspiegel.EXTRA_GRADE_TEXT";
+	public static final String EXTRA_GRADE_ID = "de.erdna.notenspiegel.EXTRA_GRADE_ID";
 
 	public static final String ACTION_START_SYNCSERVICE = "de.erdna.notenspiegel.ACTION_START_SYNCSERVICE";
-
 	public static final String ACTION_DB_NEWGRADE = "de.erdna.notenspiegel.ACTION_DB_NEWGRADE";
-
 	public static final String ACTION_SYNC_STARTED = "de.erdna.notenspiegel.ACTION_SYNC_STARTED";
 	public static final String ACTION_SYNC_ERROR = "de.erdna.notenspiegel.ACTION_SYNC_ERROR";
 	public static final String ACTION_SYNC_DONE = "de.erdna.notenspiegel.ACTION_SYNC_DONE";
