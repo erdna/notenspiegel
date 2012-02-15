@@ -6,6 +6,7 @@ public final class Constants {
 
 	public static final String EXTRA_ERROR_MSG = "EXTRA_ERROR_MSG";
 	public static final String EXTRA_GRADE_TEXT = "EXTRA_GRADE_TEXT";
+	public static final String EXTRA_GRADE_ID = "EXTRA_GRADE_ID";
 
 	public static final String ACTION_START_SYNCSERVICE = "de.erdna.notenspiegel.ACTION_START_SYNCSERVICE";
 

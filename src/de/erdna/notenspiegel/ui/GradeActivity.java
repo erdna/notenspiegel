@@ -1,5 +1,6 @@
 package de.erdna.notenspiegel.ui;
 
+import de.erdna.notenspiegel.Constants;
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.DbAdapter;
@@ -10,7 +11,6 @@ import android.view.View;
 
 public class GradeActivity extends ActionBarActivity {
 
-	public static final String EXTRA_GRADE_ID = "grade_id";
 	private DbAdapter mDbAdapter;
 	private long mId;
 
@@ -20,7 +20,7 @@ public class GradeActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_grade);
 
 		// get id from intent
-		mId = getIntent().getLongExtra(EXTRA_GRADE_ID, -1);
+		mId = getIntent().getLongExtra(Constants.EXTRA_GRADE_ID, -1);
 		if (mId == -1) finish();
 
 		// get DbAdapter

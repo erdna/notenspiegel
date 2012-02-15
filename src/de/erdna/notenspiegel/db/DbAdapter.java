@@ -77,6 +77,7 @@ public class DbAdapter extends SQLiteOpenHelper {
 
 			// send action to broadcast to receivers
 			Intent intent = new Intent(ACTION_DB_NEWGRADE);
+			intent.putExtra(EXTRA_GRADE_ID, ret);
 			intent.putExtra(EXTRA_GRADE_TEXT, grade.mText + " " + grade.mGrade);
 			context.sendBroadcast(intent);
 

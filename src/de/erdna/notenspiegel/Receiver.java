@@ -2,6 +2,7 @@ package de.erdna.notenspiegel;
 
 import static de.erdna.notenspiegel.Constants.*;
 import de.erdna.notenspiegel.sync.SyncService;
+import de.erdna.notenspiegel.ui.GradeActivity;
 import de.erdna.notenspiegel.ui.GradesListActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -38,7 +39,8 @@ public class Receiver extends BroadcastReceiver {
 			Bundle extras = intent.getExtras();
 			if (extras != null) {
 				String text = extras.getString(EXTRA_GRADE_TEXT);
-				updateNotification(context, ++mSyncCount, text);
+				long gradeId = extras.getLong(EXTRA_GRADE_ID);
+				updateNotification(context, ++mSyncCount, text, gradeId);
 
 			}
 		} else if (ACTION_SYNC_DONE.equals(action)) {
@@ -57,19 +59,29 @@ public class Receiver extends BroadcastReceiver {
 
 	}
 
-	private void updateNotification(Context context, int notificationCount, String text) {
+	private void updateNotification(Context context, int notificationCount, String text, long gradeId) {
 
 		NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-		// singular
-		String message = context.getString(R.string.notification_new_grade);
+		String message;
+		Intent contentIntent;
 
-		// plural
-		if (notificationCount != 1) {
+		if (notificationCount == 1) {
+
+			// singular
+			message = context.getString(R.string.notification_new_grade);
+			contentIntent = new Intent(context, GradeActivity.class);
+			contentIntent.putExtra(Constants.EXTRA_GRADE_ID, gradeId);
+
+		} else {
+
+			// plural
 			text = context.getString(R.string.notification_new_grades);
 			message = sharedPreferences.getString(PREF_FULL_NAME, "");
 			message = message.concat("(" + notificationCount + ")");
+			contentIntent = new Intent(context, GradesListActivity.class);
+
 		}
 
 		Notification notification = new Notification(R.drawable.ic_stat_launcher, text, System.currentTimeMillis());
@@ -81,11 +93,9 @@ public class Receiver extends BroadcastReceiver {
 		// set vibration
 		if (sharedPreferences.getBoolean(PREF_VIBRATE, false)) notification.defaults |= Notification.DEFAULT_VIBRATE;
 
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context,
-				GradesListActivity.class), 0);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, contentIntent, 0);
 
-		notification.setLatestEventInfo(context, text, message, contentIntent);
+		notification.setLatestEventInfo(context, text, message, pendingIntent);
 		manager.notify(NOTIFICATION, notification);
 	}
-
 }

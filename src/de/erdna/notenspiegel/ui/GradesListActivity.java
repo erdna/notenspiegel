@@ -2,6 +2,7 @@ package de.erdna.notenspiegel.ui;
 
 import static de.erdna.notenspiegel.Constants.*;
 
+import de.erdna.notenspiegel.Constants;
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.db.Average;
@@ -192,7 +193,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 	public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 		Intent intent = new Intent(this, GradeActivity.class);
-		intent.putExtra(GradeActivity.EXTRA_GRADE_ID, id);
+		intent.putExtra(Constants.EXTRA_GRADE_ID, id);
 		startActivity(intent);
 	}
 
@@ -221,7 +222,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 		case R.id.menuItemContextInfo:
 			Intent intent = new Intent(this, GradeActivity.class);
-			intent.putExtra(GradeActivity.EXTRA_GRADE_ID, info.id);
+			intent.putExtra(Constants.EXTRA_GRADE_ID, info.id);
 			startActivity(intent);
 
 		default:
