@@ -2,6 +2,8 @@ package de.erdna.notenspiegel.ui;
 
 import static de.erdna.notenspiegel.Constants.*;
 
+import java.util.Date;
+
 import de.erdna.notenspiegel.GradesApp;
 import de.erdna.notenspiegel.R;
 import de.erdna.notenspiegel.ui.actionbar.ActionBarPreferenceActivity;
@@ -35,7 +37,7 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 		setSummaryOfListPreference(PREF_UNIVERSITIES);
-		setSummaryOfListPreference(PREF_INTERVAL);
+		setSummaryOfAutoSync(sharedPreferences, PREF_INTERVAL);
 
 		// set version name to legal information
 		try {
@@ -91,8 +93,8 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 		}
 
 		if (PREF_INTERVAL.equals(key)) {
-			// set summary
-			setSummaryOfListPreference(key);
+
+			setSummaryOfAutoSync(sharedPreferences, key);
 
 			long interval = Long.valueOf(sharedPreferences.getString(PREF_INTERVAL, "0"));
 
@@ -120,6 +122,24 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 		if (pref instanceof ListPreference) {
 			ListPreference listPref = (ListPreference) pref;
 			pref.setSummary(listPref.getEntry());
+		}
+	}
+
+	private void setSummaryOfAutoSync(SharedPreferences sharedPreferences, String key) {
+
+		Preference pref = findPreference(key);
+		if (pref instanceof ListPreference) {
+
+			// get last update time stamp
+			String lastSyncText = "";
+			long lastSync = sharedPreferences.getLong(PREF_LAST_SYNC, 0);
+			Date d = new Date(lastSync);
+			if (lastSync > 0) lastSyncText = "\n" + getString(R.string.last_sync) + " " + d.toLocaleString();
+
+			// set summary
+			ListPreference listPref = (ListPreference) pref;
+			pref.setSummary(getString(R.string.sync_interval) + " " + listPref.getEntry() + lastSyncText);
+
 		}
 	}
 }

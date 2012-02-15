@@ -141,6 +141,11 @@ public class SyncService extends Service {
 
 			} else {
 
+				// write last update time stamp in preferences
+				Editor editor = preferences.edit();
+				editor.putLong(PREF_LAST_SYNC, System.currentTimeMillis());
+				editor.commit();
+
 				// send action broadcast to receivers that syncing is done
 				Intent intent = new Intent(ACTION_SYNC_DONE);
 				context.sendBroadcast(intent);
@@ -148,7 +153,6 @@ public class SyncService extends Service {
 			}
 
 		}
-
 	}
 
 	@Override

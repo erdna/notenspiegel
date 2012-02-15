@@ -22,6 +22,7 @@ public final class Constants {
 	public static final String PREF_VIBRATE = "vibrate";
 	public static final String PREF_LEGAL = "legalDisclaimer";
 	public static final String PREF_INTERVAL = "listInterval";
+	public static final String PREF_LAST_SYNC = "lastSync";
 
 	public static final int NOTIFICATION = 0;
 

@@ -53,6 +53,8 @@
     <string name="average_without_guarantee">Alle Berechnungen erfolgen ohne Gewähr!</string>
     <string name="successfully_synced">Erfolgreich synchronisiert</string>
     <string name="auto_sync">Auto-Synchronisation</string>
+    <string name="last_sync">letzte Aktualisierung</string>
+    <string name="sync_interval">Intervall</string>
 
     <string-array name="listIntervalNames">
         <item>7 Tage</item>
