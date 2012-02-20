@@ -53,7 +53,7 @@
     <string name="average_without_guarantee">All calculations are without guarantee!</string>
     <string name="successfully_synced">successfully synced</string>
     <string name="auto_sync">Auto synchronization</string>
-    <string name="last_sync">last synchronization</string>
+    <string name="last_sync">last sync</string>
     <string name="sync_interval">interval</string>
 
     <string-array name="listIntervalNames">

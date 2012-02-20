@@ -2,6 +2,7 @@ package de.erdna.notenspiegel.ui;
 
 import static de.erdna.notenspiegel.Constants.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.erdna.notenspiegel.GradesApp;
@@ -145,7 +146,8 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 			String lastSyncText = "";
 			long lastSync = sharedPreferences.getLong(PREF_LAST_SYNC, 0);
 			Date d = new Date(lastSync);
-			if (lastSync > 0) lastSyncText = "\n" + getString(R.string.last_sync) + " " + d.toLocaleString();
+			SimpleDateFormat sdf = new SimpleDateFormat();
+			if (lastSync > 0) lastSyncText = "\n" + getString(R.string.last_sync) + " " + sdf.format(d);
 
 			// set summary
 			ListPreference listPref = (ListPreference) pref;
