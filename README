@@ -2,6 +2,7 @@ Eine kleine App die alle Noten aus dem HISQIS Portal in einer Liste anzeigt. Daz
 
 Version 1.5 (versionCode="7"):
 * "Erfolgreich s..." PopUp entfernt
+* "Auto Sync" intern zuverlässiger
 * kleinere Bugfixes
 
 Version 1.4 (versionCode="6")[im Market]:
