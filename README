@@ -1,6 +1,7 @@
 Eine kleine App die alle Noten aus dem HISQIS Portal in einer Liste anzeigt. Dazu ist die Matrikelnummer und das Passwort einzutragen. Der zeit funktioniert es nur für Studenten der Hochschule für Technik und Wirtschaft Dresden.
 
 Version 1.6 (versionCode="8"):
+* Android 4.1 Unterstützung
 * kleinere Bugfixes
 
 Version 1.5 (versionCode="7")[im Market]:
@@ -45,4 +46,6 @@ Check on new Version:
 * activate new apk file
 * IPORTANT: change 'Recent Changes'!
 * change [im Market] in this README file to new version
-* increase versionName and versionCode 
+* increase versionName and versionCode
+* set DEBUG flag to true
+* commit changes
