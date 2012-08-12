@@ -119,9 +119,6 @@ public class OptionsActivity extends ActionBarPreferenceActivity implements OnSh
 		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		if (interval <= 0) {
 			alarmManager.cancel(operation);
-		} else if (interval <= 3600000) {
-			long triggerAtTime = System.currentTimeMillis() + interval;
-			alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerAtTime, interval, operation);
 		} else {
 			long triggerAtTime = System.currentTimeMillis() + interval;
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtTime, interval, operation);
