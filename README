@@ -2,7 +2,7 @@ Eine kleine App die alle Noten aus dem HISQIS Portal in einer Liste anzeigt. Daz
 
 Version 1.6 (versionCode="8"):
 * Android 4.1 Unterstützung
-* kleinere Bugfixes
+* Bugfix: Auto-Synchronisation
 
 Version 1.5 (versionCode="7")[im Market]:
 * "Erfolgreich s..." PopUp entfernt
@@ -40,7 +40,7 @@ Check on new Version:
 * Check versionCode and versionName in Manifest File
 * erase unused code
 * commit and create tag of versionName in Git
-* check that all version are working on Android 1.6 till 4.0
+* check that all version are working on Android 1.6 till 4.1
 * export notenspiegel.apk to new folder named like verisonName
 * upload new version to Android Market
 * activate new apk file
