@@ -2,7 +2,7 @@ package de.erdna.notenspiegel;
 
 public final class Constants {
 
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 
 	public static final String EXTRA_ERROR_MSG = "de.erdna.notenspiegel.EXTRA_ERROR_MSG";
 	public static final String EXTRA_GRADE_TEXT = "de.erdna.notenspiegel.EXTRA_GRADE_TEXT";
