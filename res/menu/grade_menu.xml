@@ -10,7 +10,7 @@
         android:icon="@drawable/ic_menu_average"
         android:title="@string/title_average"/>
     <item
-        android:id="@+id/menu_search"
+        android:id="@id/menu_search"
         android:icon="@drawable/ic_action_search"
         android:orderInCategory="0"
         android:showAsAction="always"
@@ -21,5 +21,8 @@
         android:orderInCategory="0"
         android:showAsAction="always"
         android:title="@string/refresh"/>
+    <item 
+        android:id="@id/menu_delete"
+        android:title="@string/delete_all"/>
 
 </menu>

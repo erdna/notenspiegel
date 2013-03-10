@@ -40,7 +40,8 @@
     <string name="details_notation">Notation:</string>
     <string name="details_try">Try:</string>
     <string name="details_date">Date of Exam:</string>
-    <string name="delete">Löschen</string>
+    <string name="delete">Delete</string>
+	<string name="delete_all">Delete all</string>
     <string name="notification_new_grade">Neue Note</string>
     <string name="notification_new_grades">Neue Noten</string>
     <string name="ssl_error">Activate \'Trust all certificates\' in Preferences to get Grades from %s.</string>

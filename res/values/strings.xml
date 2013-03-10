@@ -41,6 +41,7 @@
     <string name="details_try">Versuch:</string>
     <string name="details_date">Prüfungstermin:</string>
     <string name="delete">Löschen</string>
+    <string name="delete_all">Alle Löschen</string>
     <string name="notification_new_grade">Neue Note</string>
     <string name="notification_new_grades">Neue Noten</string>
     <string name="ssl_error">Um die Noten der %s abrufen zu können, muss \'Alle Zertifikate zulassen\' aktiviert sein.</string>

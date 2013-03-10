@@ -1,33 +1,32 @@
 package de.erdna.notenspiegel.ui;
 
-import static de.erdna.notenspiegel.Constants.*;
-
-import de.erdna.notenspiegel.Constants;
-import de.erdna.notenspiegel.GradesApp;
-import de.erdna.notenspiegel.R;
-import de.erdna.notenspiegel.db.Average;
-import de.erdna.notenspiegel.db.DbAdapter;
-import de.erdna.notenspiegel.db.Grade;
-import de.erdna.notenspiegel.ui.actionbar.ActionBarActivity;
+import static de.erdna.notenspiegel.Constants.ACTION_DB_NEWGRADE;
+import static de.erdna.notenspiegel.Constants.ACTION_START_SYNCSERVICE;
+import static de.erdna.notenspiegel.Constants.ACTION_SYNC_DONE;
+import static de.erdna.notenspiegel.Constants.ACTION_SYNC_ERROR;
+import static de.erdna.notenspiegel.Constants.ACTION_SYNC_STARTED;
+import static de.erdna.notenspiegel.Constants.DEBUG;
+import static de.erdna.notenspiegel.Constants.EXTRA_ERROR_MSG;
+import static de.erdna.notenspiegel.Constants.PREF_USERNAME;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -36,6 +35,13 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.erdna.notenspiegel.Constants;
+import de.erdna.notenspiegel.GradesApp;
+import de.erdna.notenspiegel.R;
+import de.erdna.notenspiegel.db.Average;
+import de.erdna.notenspiegel.db.DbAdapter;
+import de.erdna.notenspiegel.db.Grade;
+import de.erdna.notenspiegel.ui.actionbar.ActionBarActivity;
 
 public class GradesListActivity extends ActionBarActivity implements OnClickListener, OnItemClickListener {
 
@@ -88,7 +94,7 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 
 				// refresh list
 				refreshGradeList();
-				
+
 				// show successfully synchronized
 				Toast.makeText(context, R.string.successfully_synced, Toast.LENGTH_LONG).show();
 
@@ -264,6 +270,12 @@ public class GradesListActivity extends ActionBarActivity implements OnClickList
 			return true;
 		case R.id.menu_search:
 			onSearchRequested();
+			return true;
+		case R.id.menu_delete:
+			if (!((GradesApp) getApplication()).isSyncing()) {
+				((GradesApp) getApplication()).getDbAdapter().deleteAll();
+			}
+			refreshGradeList();
 			return true;
 
 		default:
